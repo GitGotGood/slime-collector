@@ -5377,7 +5377,7 @@ function GallerySlime({ skin, size = "normal", instanceId }: { skin: UnifiedSkin
 
 // Main Gallery Component
 export default function SkinGallery({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const [filter, setFilter] = useState<"all" | "production" | "inspiration">("all");
+  const [filter, setFilter] = useState<"all" | "production" | "pre-production" | "inspiration">("all");
   const [rarityFilter, setRarityFilter] = useState<"all" | keyof typeof SKINS_BY_TIER | "seasonal">("all");
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -5386,7 +5386,13 @@ export default function SkinGallery({ open, onClose }: { open: boolean; onClose:
     
     // Source filter
     if (filter !== "all") {
-      skins = SKINS_BY_SOURCE[filter];
+      if (filter === "production") {
+        skins = SKINS_BY_SOURCE.production;
+      } else if (filter === "pre-production") {
+        skins = SKINS_BY_SOURCE["pre-production"];
+      } else if (filter === "inspiration") {
+        skins = SKINS_BY_SOURCE.inspiration;
+      }
     }
     
     // Rarity filter
@@ -5405,6 +5411,11 @@ export default function SkinGallery({ open, onClose }: { open: boolean; onClose:
         s.id.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
+    
+    // Debug logging
+    console.log('Filter state:', { filter, rarityFilter, searchTerm });
+    console.log('Filtered skins count:', skins.length);
+    console.log('First 3 skins:', skins.slice(0, 3).map(s => ({ id: s.id, name: s.name, source: s.source })));
     
     return skins;
   }, [filter, rarityFilter, searchTerm]);
