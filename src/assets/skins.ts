@@ -44,6 +44,57 @@ export const SKINS: Record<string, Skin> = {
   star_parade: { id: "star_parade", name: "Star Parade", tier: "mythic", kind: "animated", colors: ["#0f172a", "#f8fafc", "#020617"] },
   galaxy_swirl: { id: "galaxy_swirl", name: "Galaxy Swirl", tier: "mythic", kind: "animated", colors: ["#1e1b4b", "#c7d2fe", "#0f172a"] },
 
+  // New Biome Coverage Slimes
+  // Forest
+  canopy_lantern: { id: "canopy_lantern", name: "Canopy Lantern", tier: "epic", kind: "animated", colors: ["#207a4f", "#2ea271"] },
+  moss_quilt: { id: "moss_quilt", name: "Moss Quilt", tier: "rare", kind: "solid", colors: ["#2e7d5a"] },
+  acorn_buddy: { id: "acorn_buddy", name: "Acorn Buddy", tier: "uncommon", kind: "solid", colors: ["#6c8a3a"] },
+  
+  // Cove
+  pearl_whisper: { id: "pearl_whisper", name: "Pearl Whisper", tier: "epic", kind: "animated", colors: ["#70c6c0", "#f2f7ff"] },
+  kelp_curl: { id: "kelp_curl", name: "Kelp Curl", tier: "rare", kind: "solid", colors: ["#267a6f"] },
+  tide_glass: { id: "tide_glass", name: "Tide Glass", tier: "uncommon", kind: "gradient", colors: ["#78d3d0", "#e9fbfb"] },
+  
+  // Tundra
+  snow_lantern: { id: "snow_lantern", name: "Snow Lantern", tier: "epic", kind: "animated", colors: ["#9fd3e6", "#eaf7ff"] },
+  frost_fern: { id: "frost_fern", name: "Frost Fern", tier: "rare", kind: "solid", colors: ["#cfeff8"] },
+  drift_puff: { id: "drift_puff", name: "Drift Puff", tier: "uncommon", kind: "animated", colors: ["#bfe7f4", "#ffffff"] },
+  
+  // Canyon
+  redwall_glow: { id: "redwall_glow", name: "Redwall Glow", tier: "epic", kind: "animated", colors: ["#b3562e", "#d67b4d"] },
+  desert_varnish: { id: "desert_varnish", name: "Desert Varnish", tier: "rare", kind: "solid", colors: ["#a14a2a"] },
+  swallow_sweep: { id: "swallow_sweep", name: "Swallow Sweep", tier: "uncommon", kind: "animated", colors: ["#cf7e50", "#f4c4a2"] },
+  
+  // Aurora
+  aurora_veil_plus: { id: "aurora_veil_plus", name: "Aurora Veil+", tier: "epic", kind: "animated", colors: ["#43e0c6", "#b189ff"] },
+  polar_crown: { id: "polar_crown", name: "Polar Crown", tier: "rare", kind: "solid", colors: ["#86c5ff"] },
+  ionosong: { id: "ionosong", name: "Ionosong", tier: "mythic", kind: "animated", colors: ["#0f1b3d", "#c7d2fe"] },
+  
+  // Savanna
+  acacia_shade: { id: "acacia_shade", name: "Acacia Shade", tier: "epic", kind: "animated", colors: ["#e0b45a", "#f7ddb0"] },
+  grass_run: { id: "grass_run", name: "Grass Run", tier: "rare", kind: "gradient", colors: ["#c9d66c", "#f2f6c6"] },
+  sun_drum: { id: "sun_drum", name: "Sun Drum", tier: "uncommon", kind: "animated", colors: ["#ffcc66", "#fff3cc"] },
+  
+  // Reef
+  coral_chorus: { id: "coral_chorus", name: "Coral Chorus", tier: "epic", kind: "animated", colors: ["#ff7e6b", "#2fd3c9"] },
+  anemone_wiggle: { id: "anemone_wiggle", name: "Anemone Wiggle", tier: "rare", kind: "solid", colors: ["#ff9ea0"] },
+  shell_gleam: { id: "shell_gleam", name: "Shell Gleam", tier: "uncommon", kind: "gradient", colors: ["#8de3de", "#f6ffff"] },
+  
+  // Temple
+  glyph_bloom: { id: "glyph_bloom", name: "Glyph Bloom", tier: "epic", kind: "animated", colors: ["#6a5d4a", "#d9c7a6"] },
+  vine_inlay: { id: "vine_inlay", name: "Vine Inlay", tier: "rare", kind: "solid", colors: ["#907a5d"] },
+  incense_drift: { id: "incense_drift", name: "Incense Drift", tier: "uncommon", kind: "animated", colors: ["#b79f80", "#f0e7d8"] },
+  
+  // Harbor
+  lighthouse_wink: { id: "lighthouse_wink", name: "Lighthouse Wink", tier: "epic", kind: "animated", colors: ["#5a82b8", "#dbe8ff"] },
+  rope_coil: { id: "rope_coil", name: "Rope Coil", tier: "rare", kind: "solid", colors: ["#c8a06d"] },
+  foam_crest: { id: "foam_crest", name: "Foam Crest", tier: "uncommon", kind: "gradient", colors: ["#74b7e4", "#e9f7ff"] },
+  
+  // Foundry
+  anvil_ember: { id: "anvil_ember", name: "Anvil Ember", tier: "epic", kind: "animated", colors: ["#151515", "#ff6a00"] },
+  forge_rune: { id: "forge_rune", name: "Forge Rune", tier: "rare", kind: "solid", colors: ["#332b28"] },
+  quench_mist: { id: "quench_mist", name: "Quench Mist", tier: "uncommon", kind: "animated", colors: ["#2a2a2a", "#5f6a71"] },
+
   // Legacy skins (for backward compatibility)
   green: { id: "green", name: "Green", tier: "common", kind: "solid", colors: ["#22c55e"] },
   mint: { id: "mint", name: "Mint", tier: "common", kind: "solid", colors: ["#4ade80"] },

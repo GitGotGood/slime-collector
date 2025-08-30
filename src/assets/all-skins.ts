@@ -15,6 +15,7 @@ export type UnifiedSkin = {
   tier: Rarity;
   source: "production" | "inspiration" | "pre-production"; // track where it came from
   origin?: SlimeOrigin; // how this slime is unlocked
+  bio?: string; // character description/story
   
   // For production skins (from skins.ts)
   kind?: "solid" | "gradient" | "animated";
@@ -253,6 +254,344 @@ export const PRODUCTION_SKINS: UnifiedSkin[] = [
     origin: { type: 'biome', source: 'observatory', displayName: 'Unlocked in Night Sky' },
     anim: "spiral_galaxy",
     base: { fill: "#1e1b4b", stroke: "#0f172a", shine: "#c7d2fe" } 
+  },
+
+  // ===== NEW BIOME COVERAGE SLIMES =====
+  // Forest (World 3)
+  { 
+    id: "canopy_lantern", 
+    name: "Canopy Lantern", 
+    tier: "epic", 
+    source: "production", 
+    origin: { type: 'biome', source: 'forest', displayName: 'Unlocked in Forest' },
+    bio: "Wears sunlight like a secret. Fireflies use it as a lamp.",
+    anim: "leaf_shadow_dapple",
+    gradient: { stops: [["#207a4f", 0], ["#2ea271", 100]], dir: "180deg" },
+    base: { fill: "#207a4f", stroke: "#0b3b28", shine: "#a7f3d0" } 
+  },
+  { 
+    id: "moss_quilt", 
+    name: "Moss Quilt", 
+    tier: "rare", 
+    source: "production", 
+    origin: { type: 'biome', source: 'forest', displayName: 'Unlocked in Forest' },
+    bio: "Collects naps in shady squares.",
+    pattern: { type: "moss_patches", size: "large", density: "sparse" },
+    base: { fill: "#2e7d5a", stroke: "#0b3b28", shine: "#5aa87f" } 
+  },
+  { 
+    id: "acorn_buddy", 
+    name: "Acorn Buddy", 
+    tier: "uncommon", 
+    source: "production", 
+    origin: { type: 'biome', source: 'forest', displayName: 'Unlocked in Forest' },
+    bio: "Hides snacks for friends. Forgets where, finds better ones.",
+    pattern: { type: "acorn_crowns", placement: "edges", density: "sparse" },
+    base: { fill: "#6c8a3a", stroke: "#365314", shine: "#e7f1bf" } 
+  },
+
+  // Cove (World 5)
+  { 
+    id: "pearl_whisper", 
+    name: "Pearl Whisper", 
+    tier: "epic", 
+    source: "production", 
+    origin: { type: 'biome', source: 'cove', displayName: 'Unlocked in Cove' },
+    bio: "Keeps a pocket pearl for wishes.",
+    anim: "diagonal_pearl_gleam",
+    gradient: { stops: [["#70c6c0", 0], ["#f2f7ff", 100]], dir: "45deg" },
+    base: { fill: "#70c6c0", stroke: "#0c4a6e", shine: "#f2f7ff" } 
+  },
+  { 
+    id: "kelp_curl", 
+    name: "Kelp Curl", 
+    tier: "rare", 
+    source: "production", 
+    origin: { type: 'biome', source: 'cove', displayName: 'Unlocked in Cove' },
+    bio: "Braids seaweed when bored.",
+    pattern: { type: "kelp_fronds", placement: "sides", period: 10 },
+    base: { fill: "#267a6f", stroke: "#134e4a", shine: "#9be1d9" } 
+  },
+  { 
+    id: "tide_glass", 
+    name: "Tide Glass", 
+    tier: "uncommon", 
+    source: "production", 
+    origin: { type: 'biome', source: 'cove', displayName: 'Unlocked in Cove' },
+    bio: "See-through enough to hide giggles.",
+    gradient: { stops: [["#78d3d0", 0], ["#e9fbfb", 100]], dir: "180deg" },
+    base: { fill: "#78d3d0", stroke: "#0c4a6e", shine: "#e9fbfb" } 
+  },
+
+  // Tundra (World 6)
+  { 
+    id: "snow_lantern", 
+    name: "Snow Lantern", 
+    tier: "epic", 
+    source: "production", 
+    origin: { type: 'biome', source: 'tundra', displayName: 'Unlocked in Tundra' },
+    bio: "Keeps a secret spark under all that hush.",
+    anim: "inner_glow_snowfall",
+    gradient: { stops: [["#9fd3e6", 0], ["#eaf7ff", 100]], dir: "180deg" },
+    base: { fill: "#9fd3e6", stroke: "#2e5a6d", shine: "#eaf7ff" } 
+  },
+  { 
+    id: "frost_fern", 
+    name: "Frost Fern", 
+    tier: "rare", 
+    source: "production", 
+    origin: { type: 'biome', source: 'tundra', displayName: 'Unlocked in Tundra' },
+    bio: "Draws winter on windows, then says sorry.",
+    pattern: { type: "frost_leaves", placement: "perimeter", color: "#7fb7ca" },
+    base: { fill: "#cfeff8", stroke: "#0c1c2e", shine: "#f0f9ff" } 
+  },
+  { 
+    id: "drift_puff", 
+    name: "Drift Puff", 
+    tier: "uncommon", 
+    source: "production", 
+    origin: { type: 'biome', source: 'tundra', displayName: 'Unlocked in Tundra' },
+    bio: "Collects quiet the way clouds collect cold.",
+    anim: "snow_drift_rise",
+    gradient: { stops: [["#bfe7f4", 0], ["#ffffff", 100]], dir: "180deg" },
+    base: { fill: "#bfe7f4", stroke: "#0c1c2e", shine: "#ffffff" } 
+  },
+
+  // Canyon (World 7)
+  { 
+    id: "redwall_glow", 
+    name: "Redwall Glow", 
+    tier: "epic", 
+    source: "production", 
+    origin: { type: 'biome', source: 'canyon', displayName: 'Unlocked in Canyon' },
+    bio: "Knows a thousand echo spots.",
+    anim: "sandstone_banding_parallax",
+    gradient: { stops: [["#b3562e", 0], ["#d67b4d", 100]], dir: "180deg" },
+    base: { fill: "#b3562e", stroke: "#2a1108", shine: "#fed7aa" } 
+  },
+  { 
+    id: "desert_varnish", 
+    name: "Desert Varnish", 
+    tier: "rare", 
+    source: "production", 
+    origin: { type: 'biome', source: 'canyon', displayName: 'Unlocked in Canyon' },
+    bio: "Shines when stories get old enough.",
+    pattern: { type: "mineral_flecks", density: "sparse", color: "#322014" },
+    base: { fill: "#a14a2a", stroke: "#2a1108", shine: "#fed7aa" } 
+  },
+  { 
+    id: "swallow_sweep", 
+    name: "Swallow Sweep", 
+    tier: "uncommon", 
+    source: "production", 
+    origin: { type: 'biome', source: 'canyon', displayName: 'Unlocked in Canyon' },
+    bio: "Races the wind and loses politely.",
+    anim: "bird_silhouettes_edge",
+    gradient: { stops: [["#cf7e50", 0], ["#f4c4a2", 100]], dir: "180deg" },
+    base: { fill: "#cf7e50", stroke: "#2a1108", shine: "#f4c4a2" } 
+  },
+
+  // Aurora (World 8)
+  { 
+    id: "aurora_veil_plus", 
+    name: "Aurora Veil+", 
+    tier: "epic", 
+    source: "production", 
+    origin: { type: 'biome', source: 'aurora', displayName: 'Unlocked in Aurora' },
+    bio: "Sews the night with color ribbons.",
+    anim: "vertical_hue_curtain",
+    gradient: { stops: [["#43e0c6", 0], ["#b189ff", 100]], dir: "180deg" },
+    base: { fill: "#43e0c6", stroke: "#EAF4FF", shine: "#b189ff" } 
+  },
+  { 
+    id: "polar_crown", 
+    name: "Polar Crown", 
+    tier: "rare", 
+    source: "production", 
+    origin: { type: 'biome', source: 'aurora', displayName: 'Unlocked in Aurora' },
+    bio: "Wears the sky like a hat.",
+    pattern: { type: "crown_halo", placement: "top", pulse: "slow" },
+    base: { fill: "#86c5ff", stroke: "#EAF4FF", shine: "#e6f6ff" } 
+  },
+  { 
+    id: "ionosong", 
+    name: "Ionosong", 
+    tier: "mythic", 
+    source: "production", 
+    origin: { type: 'biome', source: 'aurora', displayName: 'Unlocked in Aurora' },
+    bio: "Hums in colors only owls hear.",
+    anim: "star_motes_waves",
+    base: { fill: "#0f1b3d", stroke: "#EAF4FF", shine: "#c7d2fe" } 
+  },
+
+  // Savanna (World 9)
+  { 
+    id: "acacia_shade", 
+    name: "Acacia Shade", 
+    tier: "epic", 
+    source: "production", 
+    origin: { type: 'biome', source: 'savanna', displayName: 'Unlocked in Savanna' },
+    bio: "Picks favorite clouds and names them.",
+    anim: "tree_shadow_sway",
+    gradient: { stops: [["#e0b45a", 0], ["#f7ddb0", 100]], dir: "180deg" },
+    base: { fill: "#e0b45a", stroke: "#6d4a1a", shine: "#f7ddb0" } 
+  },
+  { 
+    id: "grass_run", 
+    name: "Grass Run", 
+    tier: "rare", 
+    source: "production", 
+    origin: { type: 'biome', source: 'savanna', displayName: 'Unlocked in Savanna' },
+    bio: "Ticklish at the ankles.",
+    pattern: { type: "tall_grass", placement: "base", sway: "light" },
+    gradient: { stops: [["#c9d66c", 0], ["#f2f6c6", 100]], dir: "180deg" },
+    base: { fill: "#c9d66c", stroke: "#3a2b12", shine: "#f2f6c6" } 
+  },
+  { 
+    id: "sun_drum", 
+    name: "Sun Drum", 
+    tier: "uncommon", 
+    source: "production", 
+    origin: { type: 'biome', source: 'savanna', displayName: 'Unlocked in Savanna' },
+    bio: "Beats time for walking songs.",
+    anim: "sun_disk_heartbeat",
+    gradient: { stops: [["#ffcc66", 0], ["#fff3cc", 100]], dir: "180deg" },
+    base: { fill: "#ffcc66", stroke: "#3a2b12", shine: "#fff3cc" } 
+  },
+
+  // Reef (World 12)
+  { 
+    id: "coral_chorus", 
+    name: "Coral Chorus", 
+    tier: "epic", 
+    source: "production", 
+    origin: { type: 'biome', source: 'reef', displayName: 'Unlocked in Reef' },
+    bio: "Hums bubble-opera at dawn.",
+    anim: "coral_color_shift",
+    gradient: { stops: [["#ff7e6b", 0], ["#2fd3c9", 100]], dir: "180deg" },
+    base: { fill: "#ff7e6b", stroke: "#072435", shine: "#f0fdfa" } 
+  },
+  { 
+    id: "anemone_wiggle", 
+    name: "Anemone Wiggle", 
+    tier: "rare", 
+    source: "production", 
+    origin: { type: 'biome', source: 'reef', displayName: 'Unlocked in Reef' },
+    bio: "Waves hello with too many hands.",
+    pattern: { type: "tentacle_frills", placement: "bottom", motion: "subtle" },
+    base: { fill: "#ff9ea0", stroke: "#072435", shine: "#ffd2d3" } 
+  },
+  { 
+    id: "shell_gleam", 
+    name: "Shell Gleam", 
+    tier: "uncommon", 
+    source: "production", 
+    origin: { type: 'biome', source: 'reef', displayName: 'Unlocked in Reef' },
+    bio: "Collects shiny no-one-elses.",
+    pattern: { type: "pearl_specks", count: "3-5", effect: "gentle_glint" },
+    gradient: { stops: [["#8de3de", 0], ["#f6ffff", 100]], dir: "180deg" },
+    base: { fill: "#8de3de", stroke: "#072435", shine: "#f6ffff" } 
+  },
+
+  // Temple (World 13)
+  { 
+    id: "glyph_bloom", 
+    name: "Glyph Bloom", 
+    tier: "epic", 
+    source: "production", 
+    origin: { type: 'biome', source: 'temple', displayName: 'Unlocked in Temple' },
+    bio: "Reads old light like bedtime stories.",
+    anim: "glowing_glyphs_fade",
+    gradient: { stops: [["#6a5d4a", 0], ["#d9c7a6", 100]], dir: "180deg" },
+    base: { fill: "#6a5d4a", stroke: "#4a3728", shine: "#d9c7a6" } 
+  },
+  { 
+    id: "vine_inlay", 
+    name: "Vine Inlay", 
+    tier: "rare", 
+    source: "production", 
+    origin: { type: 'biome', source: 'temple', displayName: 'Unlocked in Temple' },
+    bio: "Carries keys it can't explain.",
+    pattern: { type: "green_inlay_lines", placement: "border", motion: "slow_creep" },
+    base: { fill: "#907a5d", stroke: "#4a3728", shine: "#5aa26b" } 
+  },
+  { 
+    id: "incense_drift", 
+    name: "Incense Drift", 
+    tier: "uncommon", 
+    source: "production", 
+    origin: { type: 'biome', source: 'temple', displayName: 'Unlocked in Temple' },
+    bio: "Smells like quiet mornings.",
+    anim: "smoke_curls_corners",
+    gradient: { stops: [["#b79f80", 0], ["#f0e7d8", 100]], dir: "180deg" },
+    base: { fill: "#b79f80", stroke: "#4a3728", shine: "#f0e7d8" } 
+  },
+
+  // Harbor (World 14)
+  { 
+    id: "lighthouse_wink", 
+    name: "Lighthouse Wink", 
+    tier: "epic", 
+    source: "production", 
+    origin: { type: 'biome', source: 'harbor', displayName: 'Unlocked in Harbor' },
+    bio: "Watches storms with a brave little eye.",
+    anim: "sweeping_beam_diagonal",
+    gradient: { stops: [["#5a82b8", 0], ["#dbe8ff", 100]], dir: "180deg" },
+    base: { fill: "#5a82b8", stroke: "#1e3a8a", shine: "#dbe8ff" } 
+  },
+  { 
+    id: "rope_coil", 
+    name: "Rope Coil", 
+    tier: "rare", 
+    source: "production", 
+    origin: { type: 'biome', source: 'harbor', displayName: 'Unlocked in Harbor' },
+    bio: "Ties perfect knots, forgets why.",
+    pattern: { type: "thick_rope", placement: "base", static: true },
+    base: { fill: "#c8a06d", stroke: "#1e3a8a", shine: "#8a6435" } 
+  },
+  { 
+    id: "foam_crest", 
+    name: "Foam Crest", 
+    tier: "uncommon", 
+    source: "production", 
+    origin: { type: 'biome', source: 'harbor', displayName: 'Unlocked in Harbor' },
+    bio: "Saves gull jokes for later.",
+    pattern: { type: "foam_caps", placement: "bottom_edge", motion: "lapping" },
+    gradient: { stops: [["#74b7e4", 0], ["#e9f7ff", 100]], dir: "180deg" },
+    base: { fill: "#74b7e4", stroke: "#1e3a8a", shine: "#e9f7ff" } 
+  },
+
+  // Foundry (World 16)
+  { 
+    id: "anvil_ember", 
+    name: "Anvil Ember", 
+    tier: "epic", 
+    source: "production", 
+    origin: { type: 'biome', source: 'foundry', displayName: 'Unlocked in Foundry' },
+    bio: "Hums old workshop songs.",
+    anim: "heat_shimmer_sparks",
+    base: { fill: "#151515", stroke: "#0a0a0a", shine: "#ff6a00" } 
+  },
+  { 
+    id: "forge_rune", 
+    name: "Forge Rune", 
+    tier: "rare", 
+    source: "production", 
+    origin: { type: 'biome', source: 'foundry', displayName: 'Unlocked in Foundry' },
+    bio: "Stamps its name, changes it weekly.",
+    pattern: { type: "glowing_runes", trigger: "tap", color: "#ff8a2a" },
+    base: { fill: "#332b28", stroke: "#0a0a0a", shine: "#ff8a2a" } 
+  },
+  { 
+    id: "quench_mist", 
+    name: "Quench Mist", 
+    tier: "uncommon", 
+    source: "production", 
+    origin: { type: 'biome', source: 'foundry', displayName: 'Unlocked in Foundry' },
+    bio: "Breathes warm, sighs cool.",
+    anim: "steam_puffs_corners",
+    gradient: { stops: [["#2a2a2a", 0], ["#5f6a71", 100]], dir: "180deg" },
+    base: { fill: "#2a2a2a", stroke: "#0a0a0a", shine: "#5f6a71" } 
   },
 ];
 
