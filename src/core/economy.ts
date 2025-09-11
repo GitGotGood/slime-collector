@@ -1,7 +1,8 @@
 import type { Rarity, ShopItem, Profile } from './types';
 
+// [Sep-11] Dan: Make Epic/Mythic more expensive for V1.1 balance | Changed: Epic 1000→1500, Mythic 2500→3000 | Why: son getting premium items too easily
 export const TIER_PRICE: Record<Rarity, number> = {
-  common: 100, uncommon: 250, rare: 500, epic: 1000, mythic: 2500,
+  common: 100, uncommon: 250, rare: 500, epic: 1500, mythic: 3000,
 };
 
 export function priceOf(item: ShopItem): number {
