@@ -248,7 +248,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 5000);
         
-        await fetch('https://coqnrjxceaceqjiqdnbz.supabase.co/rest/v1/', {
+        await fetch(`${import.meta.env.VITE_SUPABASE_URL}/rest/v1/`, {
           signal: controller.signal,
           method: 'HEAD'
         });
