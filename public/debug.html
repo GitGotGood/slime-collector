@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Slime Collector Debug</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .result { background: #f0f0f0; padding: 10px; margin: 10px 0; border-radius: 5px; }
+        button { background: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; margin: 5px; }
+        .reset { background: #f44336; }
+    </style>
+</head>
+<body>
+    <h1>Slime Collector Debug Tool</h1>
+    
+    <button onclick="checkData()">Check Local Data</button>
+    <button onclick="resetMigration()" class="reset">Reset Migration Status</button>
+    
+    <div id="results"></div>
+
+    <script>
+        function checkData() {
+            const results = document.getElementById('results');
+            const hasProfile = localStorage.getItem('slime-collector-profile') !== null;
+            const migrationCompleted = localStorage.getItem('migration_completed') === 'true';
+            const profileData = localStorage.getItem('slime-collector-profile');
+            
+            let profileInfo = 'No profile found';
+            if (profileData) {
+                try {
+                    const parsed = JSON.parse(profileData);
+                    profileInfo = `Name: ${parsed.name || 'Unknown'}, Goo: ${parsed.goo || 0}, XP: ${parsed.xp || 0}`;
+                } catch (e) {
+                    profileInfo = 'Profile data corrupted';
+                }
+            }
+            
+            results.innerHTML = `
+                <div class="result"><strong>Has Local Data:</strong> ${hasProfile}</div>
+                <div class="result"><strong>Migration Completed:</strong> ${migrationCompleted}</div>
+                <div class="result"><strong>Profile Info:</strong> ${profileInfo}</div>
+            `;
+        }
+        
+        function resetMigration() {
+            localStorage.removeItem('migration_completed');
+            alert('Migration status reset! Now go back to the main site and try logging in again.');
+        }
+        
+        // Auto-check on load
+        checkData();
+    </script>
+</body>
+</html>
