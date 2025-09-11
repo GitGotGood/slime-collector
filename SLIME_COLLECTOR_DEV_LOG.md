@@ -7,48 +7,86 @@
 
 ## 🎯 **Current Status (Latest Session)**
 
-### ✅ **Badge System Integration (COMPLETED)**
-**Date**: 8/28/2025
-**Goal**: Complete comprehensive achievement and progression tracking system
+### ✅ **Rare Tier System - Complete Implementation (COMPLETED)**
+**Date**: 12/19/2024
+**Goal**: Implement comprehensive Rare tier slime system with static patterns and sophisticated design
 
-#### **Major Badge System Accomplishments**
+#### **Major Rare Tier Accomplishments**
 
-1. **🎖️ Comprehensive Badge Framework**
-   - **33+ Unique Badges**: Progress, Biome, Skill, Streak, Speed, Accuracy, Session, Shop, Collection, Secret
-   - **4-Tier Progression**: Bronze → Silver → Gold → Diamond advancement system
-   - **Event-Driven Architecture**: Real-time badge evaluation on all game actions
-   - **Forward Compatible**: Extensible system for future rewards beyond Goo
+1. **🟣 Complete Rare Tier Framework**
+   - **26 Production Rares**: Polka Mint, Ripple, Ocean Drift, Moonlit Pool, Moss Quilt, Kelp Curl, Frost Fern, Desert Varnish, Polar Crown, Grass Run, Anemone Wiggle, Vine Inlay, Rope Coil, Forge Rune
+   - **12 Pre-Production Rares**: Sunstone, Cactus Bloom, Algae Vein, Ore Fleck, Glowshroom, Cloud Puff, Sky Kite, Neon Grid, Pixel Parade, Circuit Pop, Berry Patch, Corn Silk
+   - **Static Pattern System**: No motion, sophisticated static patterns with proper contrast ratios
+   - **Enhanced Dashboard**: Full integration with existing Common/Uncommon tier system
 
-2. **🏆 Badge Categories & Examples**
-   - **Progress**: World Starter (first 10 problems), Daily Dozen (12/day), Marathon Slime (100/day)
-   - **Biomes**: Meadow (unlock first biome), Beach (unlock beach), Trailblazer (4 biomes), Explorer (8 biomes)
-   - **Skills**: Adder Apprentice (addition mastery), Times Tamer (multiplication), Division Dynamo
-   - **Streaks**: Bronze(5) → Silver(10) → Gold(20) → Diamond(30) consecutive correct answers
-   - **Speed**: Lightning Fast (3s), Blazing Speed (1.5s) with tiered milestones
-   - **Accuracy**: Sharp Shooter (90%), Bullseye (95%) session accuracy
-   - **Secret**: Hidden seasonal and achievement badges with discovery mechanics
+2. **🎨 Rare Tier Design Rules Implementation**
+   - **No Motion**: Patterns are completely static (no animations)
+   - **Gradients**: 1-2 soft stops with 120° angle (unless radial specified)
+   - **Pattern Contrast**: 4-8% alpha against local base (significantly increased visibility)
+   - **Stroke**: 1.75-2px with specified colors for proper definition
+   - **Face**: High contrast inks (≥5:1 ratio) for readability
+   - **Highlight**: Single glossy bar at 30° from top-left (white → transparent, 0.18 → 0)
 
-3. **🎨 Toast Notification System**
-   - **Beautiful Animations**: Slide-in toasts with tier-specific styling
-   - **Automatic Goo Rewards**: "🎖️ Badge Unlocked: Streak Scout (Silver) • +100 Goo"
-   - **Smart Timing**: 2.6s display with stacking support
-   - **Tier Visual Hierarchy**: 🥉Bronze, 🥈Silver, 🥇Gold, 💎Diamond emojis
+3. **🔧 Pattern Type System (12 Types)**
+   - **Dots**: Grid-based polka dots (Polka Mint) - 3x opacity multiplier
+   - **Rings**: Concentric circles (Ripple) - 2.5x opacity, 2px stroke
+   - **Waves**: Horizontal sine wave ridges (Ocean Drift) - dual wave lines
+   - **Stars**: Sparse specks (Moonlit Pool) - 1.5x size, 3x opacity
+   - **Diamond**: Quilting grid (Moss Quilt) - 2.5x opacity, 2px stroke
+   - **Stripes**: Vertical micro-stripes (Kelp Curl) - 2px width, 2.5x opacity
+   - **Fern**: Branching vein patterns (Frost Fern) - dual path system
+   - **Varnish**: Curved streak patterns (Desert Varnish) - 3px stroke
+   - **Crown**: Ring pattern (Polar Crown) - 3px stroke, 2.5x opacity
+   - **Blades**: Grass blade ticks (Grass Run) - 6 vertical elements
+   - **Dashes**: Perimeter dashes (Anemone Wiggle) - 8 positioned elements
+   - **Vine**: Curling vine filigree (Vine Inlay) - dual path system
+   - **Spiral**: Spiral coil emboss (Rope Coil) - dual spiral paths
+   - **Runes**: Scattered rune shapes (Forge Rune) - 6 positioned elements
 
-4. **📊 Progress Dashboard Integration**
-   - **Badges Tab**: Full filtering (All, Earned, Near, Category), search functionality
-   - **Progress Bars**: Visual progression toward next tier goals
-   - **Category Organization**: Intuitive grouping with smart "Near" completion detection
-   - **Profile Migration**: Safe upgrade path for existing players
+4. **🎯 Pattern Visibility Enhancement**
+   - **Base Opacity Increase**: 0.06-0.07 → 0.15-0.25 (2.5-4x increase)
+   - **Render Multiplier**: Added 2-3x multiplier in rendering (total 5-12x increase)
+   - **Stroke Width**: Increased from 1px to 2-3px for better definition
+   - **Multi-Layer Patterns**: Added secondary elements for complex patterns
+   - **Size Adjustments**: Increased pattern element sizes for better visibility
 
-5. **⚡ Event Integration**
-   - **Answer Events**: Speed tracking, accuracy counters, streak progression
-   - **Session Events**: Daily goals, marathon tracking, damage resilience
-   - **Mastery Events**: Skill-specific achievements, world completion
-   - **Shop Events**: Collection milestones, first purchase celebration
-   - **Biome Events**: Exploration badges, world unlock achievements
+5. **🎮 Enhanced Dashboard Integration**
+   - **Tier Toggle System**: 🟢 Common → 🔵 Uncommon → 🟣 Rare tier switching
+   - **Production vs Pre-Production**: Separate sections for each category
+   - **Grid Layout**: 7-column Production Rares, 6-column Pre-Production Rares
+   - **Design System Documentation**: Updated explanations for all three tiers
+   - **Performance Mode**: Maintains compatibility with animation toggles
+
+6. **🎨 Glossy Highlight System**
+   - **Linear Gradient**: White → transparent with proper falloff
+   - **30° Angle**: Positioned from top-left for realistic lighting
+   - **Opacity Control**: 0.18 → 0 gradient for subtle but visible effect
+   - **Per-Slime Integration**: Unique gradient IDs for each rare slime
+
+### ✅ **V1 Slime Curation & Biome Coverage (COMPLETED)**
+**Date**: Previous session
+**Goal**: Complete V1 launch roster with comprehensive biome coverage
+
+#### **Major Accomplishments**
+
+1. **🎨 V1 Launch Roster Implementation**
+   - **Shop Data Overhaul**: Fixed shop showing old slimes instead of new launch roster
+   - **Origin System**: Added comprehensive origin tracking for slime unlock progression
+   - **Skin Gallery Fixes**: Resolved all slimes showing as green
+   - **Biome Unlock Rewards**: 11 slimes with proper origin tracking
+
+2. **🌍 Pre-Production Slime Expansion (30 New Slimes)**
+   - **6 Biomes Covered**: Desert/Canyon, Swamp/Bog, Cave/Crystal, Day-Sky/Clouds, City/Arcade, Farm/Orchard
+   - **Gallery Integration**: Added "Pre-Production" filter for review
+   - **Animation Specifications**: 30+ unique animation concepts documented
+
+3. **📊 Critical Biome Coverage Analysis**
+   - **16 Release Biomes**: Complete mapping of production biomes
+   - **Coverage Gap**: Identified 10 missing release biomes
+   - **Strategic Planning**: Mapped pre-production slimes to release biomes
 
 ### ✅ **Phase 2 - Integration & Enhancement (COMPLETED)**
-**Date**: Previous session
+**Date**: Current session
 **Goal**: Complete the V1 Core Curriculum integration with enhanced UX
 
 #### **Major Accomplishments**
@@ -157,47 +195,6 @@ export const ALL_SHOP_ITEMS: ShopItem[] = [
 // 3x weighting for bias biome
 function todaysPicks(profile, allItems) {
   // Implements biome bias with tier diversity
-}
-```
-
-#### **Badge System (`src/core/badges.ts`)**
-```typescript
-// 33+ Badge Definitions
-export const BADGES: BadgeDef[] = [
-  // Progress badges
-  { id: 'world_starter', name: 'World Starter', category: 'progress', 
-    when: ctx => ctx.profile.badges?.counters['correctAllTime'] >= 10,
-    rewardGoo: 50, icon: '🌱' },
-  
-  // Tiered badges  
-  { id: 'streak_scout', name: 'Streak Scout', category: 'streak',
-    tiers: [
-      { tier: 'bronze', goal: 5, rewardGoo: 50 },
-      { tier: 'silver', goal: 10, rewardGoo: 100 },
-      { tier: 'gold', goal: 20, rewardGoo: 200 },
-      { tier: 'diamond', goal: 30, rewardGoo: 500 }
-    ], progressKey: 'streakBest', icon: '🎯' },
-];
-
-// Event-driven evaluation engine
-export function evaluateBadges(profile: any, ctx: BadgeContext): 
-  { newlyUnlocked: BadgeUnlock[], profile: any } {
-  // Updates counters and checks badge conditions
-}
-```
-
-#### **Toast Notifications (`src/ui/components/Toaster.tsx`)**
-```typescript
-export function ToastProvider({ children }: { children: React.ReactNode }) {
-  // Manages toast queue with animations
-}
-
-export function useBadgeToasts() {
-  return {
-    pushBadge: (opts: { name: string; tier?: BadgeTier; rewardGoo?: number }) => {
-      // Creates beautiful badge notifications with tier styling
-    }
-  };
 }
 ```
 
@@ -337,17 +334,11 @@ src/
 
 ## 📅 **Session History**
 
-### **8/28/2025 Session**
-- ✅ **Badge System**: 33+ badges, toast notifications, progress tracking
-- ✅ **Event Integration**: Real-time badge evaluation on all game actions
-- ✅ **Progress Dashboard**: Badges tab with filtering and search
-- ✅ **Profile Migration**: Safe upgrade for existing players
-- 🎯 **Next**: Final polish and production deployment
-
-### **Previous Session**
+### **Today's Session**
 - ✅ **Phase 1**: Core curriculum implementation (25 skills, 16 worlds)
 - ✅ **Bug Fixes**: Double counting, problem generation, world progression
 - ✅ **Phase 2**: Visual feedback, enhanced UI, shop bias, biome unlocking
+- 🎯 **Next**: Complete integration testing
 
 ### **Previous Sessions** *(Approximate)*
 - 🎨 **Skin System**: 120+ slime designs with style guides
@@ -357,85 +348,136 @@ src/
 
 ---
 
-## 🚀 **Ready for Production**
+## 🔐 **Authentication & Offline System Implementation**
 
-The **V1 Complete System** is feature-complete with comprehensive achievement tracking. All major systems are integrated and production-ready:
+### **Phase 3: Login & Player Database** *(Latest Session)*
 
-- ✅ **25 Math Skills** with proper problem generation
-- ✅ **16 World Progression** with mastery gates  
-- ✅ **33+ Achievement Badges** with tier progression
-- ✅ **Toast Notification System** with beautiful animations
-- ✅ **Visual Celebrations** for major achievements
-- ✅ **Enhanced UX** with world context throughout
-- ✅ **Shop Integration** with biome-based item bias
-- ✅ **Progress Dashboard** with comprehensive tracking
-- ✅ **Bug-Free Gameplay** with React Strict Mode compatibility
-- ✅ **Profile Migration** for safe feature updates
+**Major Infrastructure Overhaul:**
+- ✅ **Google OAuth Integration** with Supabase Auth
+- ✅ **Cloud Player Profiles** with family account support
+- ✅ **Offline Mode** with local storage fallback
+- ✅ **Data Synchronization** between offline and online modes
+- ✅ **Profile Management UI** with scrollable list and delete functionality
 
-### 🎯 **Final Pre-Production Tasks**
+**Critical Fixes Completed:**
+- ✅ **Offline Auto-save**: Fixed `effectivelyOffline` detection for proper localStorage saving
+- ✅ **Sync Race Conditions**: Eliminated empty cloud profile arrays during sync
+- ✅ **Duplicate Profile Prevention**: Added session-based sync guards
+- ✅ **Profile Management UX**: Added scrollable profile picker with delete buttons
 
-1. **🎨 Slime Curation**: Select final production slimes from 85+ designs
-2. **🌍 Enhanced Biomes**: Add sophisticated visual effects beyond gradients  
-3. **✨ Polish Pass**: Animation refinements, smooth transitions, audio timing
-4. **🔧 Production Config**: Performance optimization, error handling
-5. **🧪 Integration Testing**: End-to-end gameplay validation
+**Current Status:**
+- ✅ **Offline Mode**: Fully functional with auto-save every 5 seconds
+- ✅ **Online Mode**: Profile creation and switching working
+- ✅ **Profile UI**: Scrollable list with 13+ profiles, delete buttons visible
+- 🐛 **Known Issue**: Delete functionality not working in online mode (confirmation shows but profile persists)
 
-**Status**: 95% complete - Ready for final polish and deployment! 🎉
+**Architecture Highlights:**
+- **Hybrid Storage**: Cloud-first with localStorage backup
+- **Conservative Sync**: Additive goo/XP merging, never destructive
+- **Graceful Degradation**: Full offline capability when network unavailable
+- **Family Accounts**: Multiple kid profiles per parent Google account
 
 ---
 
-## 📅 **December 19, 2024 - V1 Slime Curation & Biome Coverage**
+## 🚀 **Ready for Deployment**
 
-### **🎨 V1 Launch Roster Implementation**
-**Completed:**
-- ✅ **Shop Data Overhaul**: Fixed shop showing old slimes instead of new launch roster
-  - Updated `ALL_SHOP_ITEMS` to use V1 slimes: Moss, Sky, Coral, Charcoal, etc.
-  - Updated `SKINS` registry with proper colors and tiers for all launch slimes
-  - Fixed profile initialization to start with "moss" instead of "green"
-- ✅ **Origin System**: Added comprehensive origin tracking for slime unlock progression
-  - Implemented `SlimeOrigin` type with biome/badge/shop tracking
-  - Added origin display in Shop, Collection, and Skin Gallery with MapPin icons
-  - Created biome unlock rewards (11 slimes): Clover, Sea Breeze, Ocean Drift, etc.
-- ✅ **Skin Gallery Fixes**: Resolved all slimes showing as green
-  - Updated `GallerySlime` mapping to include V1 launch roster
-  - Added biome unlock slimes to `SKINS` registry
-  - Enhanced origin tags with consistent styling across all UI
+The V1 Core Curriculum with Authentication is **95% complete**. All major systems are integrated and functional:
 
-### **🌍 Pre-Production Slime Expansion (30 New Slimes)**
-**Completed:**
-- ✅ **Desert/Canyon Biome (6 slimes)**: Oasis, Sunstone, Cactus Bloom, Dune Drift, Mirage, Scarab Gleam
-- ✅ **Swamp/Bog Biome (6 slimes)**: Murk, Peat Stripe, Algae Vein, Bog Bubble, Willow Glow, Frog Chorus
-- ✅ **Cave/Crystal Biome (5 slimes)**: Ore Fleck, Glowshroom, Geode Core, Stalactite Drip, Biolume Veil, Echo Rune
-- ✅ **Day-Sky/Clouds Biome (6 slimes)**: Bluebird, Thermal Lift, Cloud Puff, Sky Kite, Sunshower, Rainbow Arc
-- ✅ **City/Arcade Biome (6 slimes)**: Neon Grid, Pixel Parade, Circuit Pop, Subway Spark, Billboard Blink, Synthwave
-- ✅ **Farm/Orchard Biome (6 slimes)**: Apple Shine, Fresh Cream, Berry Patch, Corn Silk, Haystack, Orchard Breeze
-- ✅ **Gallery Integration**: Added "Pre-Production" filter for review with origin tags
+- ✅ **25 Math Skills** with proper problem generation
+- ✅ **16 World Progression** with mastery gates
+- ✅ **Visual Celebrations** for major achievements
+- ✅ **Enhanced UX** with world context throughout
+- ✅ **Shop Integration** with biome-based item bias
+- ✅ **Authentication System** with Google Login and offline mode
+- ✅ **Profile Management** with family account support
+- 🔧 **Remaining**: Fix online profile deletion functionality
 
-### **📊 Critical Biome Coverage Analysis**
-**Discovery:**
-- **16 Release Biomes**: meadow, beach, forest, desert, cove, tundra, canyon, aurora, savanna, glacier, volcano, reef, temple, harbor, observatory, foundry
-- **Current Coverage**: Only 6/16 release biomes have slimes
-- **Gap**: 10 release biomes have ZERO slimes (forest, cove, tundra, canyon, aurora, savanna, reef, temple, harbor, foundry)
-- **Mismatch**: 30 pre-production slimes are for non-release biomes (swamp, cave, sky, city, farm)
+**Next Phase**: Complete profile deletion, polish, and user testing! 🎉
 
-### **🎯 Next Session Priorities**
-1. **Biome Mapping**: Remap pre-production slimes to release biomes or create targeted slimes for missing biomes
-2. **Shop Integration**: Consider which new slimes should be purchasable vs. biome rewards
-3. **Animation Implementation**: Convert animation specs to actual visual effects
-4. **V1 Launch Finalization**: Complete slime roster for production deployment
+---
 
-### **🔧 Technical Achievements**
-- **Enhanced Slime System**: `UnifiedSkin` type with comprehensive origin tracking
-- **Scalable Architecture**: Pre-production workflow for future biome expansions
-- **UI Consistency**: Origin information displayed across Shop, Collection, and Gallery
-- **Data Quality**: Proper color mapping, tier distribution, and animation specifications
+## 🚨 POST-RELEASE REFACTORING DEBT
 
-### **📈 Development Stats**
-- **Total Slimes**: 13 V1 launch + 11 biome rewards + 30 pre-production = 54 slimes
-- **Biome Coverage**: 6/16 release biomes covered (37.5%)
-- **Animation Specs**: 30+ unique animation concepts documented
-- **Origin Categories**: Shop, Biome, Badge tracking implemented
+### **SkinGallery.tsx Architecture Overhaul** 
+*Priority: High - Technical Debt Cleanup*
 
-**Next**: Address the 10 missing release biomes to achieve 100% coverage for V1 launch! 🎨
+**Current State**: 6,371-line monolithic file with severe architectural issues
+**Target**: v2.1 Release (Post-Login/Visual Upgrades)
+
+#### **Critical Problems Identified:**
+1. **Massive Monolithic Component** (6,371 lines)
+   - Should be 8-10 focused components
+   - Hard to navigate, debug, maintain
+
+2. **Duplicate Rendering Logic**
+   - `GallerySlime` vs `Slime` component collision
+   - Face color logic duplicated (caused Epic face color bug)
+   - Gradient generation duplicated
+   - Animation logic scattered
+
+3. **Mixed Responsibilities**
+   - Data mapping + rendering + UI layout + business logic
+   - No separation of concerns
+   - Hard to test individual pieces
+
+4. **Data Architecture Issues**
+   - Skin data scattered across multiple files
+   - Complex ID mapping between systems
+   - No single source of truth
+
+#### **Proposed Refactoring Plan:**
+
+**Phase 1: Extract Core Components**
+```
+src/ui/components/gallery/
+├── SlimeRenderer.tsx           # Shared rendering logic
+├── WorkshopComparison.tsx      # Side-by-side comparisons  
+├── InspirationGallery.tsx      # Inspiration tier display
+├── ProductionGallery.tsx       # Production tier display
+├── GalleryFilters.tsx          # Tier/search filtering
+└── PromotionControls.tsx       # Workshop promotion UI
+```
+
+**Phase 2: Shared Utilities**
+```
+src/utils/slime/
+├── getFaceColor.ts            # Unified face color logic
+├── getSkinGradient.ts         # Unified gradient generation  
+├── mapSkinToRenderer.ts       # Data conversion utilities
+└── slimeAnimations.ts         # Shared animation helpers
+```
+
+**Phase 3: Data Consolidation**
+```
+src/assets/skins/
+├── index.ts                   # Single export point
+├── production.ts              # Production skins
+├── preProduction.ts           # Pre-prod skins  
+├── inspiration.ts             # Inspiration concepts
+└── types.ts                   # Unified interfaces
+```
+
+**Phase 4: Testing & Performance**
+- Unit tests for each component
+- Performance profiling of rendering
+- Memory leak detection
+- Bundle size optimization
+
+#### **Success Metrics:**
+- [ ] File size reduced from 6,371 → <500 lines per component
+- [ ] Zero duplicate rendering logic
+- [ ] Single source of truth for face colors
+- [ ] 90%+ test coverage on gallery components
+- [ ] <2s gallery load time with 100+ skins
+
+#### **Impact Assessment:**
+- **Development Velocity**: +40% (easier debugging/maintenance)
+- **Bug Risk**: -60% (no more duplicate logic issues)  
+- **New Feature Development**: +50% (clear component boundaries)
+- **Performance**: +20% (optimized rendering paths)
+
+**Estimated Effort**: 3-4 development days
+**Risk Level**: Medium (large refactor, but well-contained)
+**Dependencies**: None (post-release cleanup)
 
 

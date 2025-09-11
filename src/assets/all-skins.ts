@@ -127,13 +127,14 @@ export const PRODUCTION_SKINS: UnifiedSkin[] = [
 
   // Mythics - Always unlocked on day 1 (daily rotation)
   { 
-    id: "nebula_prime", 
-    name: "Nebula Prime", 
+    id: "nebula", 
+    name: "Nebula", 
     tier: "mythic", 
     source: "production", 
     origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
-    anim: "deep_space_parallax", 
-    base: { fill: "#1e1b4b", stroke: "#0f172a", shine: "#c7d2fe" } 
+    bio: "Deep space with parallax stars and cosmic swirls.",
+    kind: "animated",
+    colors: ["#5b2d8f", "#1b1e4b", "#0f1530"]
   },
   { 
     id: "phoenix_heart", 
@@ -141,8 +142,9 @@ export const PRODUCTION_SKINS: UnifiedSkin[] = [
     tier: "mythic", 
     source: "production", 
     origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
-    anim: "ember_rise_trail", 
-    base: { fill: "#dc2626", stroke: "#7f1d1d", shine: "#fed7d7" } 
+    bio: "Ember rise with glowing trail and heart pulse.",
+    kind: "animated",
+    colors: ["#ff7a3c", "#d12525", "#571616"]
   },
 
   // ===== BIOME UNLOCK REWARDS =====
@@ -242,6 +244,9 @@ export const PRODUCTION_SKINS: UnifiedSkin[] = [
     name: "Star Parade", 
     tier: "mythic", 
     source: "production", 
+    bio: "Lace of marching stars in cosmic formation.",
+    kind: "animated",
+    colors: ["#0f3d4b", "#062a36", "#08202a"], 
     origin: { type: 'biome', source: 'observatory', displayName: 'Unlocked in Night Sky' },
     anim: "twinkling_stars",
     base: { fill: "#0f172a", stroke: "#020617", shine: "#f8fafc" } 
@@ -251,6 +256,9 @@ export const PRODUCTION_SKINS: UnifiedSkin[] = [
     name: "Galaxy Swirl", 
     tier: "mythic", 
     source: "production", 
+    bio: "Spiral tint with comet trail and stellar rotation.",
+    kind: "animated",
+    colors: ["#6a6bd6", "#3443a3", "#1a2454"], 
     origin: { type: 'biome', source: 'observatory', displayName: 'Unlocked in Night Sky' },
     anim: "spiral_galaxy",
     base: { fill: "#1e1b4b", stroke: "#0f172a", shine: "#c7d2fe" } 
@@ -415,11 +423,13 @@ export const PRODUCTION_SKINS: UnifiedSkin[] = [
   },
   { 
     id: "ionosong", 
-    name: "Ionosong", 
+    name: "Ionōsong", 
     tier: "mythic", 
     source: "production", 
+    bio: "Aurora waves that 'sing' with ionospheric harmony.",
+    kind: "animated",
+    colors: ["#2fd2ff", "#6a79ff", "#121842"], 
     origin: { type: 'biome', source: 'aurora', displayName: 'Unlocked in Aurora' },
-    bio: "Hums in colors only owls hear.",
     anim: "star_motes_waves",
     base: { fill: "#0f1b3d", stroke: "#EAF4FF", shine: "#c7d2fe" } 
   },
@@ -593,6 +603,344 @@ export const PRODUCTION_SKINS: UnifiedSkin[] = [
     gradient: { stops: [["#2a2a2a", 0], ["#5f6a71", 100]], dir: "180deg" },
     base: { fill: "#2a2a2a", stroke: "#0a0a0a", shine: "#5f6a71" } 
   },
+
+  // === ENHANCED VARIANTS (ALL TIERS) ===
+  // Enhanced Common Slimes
+  { 
+    id: "moss_enhanced", 
+    name: "Moss Enhanced", 
+    tier: "common", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' },
+    bio: "Calm forest green with leaf highlight and micro-identity.",
+    kind: "solid",
+    colors: ["#3FA05A"]
+  },
+  { 
+    id: "sky_enhanced", 
+    name: "Sky Enhanced", 
+    tier: "common", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' },
+    bio: "Breezy powder blue with cloud highlight and micro-identity.",
+    kind: "solid",
+    colors: ["#9ECBF6"]
+  },
+  { 
+    id: "coral_enhanced", 
+    name: "Coral Enhanced", 
+    tier: "common", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' },
+    bio: "Friendly warm pink-orange with smile highlight and micro-identity.",
+    kind: "solid",
+    colors: ["#FF7D6E"]
+  },
+  { 
+    id: "charcoal_enhanced", 
+    name: "Charcoal Enhanced", 
+    tier: "common", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' },
+    bio: "Bold deep gray with teal face and chip highlight.",
+    kind: "solid",
+    colors: ["#2B2F36"]
+  },
+  { 
+    id: "clover_enhanced", 
+    name: "Clover Enhanced", 
+    tier: "common", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' },
+    bio: "Lucky garden green with seed highlight and micro-identity.",
+    kind: "solid",
+    colors: ["#6FBF2E"]
+  },
+
+  // Enhanced Uncommon Slimes
+  { 
+    id: "spring_fade_enhanced", 
+    name: "Spring Fade Enhanced", 
+    tier: "uncommon", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' },
+    bio: "Evergreen to golden fade with sheen and rim effects.",
+    kind: "gradient",
+    colors: ["#C8F39B", "#FFE69A"]
+  },
+  { 
+    id: "blue_lagoon_enhanced", 
+    name: "Blue Lagoon Enhanced", 
+    tier: "uncommon", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' },
+    bio: "Aqua to deep lagoon with cool rim lighting.",
+    kind: "gradient",
+    colors: ["#55C3E0", "#2563EB"]
+  },
+  { 
+    id: "sea_breeze_enhanced", 
+    name: "Sea Breeze Enhanced", 
+    tier: "uncommon", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' },
+    bio: "Shoreline breeze with enhanced gradient effects.",
+    kind: "gradient",
+    colors: ["#7FD8D3", "#2F9E9A"]
+  },
+  { 
+    id: "raindrop_enhanced", 
+    name: "Raindrop Enhanced", 
+    tier: "uncommon", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' },
+    bio: "Wet droplet with large sheen and enhanced lighting.",
+    kind: "gradient",
+    colors: ["#A9D6FF", "#5E86D6"]
+  },
+  { 
+    id: "acorn_buddy_enhanced", 
+    name: "Acorn Buddy Enhanced", 
+    tier: "uncommon", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' },
+    bio: "Leafy olive to acorn gold with forest charm.",
+    kind: "gradient",
+    colors: ["#7A9A2D", "#C18A2E"]
+  },
+
+  // Enhanced Rare Slimes
+  { 
+    id: "polka_mint_enhanced", 
+    name: "Polka Mint Enhanced", 
+    tier: "rare", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' },
+    bio: "Mint with polka dot patterns and glossy highlights.",
+    kind: "gradient",
+    colors: ["#DDF7EC", "#BFEFD8"]
+  },
+  { 
+    id: "ripple_enhanced", 
+    name: "Ripple Enhanced", 
+    tier: "rare", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' },
+    bio: "Concentric ripple patterns with water effects.",
+    kind: "gradient",
+    colors: ["#BDEDE4", "#6FC6BE"]
+  },
+  { 
+    id: "ocean_drift_enhanced", 
+    name: "Ocean Drift Enhanced", 
+    tier: "rare", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' },
+    bio: "Wave ridge patterns with oceanic depth.",
+    kind: "gradient",
+    colors: ["#BDEBFF", "#5DC3F2"]
+  },
+  { 
+    id: "moonlit_pool_enhanced", 
+    name: "Moonlit Pool Enhanced", 
+    tier: "rare", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' },
+    bio: "Starry pool with radial moonlight and night patterns.",
+    kind: "gradient",
+    colors: ["#9AA5B1", "#4D5A67"]
+  },
+  { 
+    id: "moss_quilt_enhanced", 
+    name: "Moss Quilt Enhanced", 
+    tier: "rare", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' },
+    bio: "Forest moss with diamond quilting patterns.",
+    kind: "gradient",
+    colors: ["#98C08F", "#51855A"]
+  },
+
+  // Enhanced Mythic Slimes (MERGED INTO ORIGINALS - REMOVED)
+
+  // Pre-Production Enhanced Mythics
+  { 
+    id: "mirage_enhanced", 
+    name: "Mirage Enhanced", 
+    tier: "mythic", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' },
+    bio: "Heat shimmer creates desert mirage illusions.",
+    kind: "animated",
+    colors: ["#ffe7b0", "#ffc178", "#7a4b11"]
+  },
+  { 
+    id: "frog_chorus_enhanced", 
+    name: "Frog Chorus Enhanced", 
+    tier: "mythic", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' },
+    bio: "Swampy musical glow with croaking rhythm.",
+    kind: "animated",
+    colors: ["#1f8a52", "#0e5b3a", "#0a3b27"]
+  },
+  { 
+    id: "biolume_veil_enhanced", 
+    name: "Biolume Veil Enhanced", 
+    tier: "mythic", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' },
+    bio: "Cave bioluminescence curtain with flowing light.",
+    kind: "animated",
+    colors: ["#0d1b2a", "#16e0ae", "#0a1420"]
+  },
+  { 
+    id: "echo_rune_enhanced", 
+    name: "Echo Rune Enhanced", 
+    tier: "mythic", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' },
+    bio: "Ancient runes that flash with mystical beats.",
+    kind: "animated",
+    colors: ["#2a2f3b", "#0b7a63", "#141821"]
+  },
+  // Synthwave Enhanced (MERGED INTO ORIGINAL - REMOVED)
+
+  // Pre-Production Commons (originals for comparison)
+  { 
+    id: "murk", 
+    name: "Murk", 
+    tier: "common", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Pre-Production' },
+    bio: "Swampy graphite-blue.",
+    kind: "solid",
+    colors: ["#3C4953"]
+  },
+  { 
+    id: "bluebird", 
+    name: "Bluebird", 
+    tier: "common", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Pre-Production' },
+    bio: "Saturated azure.",
+    kind: "solid",
+    colors: ["#2E77FF"]
+  },
+  { 
+    id: "apple_shine", 
+    name: "Apple Shine", 
+    tier: "common", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Pre-Production' },
+    bio: "Cheerful red.",
+    kind: "solid",
+    colors: ["#E9413B"]
+  },
+  { 
+    id: "honey", 
+    name: "Honey", 
+    tier: "common", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Pre-Production' },
+    bio: "Warm golden honey.",
+    kind: "solid",
+    colors: ["#F7C437"]
+  },
+  { 
+    id: "lilac", 
+    name: "Lilac", 
+    tier: "common", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Pre-Production' },
+    bio: "Soft purple lilac.",
+    kind: "solid",
+    colors: ["#BDA7FF"]
+  },
+
+  // Missing Production Enhanced Commons  
+  { 
+    id: "green_enhanced", 
+    name: "Green Enhanced", 
+    tier: "common", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' },
+    bio: "Classic green with micro-identity highlights.",
+    kind: "solid",
+    colors: ["#22c55e"]
+  },
+  { 
+    id: "mint_enhanced", 
+    name: "Mint Enhanced", 
+    tier: "common", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' },
+    bio: "Fresh mint with micro-identity highlights.",
+    kind: "solid",
+    colors: ["#4ade80"]
+  },
+  { 
+    id: "blueberry_enhanced", 
+    name: "Blueberry Enhanced", 
+    tier: "common", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' },
+    bio: "Sweet blueberry with micro-identity highlights.",
+    kind: "solid",
+    colors: ["#60a5fa"]
+  },
+
+  // Pre-Production Enhanced Commons
+  { 
+    id: "murk_enhanced", 
+    name: "Murk Enhanced", 
+    tier: "common", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Pre-Production Enhanced' },
+    bio: "Swampy graphite-blue with micro-identity highlights.",
+    kind: "solid",
+    colors: ["#3C4953"]
+  },
+  { 
+    id: "bluebird_enhanced", 
+    name: "Bluebird Enhanced", 
+    tier: "common", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Pre-Production Enhanced' },
+    bio: "Saturated azure with arc-shaped highlights.",
+    kind: "solid",
+    colors: ["#2E77FF"]
+  },
+  { 
+    id: "apple_shine_enhanced", 
+    name: "Apple Shine Enhanced", 
+    tier: "common", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Pre-Production Enhanced' },
+    bio: "Cheerful red with apple seed highlight shape.",
+    kind: "solid",
+    colors: ["#E9413B"]
+  },
+  { 
+    id: "honey_enhanced", 
+    name: "Honey Enhanced", 
+    tier: "common", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Pre-Production Enhanced' },
+    bio: "Warm golden honey with stripe highlights.",
+    kind: "solid",
+    colors: ["#F7C437"]
+  },
+  { 
+    id: "lilac_enhanced", 
+    name: "Lilac Enhanced", 
+    tier: "common", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Pre-Production Enhanced' },
+    bio: "Soft purple lilac with cloud-shaped highlights.",
+    kind: "solid",
+    colors: ["#BDA7FF"]
+  },
 ];
 
 // ===== INSPIRATION SKINS (from skinspiration.ts) =====
@@ -626,7 +974,7 @@ export const INSPIRATION_UNCOMMON: UnifiedSkin[] = [
   { id: "rose_glow", name: "Rose Glow", tier: "uncommon", source: "inspiration", gradient: { stops: [["#fecdd3", 0], ["#fb7185", 100]], dir: "diag" } },
   { id: "sky_drift", name: "Sky Drift", tier: "uncommon", source: "inspiration", gradient: { stops: [["#bae6fd", 0], ["#3b82f6", 100]], dir: "diag" } },
   { id: "berry_smoothie", name: "Berry Smoothie", tier: "uncommon", source: "inspiration", gradient: { stops: [["#f472b6", 0], ["#a78bfa", 100]], dir: "diag" } },
-  { id: "citrus_pop", name: "Citrus Pop", tier: "uncommon", source: "inspiration", gradient: { stops: [["#fef08a", 0], ["#84cc16", 100]], dir: "diag" } },
+  { id: "citrus_pop", name: "Citrus Pop", tier: "uncommon", source: "production", gradient: { stops: [["#fef08a", 0], ["#84cc16", 100]], dir: "diag" } },
   { id: "lavender_drift", name: "Lavender Drift", tier: "uncommon", source: "inspiration", gradient: { stops: [["#e9d5ff", 0], ["#a78bfa", 100]], dir: "diag" } },
   { id: "copper_patina", name: "Copper Patina", tier: "uncommon", source: "inspiration", gradient: { stops: [["#2dd4bf", 0], ["#b45309", 100]], dir: "diag" } },
 ];
@@ -639,7 +987,6 @@ export const INSPIRATION_RARE: UnifiedSkin[] = [
   
   // Original inspiration rares
   { id: "bumble", name: "Bumble", tier: "rare", source: "inspiration", base: { fill: "#fde047", stroke: "#92400e", shine: "#fef9c3" }, pattern: "stripes" },
-  { id: "sprinkles", name: "Sprinkles", tier: "rare", source: "inspiration", base: { fill: "#fef2f2", stroke: "#7c2d12", shine: "#fde68a" }, pattern: "sprinkles" },
   { id: "starlet", name: "Starlet", tier: "rare", source: "inspiration", base: { fill: "#a78bfa", stroke: "#5b21b6", shine: "#e9d5ff" }, pattern: "starlet" },
   { id: "pebble", name: "Pebble", tier: "rare", source: "inspiration", base: { fill: "#d1fae5", stroke: "#065f46", shine: "#bbf7d0" }, pattern: "pebble" },
   { id: "plaid", name: "Picnic", tier: "rare", source: "inspiration", base: { fill: "#fee2e2", stroke: "#7f1d1d", shine: "#fecaca" }, pattern: "plaid" },
@@ -648,6 +995,162 @@ export const INSPIRATION_RARE: UnifiedSkin[] = [
   { id: "confetti", name: "Confetti", tier: "rare", source: "inspiration", base: { fill: "#fefce8", stroke: "#6b7280", shine: "#fef9c3" }, pattern: "confetti" },
   { id: "scales", name: "Scales", tier: "rare", source: "inspiration", base: { fill: "#bbf7d0", stroke: "#065f46", shine: "#dcfce7" }, pattern: "scales" },
   { id: "hearts", name: "Hearts", tier: "rare", source: "inspiration", base: { fill: "#fecdd3", stroke: "#9f1239", shine: "#ffe4e6" }, pattern: "hearts" },
+
+  // Cave / Shadow / Earth Theme
+  { id: "deep_dark_cave", name: "Deep Dark Cave", tier: "rare", source: "inspiration", kind: "gradient", colors: ["#0ea5e9", "#312e81"], 
+    bio: "Teal-to-indigo body with a soft center-out vignette like a mysterious hole. The vignette breathes gently in 6.5-second cycles.", origin: { type: 'biome', source: 'cave', displayName: 'Cave' } },
+  { id: "never_ending_cave", name: "Never-Ending Cave", tier: "rare", source: "inspiration", kind: "gradient", colors: ["#475569", "#1f2937"], 
+    bio: "Cool gray with concentric ring hints suggesting an endless tunnel. Inner rings drift inward before fading away.", origin: { type: 'biome', source: 'cave', displayName: 'Cave/Canyon' } },
+  { id: "spooky_cave", name: "Spooky Cave", tier: "rare", source: "inspiration", kind: "gradient", colors: ["#4338ca", "#1e1b4b"], 
+    bio: "Dusk purple with faint mist rolling near the bottom. The ethereal mist drifts sideways in 6-second cycles.", origin: { type: 'biome', source: 'cave', displayName: 'Cave' } },
+  { id: "fault_glow", name: "Fault Glow", tier: "rare", source: "inspiration", kind: "gradient", colors: ["#6b7280", "#374151"], 
+    bio: "Stone gray body cut by a thin amber seam like a geological fault line. The seam pulses with brief brightness every 7 seconds.", origin: { type: 'biome', source: 'canyon', displayName: 'Canyon' } },
+  { id: "aftershock", name: "Aftershock", tier: "rare", source: "inspiration", kind: "gradient", colors: ["#111827", "#374151"], 
+    bio: "Muted basalt with a subtle oval ripple imprint. Ripples expand and fade in 6.8-second tremors.", origin: { type: 'biome', source: 'canyon', displayName: 'Canyon/Foundry' } },
+
+  // Fire / Heat / Ash Theme
+  { id: "ember_rim", name: "Ember Rim", tier: "rare", source: "inspiration", kind: "gradient", colors: ["#ea580c", "#b45309"], 
+    bio: "Deep orange with darker edges and a thin ember ring. The ring glows and dims in 6-second cycles.", origin: { type: 'biome', source: 'volcano', displayName: 'Volcano' } },
+  { id: "ashfall", name: "Ashfall", tier: "rare", source: "inspiration", kind: "gradient", colors: ["#9a3412", "#7c2d12"], 
+    bio: "Red-brown body with sparse ash flecks drifting downward. 1-2 flecks fall every 7-9 seconds.", origin: { type: 'biome', source: 'volcano', displayName: 'Volcano' } },
+  { id: "volcanic_glass", name: "Volcanic Glass", tier: "rare", source: "inspiration", kind: "gradient", colors: ["#0f172a", "#111827"], 
+    bio: "Near-black obsidian with a glassy diagonal highlight. The highlight sweeps across in 7-second intervals.", origin: { type: 'biome', source: 'volcano', displayName: 'Volcano/Foundry' } },
+
+  // Sand / Wind Theme
+  { id: "sandstorm_wall", name: "Sandstorm Wall", tier: "rare", source: "inspiration", kind: "gradient", colors: ["#fde68a", "#f59e0b"], 
+    bio: "Warm sand with a side gradient wall moving right to left. The wall slides across in 6-second gusts.", origin: { type: 'biome', source: 'desert', displayName: 'Desert' } },
+  { id: "dune_surge", name: "Dune Surge", tier: "rare", source: "inspiration", kind: "gradient", colors: ["#f5e6c4", "#eab308"], 
+    bio: "Beige base with a single S-curve dune band. The band shifts diagonally in 6.5-second movements.", origin: { type: 'biome', source: 'desert', displayName: 'Desert' } },
+  { id: "whirlwind_edge", name: "Whirlwind Edge", tier: "rare", source: "inspiration", kind: "gradient", colors: ["#f3e8d7", "#fde68a"], 
+    bio: "Pale tan with a faint spiral near one side. The spiral rotates 8° back-and-forth in 7-second cycles.", origin: { type: 'biome', source: 'canyon', displayName: 'Canyon/Desert' } },
+
+  // Water / Tides / Storm Theme
+  { id: "riptide_bowl", name: "Riptide Bowl", tier: "rare", source: "inspiration", kind: "gradient", colors: ["#22d3ee", "#2563eb"], 
+    bio: "Aqua-to-deep blue with a curved inner rim creating a bowl effect. The rim drifts with soft shimmer in 6-second waves.", origin: { type: 'biome', source: 'cove', displayName: 'Cove/Harbor' } },
+  { id: "whirlpool_eye", name: "Whirlpool Eye", tier: "rare", source: "inspiration", kind: "gradient", colors: ["#14b8a6", "#0ea5e9"], 
+    bio: "Teal with subtle spiral rings drawing toward the center. Rings tighten and ease in 6.2-second cycles.", origin: { type: 'biome', source: 'reef', displayName: 'Reef/Cove' } },
+  { id: "monsoon_sheet", name: "Monsoon Sheet", tier: "rare", source: "inspiration", kind: "gradient", colors: ["#60a5fa", "#1e40af"], 
+    bio: "Steel blue with a thin vertical rain sheet. The sheet slides downward in 6.5-second downpours.", origin: { type: 'biome', source: 'harbor', displayName: 'Harbor/Day Sky' } },
+
+  // Ice / Aurora / Cold Theme
+  { id: "crevasse_light", name: "Crevasse Light", tier: "rare", source: "inspiration", kind: "gradient", colors: ["#93c5fd", "#64748b"], 
+    bio: "Icy gray-blue with a fine white crevasse slash. The slash flares briefly every 7 seconds.", origin: { type: 'biome', source: 'glacier', displayName: 'Glacier' } },
+  { id: "black_ice", name: "Black Ice", tier: "rare", source: "inspiration", kind: "gradient", colors: ["#334155", "#111827"], 
+    bio: "Dark slate with a glass wedge highlight. The wedge slides across in 6-second intervals.", origin: { type: 'biome', source: 'glacier', displayName: 'Glacier' } },
+  { id: "aurora_curtain", name: "Aurora Curtain", tier: "rare", source: "inspiration", kind: "gradient", colors: ["#67e8f9", "#3b82f6"], 
+    bio: "Cool cyan base with a soft vertical color curtain in green and rose. The curtain waves slowly in 7.5-second cycles.", origin: { type: 'biome', source: 'aurora', displayName: 'Aurora' } },
+
+  // Sky / Lightning / Space Theme
+  { id: "thunder_shelf", name: "Thunder Shelf", tier: "rare", source: "inspiration", kind: "gradient", colors: ["#06b6d4", "#0ea5e9"], 
+    bio: "Storm teal with a broad anvil shelf highlight band. The band brightens and dims in 6-second intervals.", origin: { type: 'biome', source: 'aurora', displayName: 'Aurora/Day Sky' } },
+  { id: "static_sheet", name: "Static Sheet", tier: "rare", source: "inspiration", kind: "gradient", colors: ["#0f172a", "#1f2937"], 
+    bio: "Midnight navy with thin static lines at the top third. 1-2 lines blink for 150ms every ~8 seconds.", origin: { type: 'biome', source: 'observatory', displayName: 'Observatory' } },
+  { id: "solar_haze", name: "Solar Haze", tier: "rare", source: "inspiration", kind: "gradient", colors: ["#fde047", "#f59e0b"], 
+    bio: "Warm gold center with soft radial haze. The haze breathes gently in 6.8-second cycles.", origin: { type: 'biome', source: 'observatory', displayName: 'Observatory/Desert' } },
+  { id: "gravity_well", name: "Gravity Well", tier: "rare", source: "inspiration", kind: "gradient", colors: ["#0b1026", "#111827"], 
+    bio: "Blue-black with a subtle lensing ring off-center. The ring warps in and out in 7-second distortions.", origin: { type: 'biome', source: 'observatory', displayName: 'Observatory' } },
+  { id: "prism_mist", name: "Prism Mist", tier: "rare", source: "inspiration", kind: "gradient", colors: ["#94a3b8", "#64748b"], 
+    bio: "Cool gray base with a faint triangular prism highlight showing RGB hints. The highlight slides and fades in 6-second cycles.", origin: { type: 'biome', source: 'observatory', displayName: 'Observatory/Glacier' } },
+
+  // Metal / Forge / Industrial Theme
+  { id: "forge_heat", name: "Forge Heat", tier: "rare", source: "inspiration", kind: "gradient", colors: ["#92400e", "#d97706"], 
+    bio: "Brown-to-copper with a soft heat bloom at the bottom. The bloom pulses with warmth in 6.2-second cycles.", origin: { type: 'biome', source: 'foundry', displayName: 'Foundry' } },
+  { id: "quench_mist_inspiration", name: "Quench Mist", tier: "rare", source: "inspiration", kind: "gradient", colors: ["#1f2937", "#0f172a"], 
+    bio: "Charcoal body with a cool steam plume wedge. The plume drifts upward in 7-second intervals.", origin: { type: 'biome', source: 'foundry', displayName: 'Foundry' } },
+
+  // === EPIC TIER SLIMES ===
+  
+  // Production Epic Enhanced Versions (only existing epics)
+  { id: "lava_flow_enhanced", name: "Lava Flow Enhanced", tier: "epic", source: "production", kind: "gradient", colors: ["#f87171", "#fb923c", "#b45309"],
+    bio: "Enhanced lava flow with amplified vein noise and more frequent ember sparks.", origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' } },
+  { id: "aurora_veil_enhanced", name: "Aurora Veil Enhanced", tier: "epic", source: "production", kind: "gradient", colors: ["#60a5fa", "#8b5cf6", "#22d3ee"],
+    bio: "Enhanced aurora veil with micro-identity highlights and improved band movement.", origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' } },
+  { id: "glacier_enhanced", name: "Glacier Enhanced", tier: "epic", source: "production", kind: "gradient", colors: ["#93c5fd", "#60a5fa", "#e0f2fe"],
+    bio: "Enhanced glacier with amplified caustic effects and micro-identity highlights.", origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' } },
+  { id: "aurora_veil_plus_enhanced", name: "Aurora Veil+ Enhanced", tier: "epic", source: "production", kind: "gradient", colors: ["#60a5fa", "#8b5cf6", "#22d3ee"],
+    bio: "Enhanced Aurora Veil+ with micro-identity highlights and improved parallax effects.", origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' } },
+
+  // Pre-Production Epic Slimes (new concepts)
+  { id: "dune_drift", name: "Dune Drift", tier: "epic", source: "pre-production", kind: "gradient", colors: ["#fde68a", "#fbbf24", "#f59e0b"],
+    bio: "Wind-blown sand band moves right in 8-second cycles with gentle opacity.", origin: { type: 'biome', source: 'desert', displayName: 'Desert' } },
+  { id: "bog_bubble", name: "Bog Bubble", tier: "epic", source: "pre-production", kind: "gradient", colors: ["#16a34a", "#065f46"],
+    bio: "Single bubble circle rises in 1-second intervals every 7-9 seconds.", origin: { type: 'biome', source: 'swamp', displayName: 'Swamp' } },
+  { id: "willow_glow", name: "Willow Glow", tier: "epic", source: "pre-production", kind: "gradient", colors: ["#22c55e", "#16a34a"],
+    bio: "Faint leaf silhouettes sway 5° in place over 7-second cycles.", origin: { type: 'biome', source: 'forest', displayName: 'Forest' } },
+  { id: "geode_core", name: "Geode Core", tier: "epic", source: "pre-production", kind: "gradient", colors: ["#a78bfa", "#60a5fa"],
+    bio: "Inner ring shimmer rotates 8° in 8-second cycles with 2% sparkle when ring passes top.", origin: { type: 'biome', source: 'cave', displayName: 'Cave' } },
+  { id: "stalactite_drip", name: "Stalactite Drip", tier: "epic", source: "pre-production", kind: "gradient", colors: ["#64748b", "#94a3b8"],
+    bio: "Downward highlight drip line moves 10px over 900ms every 8-12 seconds.", origin: { type: 'biome', source: 'cave', displayName: 'Cave' } },
+  { id: "sunshower", name: "Sunshower", tier: "epic", source: "pre-production", kind: "gradient", colors: ["#bae6fd", "#fde68a"],
+    bio: "Micro sun-rays expand 20% and fade in 1.2-second intervals every 10 seconds.", origin: { type: 'biome', source: 'forest', displayName: 'Forest' } },
+  { id: "rainbow_arc", name: "Rainbow Arc", tier: "epic", source: "pre-production", kind: "gradient", colors: ["#fca5a5", "#fcd34d", "#86efac", "#93c5fd", "#c4b5fd"],
+    bio: "Soft pale arc drifts 3px upward and back in 5-second cycles.", origin: { type: 'biome', source: 'meadow', displayName: 'Meadow' } },
+  { id: "subway_spark", name: "Subway Spark", tier: "epic", source: "pre-production", kind: "gradient", colors: ["#334155", "#1f2937"],
+    bio: "Single teal spark darts 12px then fades in 400ms every 9-12 seconds.", origin: { type: 'biome', source: 'city', displayName: 'City' } },
+  { id: "billboard_blink", name: "Billboard Blink", tier: "epic", source: "pre-production", kind: "gradient", colors: ["#312e81", "#1e1b4b"],
+    bio: "Neon sweep moves left to right in 7-second cycles with slight 5% flicker at end.", origin: { type: 'biome', source: 'city', displayName: 'City' } },
+  { id: "haystack", name: "Haystack", tier: "epic", source: "pre-production", kind: "gradient", colors: ["#fde68a", "#f59e0b"],
+    bio: "Vertical straw striations drift 6px in 8-second cycles.", origin: { type: 'biome', source: 'farm', displayName: 'Farm' } },
+  { id: "orchard_breeze", name: "Orchard Breeze", tier: "epic", source: "pre-production", kind: "gradient", colors: ["#22c55e", "#16a34a"],
+    bio: "Leaf flecks slide sideways 10px in 7.5-second intervals.", origin: { type: 'biome', source: 'orchard', displayName: 'Orchard' } },
+
+  // Fresh Epic Concepts (new ideas)
+  { id: "harbor_wake", name: "Harbor Wake", tier: "epic", source: "pre-production", kind: "gradient", colors: ["#14b8a6", "#2dd4bf"],
+    bio: "Teal to seafoam with gentle V-shaped ripple rocking 6px in 8-second cycles.", origin: { type: 'biome', source: 'harbor', displayName: 'Harbor' } },
+  { id: "temple_incense", name: "Temple Incense", tier: "epic", source: "pre-production", kind: "gradient", colors: ["#fde68a", "#a78bfa"],
+    bio: "Sand to clay with soft vertical incense plume fading up in 1.4-second intervals every 9 seconds.", origin: { type: 'biome', source: 'temple', displayName: 'Temple' } },
+  { id: "canyon_shade", name: "Canyon Shade", tier: "epic", source: "pre-production", kind: "gradient", colors: ["#ea580c", "#78350f"],
+    bio: "Terracotta to umber with drifting cliff-shadow mask in 7-second cycles.", origin: { type: 'biome', source: 'canyon', displayName: 'Canyon' } },
+  { id: "reef_bloom", name: "Reef Bloom", tier: "epic", source: "pre-production", kind: "gradient", colors: ["#22d3ee", "#c4b5fd"],
+    bio: "Aqua to lavender with slow rotating anemone petal mask (8° over 8 seconds).", origin: { type: 'biome', source: 'reef', displayName: 'Reef' } },
+  { id: "savanna_mirage", name: "Savanna Mirage", tier: "epic", source: "pre-production", kind: "gradient", colors: ["#fde68a", "#d97706"],
+    bio: "Pale gold to warm tan with horizontal heat-waver (3px sine, 6.5-second cycles).", origin: { type: 'biome', source: 'savanna', displayName: 'Savanna' } },
+  { id: "foundry_heatwave", name: "Foundry Heatwave", tier: "epic", source: "pre-production", kind: "gradient", colors: ["#d97706", "#b45309"],
+    bio: "Copper to rust with subtle vertical shimmer and rare 1px spark pop every 10 seconds.", origin: { type: 'biome', source: 'foundry', displayName: 'Foundry' } },
+  { id: "tundra_halo", name: "Tundra Halo", tier: "epic", source: "pre-production", kind: "gradient", colors: ["#93c5fd", "#f8fafc"],
+    bio: "Icy blue to white with soft circular halo breathing (1.05 scale, 7-second cycles).", origin: { type: 'biome', source: 'tundra', displayName: 'Tundra' } },
+  { id: "observatory_drift", name: "Observatory Drift", tier: "epic", source: "pre-production", kind: "gradient", colors: ["#1e1b4b", "#6366f1"],
+    bio: "Midnight blue to indigo with extremely faint star drift (2 dots over 9 seconds).", origin: { type: 'biome', source: 'observatory', displayName: 'Observatory' } },
+
+  // Pre-Production and Fresh Epic Enhanced Versions
+  { id: "dune_drift_enhanced", name: "Dune Drift Enhanced", tier: "epic", source: "pre-production", kind: "gradient", colors: ["#fde68a", "#fbbf24", "#f59e0b"],
+    bio: "Enhanced wind-blown sand with micro-identity highlights and amplified movement.", origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' } },
+  { id: "bog_bubble_enhanced", name: "Bog Bubble Enhanced", tier: "epic", source: "pre-production", kind: "gradient", colors: ["#16a34a", "#065f46"],
+    bio: "Enhanced bog bubbles with micro-identity highlights and improved bubble effects.", origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' } },
+  { id: "willow_glow_enhanced", name: "Willow Glow Enhanced", tier: "epic", source: "pre-production", kind: "gradient", colors: ["#22c55e", "#16a34a"],
+    bio: "Enhanced willow glow with micro-identity highlights and improved leaf movement.", origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' } },
+  { id: "geode_core_enhanced", name: "Geode Core Enhanced", tier: "epic", source: "pre-production", kind: "gradient", colors: ["#a78bfa", "#60a5fa"],
+    bio: "Enhanced geode core with micro-identity highlights and amplified shimmer effects.", origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' } },
+  { id: "stalactite_drip_enhanced", name: "Stalactite Drip Enhanced", tier: "epic", source: "pre-production", kind: "gradient", colors: ["#64748b", "#94a3b8"],
+    bio: "Enhanced stalactite drip with micro-identity highlights and improved drip effects.", origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' } },
+  { id: "sunshower_enhanced", name: "Sunshower Enhanced", tier: "epic", source: "pre-production", kind: "gradient", colors: ["#bae6fd", "#fde68a"],
+    bio: "Enhanced sunshower with micro-identity highlights and amplified sun-ray effects.", origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' } },
+  { id: "rainbow_arc_enhanced", name: "Rainbow Arc Enhanced", tier: "epic", source: "pre-production", kind: "gradient", colors: ["#fca5a5", "#fcd34d", "#86efac", "#93c5fd", "#c4b5fd"],
+    bio: "Enhanced rainbow arc with micro-identity highlights and improved drift effects.", origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' } },
+  { id: "subway_spark_enhanced", name: "Subway Spark Enhanced", tier: "epic", source: "pre-production", kind: "gradient", colors: ["#334155", "#1f2937"],
+    bio: "Enhanced subway spark with micro-identity highlights and improved spark effects.", origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' } },
+  { id: "billboard_blink_enhanced", name: "Billboard Blink Enhanced", tier: "epic", source: "pre-production", kind: "gradient", colors: ["#312e81", "#1e1b4b"],
+    bio: "Enhanced billboard blink with micro-identity highlights and improved neon effects.", origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' } },
+  { id: "haystack_enhanced", name: "Haystack Enhanced", tier: "epic", source: "pre-production", kind: "gradient", colors: ["#fde68a", "#f59e0b"],
+    bio: "Enhanced haystack with micro-identity highlights and improved straw effects.", origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' } },
+  { id: "orchard_breeze_enhanced", name: "Orchard Breeze Enhanced", tier: "epic", source: "pre-production", kind: "gradient", colors: ["#22c55e", "#16a34a"],
+    bio: "Enhanced orchard breeze with micro-identity highlights and improved leaf fleck effects.", origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' } },
+  { id: "harbor_wake_enhanced", name: "Harbor Wake Enhanced", tier: "epic", source: "pre-production", kind: "gradient", colors: ["#14b8a6", "#2dd4bf"],
+    bio: "Enhanced harbor wake with micro-identity highlights and amplified ripple effects.", origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' } },
+  { id: "temple_incense_enhanced", name: "Temple Incense Enhanced", tier: "epic", source: "pre-production", kind: "gradient", colors: ["#fde68a", "#a78bfa"],
+    bio: "Enhanced temple incense with micro-identity highlights and improved plume effects.", origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' } },
+  { id: "canyon_shade_enhanced", name: "Canyon Shade Enhanced", tier: "epic", source: "pre-production", kind: "gradient", colors: ["#ea580c", "#78350f"],
+    bio: "Enhanced canyon shade with micro-identity highlights and improved shadow effects.", origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' } },
+  { id: "reef_bloom_enhanced", name: "Reef Bloom Enhanced", tier: "epic", source: "pre-production", kind: "gradient", colors: ["#22d3ee", "#c4b5fd"],
+    bio: "Enhanced reef bloom with micro-identity highlights and improved anemone effects.", origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' } },
+  { id: "savanna_mirage_enhanced", name: "Savanna Mirage Enhanced", tier: "epic", source: "pre-production", kind: "gradient", colors: ["#fde68a", "#d97706"],
+    bio: "Enhanced savanna mirage with micro-identity highlights and amplified heat-waver effects.", origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' } },
+  { id: "foundry_heatwave_enhanced", name: "Foundry Heatwave Enhanced", tier: "epic", source: "pre-production", kind: "gradient", colors: ["#d97706", "#b45309"],
+    bio: "Enhanced foundry heatwave with micro-identity highlights and improved shimmer effects.", origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' } },
+  { id: "tundra_halo_enhanced", name: "Tundra Halo Enhanced", tier: "epic", source: "pre-production", kind: "gradient", colors: ["#93c5fd", "#f8fafc"],
+    bio: "Enhanced tundra halo with micro-identity highlights and amplified halo breathing effects.", origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' } },
+  { id: "observatory_drift_enhanced", name: "Observatory Drift Enhanced", tier: "epic", source: "pre-production", kind: "gradient", colors: ["#1e1b4b", "#6366f1"],
+    bio: "Enhanced observatory drift with micro-identity highlights and improved star drift effects.", origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' } },
 ];
 
 // Epic skins (gentle animated motifs)
@@ -657,13 +1160,63 @@ export const INSPIRATION_EPIC: UnifiedSkin[] = [
   { id: "aurora_legacy", name: "Aurora (Legacy)", tier: "epic", source: "inspiration", kind: "animated", colors: ["#22d3ee", "#22c55e", "#a78bfa"] },
   
   // Original inspiration epics
-  { id: "ocean_anim", name: "Ocean", tier: "epic", source: "inspiration", anim: "ocean", base: { fill: "#0ea5e9", stroke: "#075985", shine: "#bae6fd" } },
+  { id: "ocean_anim", name: "Ocean", tier: "epic", source: "production", anim: "ocean", base: { fill: "#0ea5e9", stroke: "#075985", shine: "#bae6fd" } },
   { id: "lava_anim", name: "Lava (Inspiration)", tier: "epic", source: "inspiration", anim: "lava", base: { fill: "#f97316", stroke: "#7c2d12", shine: "#fed7aa" } },
   { id: "blizzard_anim", name: "Blizzard", tier: "epic", source: "inspiration", anim: "blizzard", base: { fill: "#93c5fd", stroke: "#1e3a8a", shine: "#e0f2fe" } },
   { id: "monsoon_anim", name: "Monsoon", tier: "epic", source: "inspiration", anim: "monsoon", base: { fill: "#38bdf8", stroke: "#0c4a6e", shine: "#bae6fd" } },
   { id: "aurora_anim", name: "Aurora (Inspiration)", tier: "epic", source: "inspiration", anim: "aurora", base: { fill: "#10b981", stroke: "#065f46", shine: "#a7f3d0" } },
   { id: "firefly_anim", name: "Firefly", tier: "epic", source: "inspiration", anim: "firefly", base: { fill: "#166534", stroke: "#052e16", shine: "#bbf7d0" } },
   { id: "tidepool_anim", name: "Tidepool", tier: "epic", source: "inspiration", anim: "tidepool", base: { fill: "#06b6d4", stroke: "#083344", shine: "#a5f3fc" } },
+
+  // New Epic Inspiration Concepts - Action & Adventure
+  { id: "blaze_knight", name: "Blaze Knight", tier: "epic", source: "inspiration", kind: "gradient", colors: ["#ef4444", "#f97316"],
+    bio: "Fiery red/orange body with a faint diagonal shield band. Soft shield gleam sweep.", origin: { type: 'biome', source: 'volcano', displayName: 'Volcano' } },
+  { id: "jungle_raider", name: "Jungle Raider", tier: "epic", source: "inspiration", kind: "gradient", colors: ["#16a34a", "#065f46"],
+    bio: "Deep green with a subtle strap crossing like a satchel. Strap gets a faint highlight pass.", origin: { type: 'biome', source: 'forest', displayName: 'Forest' } },
+  { id: "cave_explorer", name: "Cave Explorer", tier: "epic", source: "inspiration", kind: "gradient", colors: ["#475569", "#64748b"],
+    bio: "Slate body with tiny off-center lamp halo (radial, pale yellow). Halo breathes gently.", origin: { type: 'biome', source: 'canyon', displayName: 'Canyon/Cave' } },
+  { id: "sky_racer", name: "Sky Racer", tier: "epic", source: "inspiration", kind: "gradient", colors: ["#60a5fa", "#93c5fd"],
+    bio: "Azure with a racing stripe arc (white/teal) across the top. Stripe shifts horizontally.", origin: { type: 'biome', source: 'day_sky', displayName: 'Day Sky' } },
+  { id: "desert_outrider", name: "Desert Outrider", tier: "epic", source: "inspiration", kind: "gradient", colors: ["#facc15", "#f59e0b"],
+    bio: "Warm sand to amber body with faint chevron on chest. Chevron gains a gentle pulse.", origin: { type: 'biome', source: 'desert', displayName: 'Desert' } },
+
+  // Tech & Mech
+  { id: "turbo_bot", name: "Turbo Bot", tier: "epic", source: "inspiration", kind: "gradient", colors: ["#64748b", "#9ca3af"],
+    bio: "Steel blue with tiny vent slots (two short dashes). Vents emit rare teal glow blinks.", origin: { type: 'biome', source: 'foundry', displayName: 'Foundry/City' } },
+  { id: "neon_circuit", name: "Neon Circuit", tier: "epic", source: "inspiration", kind: "gradient", colors: ["#312e81", "#1e1b4b"],
+    bio: "Midnight violet body with a single circuit trace loop. Trace light runs around occasionally.", origin: { type: 'biome', source: 'observatory', displayName: 'Observatory/City' } },
+  { id: "magnet_core", name: "Magnet Core", tier: "epic", source: "inspiration", kind: "gradient", colors: ["#111827", "#374151"],
+    bio: "Charcoal with a subtle U-magnet silhouette. Magnet emits gentle ripple rings.", origin: { type: 'biome', source: 'foundry', displayName: 'Foundry' } },
+  { id: "plasma_pilot", name: "Plasma Pilot", tier: "epic", source: "inspiration", kind: "gradient", colors: ["#22d3ee", "#06b6d4"],
+    bio: "Cyan to teal body with a tiny visor glare arc. Visor glare slides smoothly.", origin: { type: 'biome', source: 'harbor', displayName: 'Harbor/Observatory' } },
+
+  // Creatures, Monsters, Dinos
+  { id: "rex_roar", name: "Rex Roar", tier: "epic", source: "inspiration", kind: "gradient", colors: ["#22c55e", "#16a34a"],
+    bio: "Bold green with faint scale band (low contrast). Scale band drifts diagonally.", origin: { type: 'biome', source: 'savanna', displayName: 'Savanna/Forest' } },
+  { id: "thunder_lizard", name: "Thunder Lizard", tier: "epic", source: "inspiration", kind: "gradient", colors: ["#84cc16", "#a16207"],
+    bio: "Olive to umber with tiny bone/plate ticks near the top. Plates shimmer in stagger.", origin: { type: 'biome', source: 'canyon', displayName: 'Canyon' } },
+  { id: "slimezilla_jr", name: "Slimezilla Jr.", tier: "epic", source: "inspiration", kind: "gradient", colors: ["#0ea5e9", "#0d9488"],
+    bio: "Deep teal with a subtle dorsal ridge silhouette. Ridge highlight rolls smoothly.", origin: { type: 'biome', source: 'reef', displayName: 'Reef/Harbor' } },
+
+  // Sports & Speed
+  { id: "goal_streak", name: "Goal Streak", tier: "epic", source: "inspiration", kind: "gradient", colors: ["#16a34a", "#22c55e"],
+    bio: "Pitch green with a pale panel arc (soccer vibe). Quick streak line flashes occasionally.", origin: { type: 'biome', source: 'meadow', displayName: 'Meadow' } },
+  { id: "home_run", name: "Home Run", tier: "epic", source: "inspiration", kind: "gradient", colors: ["#fef3c7", "#fde68a"],
+    bio: "Cream to sand body with a single stitch curve (red). Stitch casts a subtle shadow sweep.", origin: { type: 'biome', source: 'harbor', displayName: 'Harbor/Farm' } },
+  { id: "drift_king", name: "Drift King", tier: "epic", source: "inspiration", kind: "gradient", colors: ["#4b5563", "#94a3b8"],
+    bio: "Smoky gray with a tire-s-curve gloss. S-curve moves sideways with smooth easing.", origin: { type: 'biome', source: 'city', displayName: 'City/Canyon' } },
+
+  // Pirates, Space, Fantasy
+  { id: "star_captain", name: "Star Captain", tier: "epic", source: "inspiration", kind: "gradient", colors: ["#0f172a", "#1e1b4b"],
+    bio: "Navy to indigo with a small gold star badge. Star badge twinkles occasionally.", origin: { type: 'biome', source: 'observatory', displayName: 'Observatory/Harbor' } },
+  { id: "coral_corsair", name: "Coral Corsair", tier: "epic", source: "inspiration", kind: "gradient", colors: ["#14b8a6", "#0ea5e9"],
+    bio: "Reef teal with a faint bandana knot shape. Knot highlight tilts gently back and forth.", origin: { type: 'biome', source: 'reef', displayName: 'Reef' } },
+  { id: "rune_sprinter", name: "Rune Sprinter", tier: "epic", source: "inspiration", kind: "gradient", colors: ["#b45309", "#d97706"],
+    bio: "Warm copper with two short rune dashes. Runes glow on in sequence then fade.", origin: { type: 'biome', source: 'temple', displayName: 'Temple/Foundry' } },
+  { id: "meteor_glide", name: "Meteor Glide", tier: "epic", source: "inspiration", kind: "gradient", colors: ["#475569", "#64748b"],
+    bio: "Blue-gray with a soft meteoroid streak diagonal. Streak slides with tiny spark pop at tail.", origin: { type: 'biome', source: 'observatory', displayName: 'Observatory' } },
+  { id: "storm_rider", name: "Storm Rider", tier: "epic", source: "inspiration", kind: "gradient", colors: ["#22d3ee", "#06b6d4"],
+    bio: "Electric teal with a single bolt glyph. Bolt fades with micro ripple expansion.", origin: { type: 'biome', source: 'aurora', displayName: 'Aurora/Glacier' } },
   { id: "sandstorm_anim", name: "Sandstorm", tier: "epic", source: "inspiration", anim: "sandstorm", base: { fill: "#f5d0a5", stroke: "#92400e", shine: "#fde68a" } },
   { id: "thunderhead_anim", name: "Thunderhead", tier: "epic", source: "inspiration", anim: "thunderhead", base: { fill: "#94a3b8", stroke: "#334155", shine: "#e2e8f0" } },
   { id: "breeze_anim", name: "Breeze", tier: "epic", source: "inspiration", anim: "breeze", base: { fill: "#a7f3d0", stroke: "#065f46", shine: "#d1fae5" } },
@@ -705,7 +1258,7 @@ export const MY_COMMON: UnifiedSkin[] = [
 
 // Additional Uncommon skins (gradient themes)
 export const MY_UNCOMMON: UnifiedSkin[] = [
-  { id: "sunset_beach", name: "Sunset Beach", tier: "uncommon", source: "inspiration", gradient: { stops: [["#f97316", 0], ["#fbbf24", 50], ["#f472b6", 100]], dir: "diag" } },
+  { id: "sunset_beach", name: "Sunset Beach", tier: "uncommon", source: "production", gradient: { stops: [["#f97316", 0], ["#fbbf24", 50], ["#f472b6", 100]], dir: "diag" } },
   { id: "forest_mist", name: "Forest Mist", tier: "uncommon", source: "inspiration", gradient: { stops: [["#059669", 0], ["#34d399", 100]], dir: "diag" } },
   { id: "arctic_dawn", name: "Arctic Dawn", tier: "uncommon", source: "inspiration", gradient: { stops: [["#0ea5e9", 0], ["#e0f2fe", 100]], dir: "diag" } },
   { id: "volcano_glow", name: "Volcano Glow", tier: "uncommon", source: "inspiration", gradient: { stops: [["#dc2626", 0], ["#f97316", 100]], dir: "diag" } },
@@ -768,7 +1321,7 @@ export const NEW_UNCOMMON: UnifiedSkin[] = [
   { id: "mojito", name: "Mojito", tier: "uncommon", source: "inspiration", gradient: { stops: [["#BFFB6F", 0], ["#B6E3B6", 100]], dir: "180deg" }, base: { fill: "#BFFB6F", stroke: "#336B11", shine: "#0F2F1D" } },
   { id: "melon_glow", name: "Melon Glow", tier: "uncommon", source: "inspiration", gradient: { stops: [["#FF9B86", 0], ["#FFD24A", 100]], dir: "180deg" }, base: { fill: "#FF9B86", stroke: "#7C2D12", shine: "#3A1405" } },
   { id: "peach_soda", name: "Peach Soda", tier: "uncommon", source: "inspiration", gradient: { stops: [["#FFC49E", 0], ["#FFF1DA", 100]], dir: "180deg" }, base: { fill: "#FFC49E", stroke: "#9A4F2A", shine: "#2B1308" } },
-  { id: "berry_fizz", name: "Berry Fizz", tier: "uncommon", source: "inspiration", gradient: { stops: [["#FF6BA0", 0], ["#7D4AA3", 100]], dir: "180deg" }, base: { fill: "#FF6BA0", stroke: "#5B1A4A", shine: "#FDEBFA" } },
+  { id: "berry_fizz", name: "Berry Fizz", tier: "uncommon", source: "production", gradient: { stops: [["#FF6BA0", 0], ["#7D4AA3", 100]], dir: "180deg" }, base: { fill: "#FF6BA0", stroke: "#5B1A4A", shine: "#FDEBFA" } },
   { id: "lavender_milk", name: "Lavender Milk", tier: "uncommon", source: "inspiration", gradient: { stops: [["#E6D6FF", 0], ["#FFFFFF", 100]], dir: "180deg" }, base: { fill: "#E6D6FF", stroke: "#5B21B6", shine: "#27104A" } },
   { id: "mint_frost", name: "Mint Frost", tier: "uncommon", source: "inspiration", gradient: { stops: [["#7FECD8", 0], ["#F1FFFB", 100]], dir: "180deg" }, base: { fill: "#7FECD8", stroke: "#134E4A", shine: "#0E2A26" } },
   { id: "sunrise_dew", name: "Sunrise Dew", tier: "uncommon", source: "inspiration", gradient: { stops: [["#FFD36E", 0], ["#FFD0E4", 100]], dir: "180deg" }, base: { fill: "#FFD36E", stroke: "#92400E", shine: "#3A1A06" } },
@@ -791,7 +1344,7 @@ export const NEW_RARE: UnifiedSkin[] = [
   { id: "mini_stripes", name: "Mini Stripes", tier: "rare", source: "inspiration", pattern: { type: "diagonal_stripes", width: 1, spacing: 8, color: "#FFFFFF", alpha: 0.10 }, base: { fill: "#A9D8FF", stroke: "#1E3A8A", shine: "#0E2440" } },
   { id: "waves", name: "Waves", tier: "rare", source: "inspiration", pattern: { type: "sine_waves", width: 1, amplitude: 2, period: 28, color: "#DCEBFF", alpha: 0.12 }, base: { fill: "#7089A7", stroke: "#334155", shine: "#0B2140" } },
   { id: "honeycomb", name: "Honeycomb", tier: "rare", source: "inspiration", pattern: { type: "hexagon_grid", size: 11, color: "#FFEDB3", alpha: 0.16 }, base: { fill: "#FFD24A", stroke: "#92400E", shine: "#3A1F06" } },
-  { id: "sprinkles", name: "Sprinkles", tier: "rare", source: "inspiration", pattern: { type: "confetti_dots", count: 18, colors: ["#FFB3BA", "#BAFFC9", "#BAE1FF", "#FFFFBA"], alpha: 0.50 }, base: { fill: "#F7FBFF", stroke: "#93C5FD", shine: "#0E1B2B" } },
+  { id: "sprinkles", name: "Sprinkles", tier: "rare", source: "production", pattern: { type: "confetti_dots", count: 18, colors: ["#FFB3BA", "#BAFFC9", "#BAE1FF", "#FFFFBA"], alpha: 0.50 }, base: { fill: "#F7FBFF", stroke: "#93C5FD", shine: "#0E1B2B" } },
   { id: "stitch", name: "Stitch", tier: "rare", source: "inspiration", pattern: { type: "dashed_ring", dashLength: 3, color: "#FFFFFF", alpha: 0.40 }, base: { fill: "#B9C2CC", stroke: "#475569", shine: "#111827" } },
   { id: "plaid_picnic", name: "Plaid Picnic", tier: "rare", source: "inspiration", pattern: { type: "plaid", width: 1, colors: ["#FFD8E4", "#BFE3FF"], alpha: 0.12 }, base: { fill: "#F7BFD0", stroke: "#9F1239", shine: "#401524" } },
   { id: "pebble_path", name: "Pebble Path", tier: "rare", source: "inspiration", pattern: { type: "stone_speckles", size: 2, density: "bottom", colors: ["#8B4513", "#A0522D"], alpha: 0.18 }, base: { fill: "#E9D8B5", stroke: "#9D8057", shine: "#2B2216" } },
@@ -828,7 +1381,7 @@ export const NEW_EPIC: UnifiedSkin[] = [
   { id: "heartbeat", name: "Heartbeat", tier: "epic", source: "inspiration", anim: "heartbeat", base: { fill: "#7C2F58", stroke: "#561F3C", shine: "#FFE6F2" } },
   { id: "sunshower", name: "Sunshower", tier: "epic", source: "inspiration", anim: "sunshower", base: { fill: "#C6E7FF", stroke: "#88C5E7", shine: "#0E2440" } },
   { id: "snow_drift", name: "Snow Drift", tier: "epic", source: "inspiration", anim: "snow_drift", base: { fill: "#132033", stroke: "#0C1626", shine: "#E8F0FF" } },
-  { id: "will_o_glow", name: "Will-o-Glow", tier: "epic", source: "inspiration", anim: "will_o_glow", base: { fill: "#0E1C14", stroke: "#081108", shine: "#F3FFF7" } },
+  { id: "will_o_glow", name: "Will-o-Glow", tier: "epic", source: "production", anim: "will_o_glow", base: { fill: "#0E1C14", stroke: "#081108", shine: "#F3FFF7" } },
   { id: "vine_crawl", name: "Vine Crawl", tier: "epic", source: "inspiration", anim: "vine_crawl", base: { fill: "#415A31", stroke: "#2C3E23", shine: "#ECFFE8" } },
   { id: "galaxy_swirl", name: "Galaxy Swirl", tier: "epic", source: "inspiration", anim: "galaxy_swirl", base: { fill: "#12152B", stroke: "#090B1A", shine: "#EEF3FF" } },
   { id: "jelly_ripple", name: "Jelly Ripple", tier: "epic", source: "inspiration", anim: "jelly_ripple", base: { fill: "#7FE4FF", stroke: "#5ACAF0", shine: "#0F3441" } },
@@ -845,7 +1398,7 @@ export const NEW_EPIC: UnifiedSkin[] = [
 
 // NEW MYTHIC (animated + special effects) — 25
 export const NEW_MYTHIC: UnifiedSkin[] = [
-  { id: "nebula_prime", name: "Nebula Prime", tier: "mythic", source: "inspiration", anim: "deep_space_parallax", base: { fill: "#1e1b4b", stroke: "#0f172a", shine: "#c7d2fe" } },
+  { id: "nebula", name: "Nebula", tier: "mythic", source: "inspiration", anim: "deep_space_parallax", base: { fill: "#1e1b4b", stroke: "#0f172a", shine: "#c7d2fe" } },
   { id: "phoenix_heart", name: "Phoenix Heart", tier: "mythic", source: "inspiration", anim: "ember_rise_trail", base: { fill: "#dc2626", stroke: "#7f1d1d", shine: "#fed7d7" } },
   { id: "leviathan_tide", name: "Leviathan Tide", tier: "mythic", source: "inspiration", anim: "dark_sea_surge", base: { fill: "#0c4a6e", stroke: "#0f172a", shine: "#67e8f9" } },
   { id: "pegasus_gale", name: "Pegasus Gale", tier: "mythic", source: "inspiration", anim: "winged_wisps", base: { fill: "#bae6fd", stroke: "#075985", shine: "#f0f9ff" } },
@@ -1166,7 +1719,10 @@ export const PRE_PRODUCTION_SKINS: UnifiedSkin[] = [
     id: "synthwave", 
     name: "Synthwave", 
     tier: "mythic", 
-    source: "pre-production",
+    source: "production", 
+    bio: "Neon gradient with retro scanline effects.",
+    kind: "animated",
+    colors: ["#7a3cff", "#ff4d6d", "#2c0c3a"],
     origin: { type: 'biome', source: 'city', displayName: 'Unlocked in City' },
     anim: "horizon_gradient_skyline",
     gradient: { stops: [["#7c3aed", 0], ["#f97316", 100]], dir: "180deg" },

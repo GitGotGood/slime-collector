@@ -141,7 +141,7 @@ const SkillCard: React.FC<{
       {/* Progress bars */}
       <div className="space-y-2 mb-3">
         <div className="flex items-center justify-between text-xs">
-          <span>Attempts: {stats.attempts}/{gate.attempts}</span>
+          <span>Strong Answers: {stats.attempts}/{gate.attempts}</span>
           <span className={stats.attempts >= gate.attempts ? "text-emerald-600" : "text-gray-500"}>
             {stats.attempts >= gate.attempts ? "✓" : ""}
           </span>

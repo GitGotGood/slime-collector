@@ -22,7 +22,7 @@ export function mkProfile(id: string, name: string, color: string): Profile {
   return {
     id, name, color,
     goo: 0, xp: 0, level: 1,
-    settings: { soundOn: true, activeSkin: 'moss', eyeTracking: true },
+    settings: { soundOn: true, activeSkin: 'moss', eyeTracking: true, currentSkill: 'add_1_10' },
     mastered: {},
     skillStats: {} as any,
     unlocks: { skins: ['moss'], biomes: ['meadow'] },
@@ -47,7 +47,7 @@ export function migrateProfile(p: Partial<Profile>): Profile {
     goo: typeof p.goo === 'number' ? p.goo : 0,
     xp: typeof p.xp === 'number' ? p.xp : 0,
     level: typeof p.level === 'number' ? p.level : 1,
-    settings: { soundOn: true, activeSkin: 'moss', eyeTracking: true, ...(p.settings ?? {}) },
+    settings: { soundOn: true, activeSkin: 'moss', eyeTracking: true, currentSkill: 'add_1_10', ...(p.settings ?? {}) },
     mastered: p.mastered ?? {},
     skillStats: (p.skillStats as any) ?? {},
     unlocks: { skins: ['moss'], biomes: ['meadow'], ...(p.unlocks ?? {}) },

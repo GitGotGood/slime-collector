@@ -81,7 +81,7 @@ function g_missing_20(): Problem {
   if (Math.random() < 0.5) {
     const a = ri(1, 20), c = ri(a, a + 20), x = c - a;
     return { text: `${a} + ☐ = ${c}`, answer: x, options: mc4(x, [x - 1, x + 1, a, c], 0, 40) };
-  } else {
+    } else {
     const c = ri(1, 20), b = ri(0, c), x = c - b;
     return { text: `${c} - ☐ = ${b}`, answer: x, options: mc4(x, [x - 1, x + 1, b, c], 0, 20) };
   }
@@ -117,6 +117,20 @@ function g_sub_3digit(): Problem {
   const a = ri(200, 999), b = ri(100, a), ans = a - b;
   const slips = [ans - 10, ans + 10, a - (b - 10)];
   return { a, b, op: '-', answer: ans, options: mc4(ans, slips, 0, 999) };
+}
+
+function g_sub_3digit_triple(): Problem {
+  // Triple digit subtraction with larger ranges
+  const a = ri(300, 999), b = ri(150, a), ans = a - b;
+  const slips = [ans - 100, ans + 100, a - (b - 100), a - (b + 100)];
+  return { a, b, op: '-', answer: ans, options: mc4(ans, slips, 0, 999) };
+}
+
+function g_sub_4digit_quad(): Problem {
+  // Quadruple digit subtraction
+  const a = ri(2000, 9999), b = ri(1000, a), ans = a - b;
+  const slips = [ans - 1000, ans + 1000, a - (b - 1000), a - (b + 1000)];
+  return { a, b, op: '-', answer: ans, options: mc4(ans, slips, 0, 9999) };
 }
 
 function g_mul_1d_x_2_3d(): Problem {
@@ -248,6 +262,8 @@ export const SKILLS: Record<SkillID, SkillDef> = {
   div_facts: { id: 'div_facts', label: 'Division Facts', diff: 1.45, kind: 'div', gen: g_div_facts },
   add_3digit: { id: 'add_3digit', label: 'Add 3-Digit', diff: 1.55, kind: 'multi-digit', gen: g_add_3digit },
   sub_3digit: { id: 'sub_3digit', label: 'Subtract 3-Digit', diff: 1.55, kind: 'multi-digit', gen: g_sub_3digit },
+  sub_3digit_triple: { id: 'sub_3digit_triple', label: 'Triple Digit Subtraction', diff: 1.60, kind: 'multi-digit', gen: g_sub_3digit_triple },
+  sub_4digit_quad: { id: 'sub_4digit_quad', label: 'Quadruple Digit Subtraction', diff: 1.65, kind: 'multi-digit', gen: g_sub_4digit_quad },
   mul_1d_x_2_3d: { id: 'mul_1d_x_2_3d', label: '1-digit × Multi', diff: 1.65, kind: 'mul', gen: g_mul_1d_x_2_3d },
   mul_2d_intro: { id: 'mul_2d_intro', label: '2-digit × 2-digit (Intro)', diff: 1.75, kind: 'mul', gen: g_mul_2d_intro },
   longdiv_1d: { id: 'longdiv_1d', label: 'Long Division (÷1-digit, exact)', diff: 1.85, kind: 'div', gen: g_longdiv_1d },
@@ -279,6 +295,7 @@ export const SKILL_ORDER: SkillID[] = [
   'mixed_20', 'missing_20',
   'mul_0_5_10', 'mul_0_10', 'div_facts',
   'add_3digit', 'sub_3digit',
+  'sub_3digit_triple', 'sub_4digit_quad', // NEW: Enable by default for release
   'mul_1d_x_2_3d', 'mul_2d_intro', 'longdiv_1d',
   'frac_basic', 'frac_equiv', 'frac_add_like', 'frac_sub_like', 'frac_whole_mult',
   'dec_place', 'dec_addsub',

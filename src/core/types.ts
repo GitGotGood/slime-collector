@@ -9,6 +9,7 @@ export type SkillID =
   | 'mul_0_5_10'|'mul_0_10'
   | 'div_facts'
   | 'add_3digit'|'sub_3digit'
+  | 'sub_3digit_triple'|'sub_4digit_quad'
   | 'mul_1d_x_2_3d'|'mul_2d_intro'
   | 'longdiv_1d'
   | 'frac_basic'|'frac_equiv'
