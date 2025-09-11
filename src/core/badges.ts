@@ -145,7 +145,7 @@ export const BADGES: BadgeDef[] = [
     rewardGoo:250,
   },
 
-  // Streak badges (tiered)
+  // [Sep-11] Dan: Make badges harder - son getting diamonds in 10-15min | Changed: stretched silver/gold thresholds | Why: need better progression curve
   { 
     id:'streak_best', 
     name:'Streak Scout', 
@@ -153,10 +153,10 @@ export const BADGES: BadgeDef[] = [
     icon:'🎯',
     description:'Reach best streak milestones.',
     progressKey:'streakBest',
-    tiers: [ T('bronze',5,50), T('silver',10,100), T('gold',20,150), T('diamond',30,250) ],
+    tiers: [ T('bronze',5,50), T('silver',20,100), T('gold',35,150), T('diamond',50,250) ],
   },
 
-  // Speed badges (tiered)
+  // Speed badges (tiered) - rebalanced for better progression
   { 
     id:'speed_fast3', 
     name:'Speedster', 
@@ -164,7 +164,7 @@ export const BADGES: BadgeDef[] = [
     icon:'⚡',
     description:'Answer fast in a session (under 3s).',
     progressKey:'fastUnder3',
-    tiers: [ T('bronze',5,50), T('silver',15,100), T('gold',30,150), T('diamond',60,250) ],
+    tiers: [ T('bronze',5,50), T('silver',25,100), T('gold',50,150), T('diamond',100,250) ],
   },
   { 
     id:'speed_fast1_5', 
@@ -173,7 +173,7 @@ export const BADGES: BadgeDef[] = [
     icon:'🔥',
     description:'Lightning answers in a session (under 1.5s).',
     progressKey:'fastUnder1_5',
-    tiers: [ T('bronze',5,50), T('silver',10,100), T('gold',20,150), T('diamond',40,250) ],
+    tiers: [ T('bronze',5,50), T('silver',20,100), T('gold',40,150), T('diamond',100,250) ],
   },
 
   // Accuracy badges (session-based)

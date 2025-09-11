@@ -47,9 +47,10 @@ export default function ShopModal({
     return () => clearInterval(id);
   }, [open]);
 
+  // [Sep-11] Dan: Shop refresh bug - inventory not updating | Changed: added dailyRefresh to deps | Why: useMemo wasn't recalculating when seed changed
   const { daily, evergreen, biasInfo } = useMemo(() => {
     return getShopPicks(profile, ALL_SHOP_ITEMS);
-  }, [profile.shopBiasUntil, profile.shopBiasBiome, profile.unlocks?.skins]);
+  }, [profile.shopBiasUntil, profile.shopBiasBiome, profile.unlocks?.skins, profile.dailyRefresh]);
 
   const cost = nextRefreshCost(profile);
   const canRefresh = cost !== null && profile.goo >= (cost ?? 0);
