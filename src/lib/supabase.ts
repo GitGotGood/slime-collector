@@ -1,11 +1,24 @@
 import { createClient } from "@supabase/supabase-js";
 
 // Debug environment variables
+console.log('🔧 SUPABASE FILE LOADED!');
 console.log('🔧 Environment Debug:', {
   VITE_SUPABASE_URL: import.meta.env.VITE_SUPABASE_URL,
   VITE_SUPABASE_ANON_KEY: import.meta.env.VITE_SUPABASE_ANON_KEY ? '✅ Present' : '❌ Missing',
   allEnvVars: import.meta.env
 });
+
+// Add error handling for client creation
+try {
+  if (!import.meta.env.VITE_SUPABASE_URL) {
+    console.error('❌ VITE_SUPABASE_URL is undefined!');
+  }
+  if (!import.meta.env.VITE_SUPABASE_ANON_KEY) {
+    console.error('❌ VITE_SUPABASE_ANON_KEY is undefined!');
+  }
+} catch (error) {
+  console.error('❌ Error checking environment variables:', error);
+}
 
 // Create Supabase client
 export const supabase = createClient(
