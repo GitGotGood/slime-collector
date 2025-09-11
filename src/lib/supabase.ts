@@ -1,6 +1,9 @@
 import { createClient } from "@supabase/supabase-js";
 
-// Debug environment variables
+// Context [Sep-11-2025]: User had white screen on Netlify deployment - needed to debug env vars
+// What: Added comprehensive debug logging to diagnose missing environment variables  
+// Why: Supabase client was failing silently with undefined env vars, preventing app startup
+// Goal: Ensure environment variables load correctly in production and provide clear debugging info
 console.log('🔧 SUPABASE FILE LOADED!');
 console.log('🔧 Environment Debug:', {
   VITE_SUPABASE_URL: import.meta.env.VITE_SUPABASE_URL,

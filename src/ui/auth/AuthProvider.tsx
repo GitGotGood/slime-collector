@@ -248,9 +248,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 5000);
         
-        await fetch(`${import.meta.env.VITE_SUPABASE_URL}/rest/v1/`, {
+        // Context [Sep-11-2025]: User reported white screen on Netlify, then 404 errors during iPad OAuth
+        // What: Changed hardcoded Supabase URL to environment variable for network connectivity check
+        // Why: Hardcoded URL had typo (coqnrjx vs cqpnrjx) causing 404s, plus needed dynamic URLs for env flexibility
+        // Goal: Enable proper OAuth flow across all environments and prevent hardcoded URL maintenance issues
+        await fetch(`${import.meta.env.VITE_SUPABASE_URL}/auth/v1/settings`, {
           signal: controller.signal,
-          method: 'HEAD'
+          method: 'GET'
         });
         
         clearTimeout(timeoutId);
