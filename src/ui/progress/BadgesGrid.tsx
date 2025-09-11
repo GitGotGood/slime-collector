@@ -204,3 +204,5 @@ function getTierInfo(def: BadgeDef, counters: Record<string, number>, earnedTier
 function tierRank(t?: BadgeTier): number {
   return t==='diamond'?4 : t==='gold'?3 : t==='silver'?2 : t==='bronze'?1 : 0;
 }
+
+

@@ -158,12 +158,12 @@ export default function ProgressModal({
                 
                 return (
                   <div className="rounded-xl bg-gradient-to-r from-amber-50 to-yellow-50 border border-amber-200 p-3 mb-4">
-                    <div className="font-semibold text-amber-800 mb-1">🎯 Next World: {next.title}</div>
+                    <div className="font-semibold text-amber-800 mb-1">🎯 {next.title} Math Progress</div>
                     <div className="text-xs text-amber-700/80 mb-2">Master "{next.primarySkill}" to unlock</div>
                     <div className="grid grid-cols-3 gap-2 text-xs">
                       <div className={`text-center ${attempts >= next.gate.attempts ? 'text-green-600' : 'text-amber-600'}`}>
                         <div className="font-semibold">{attempts}/{next.gate.attempts}</div>
-                        <div>attempts</div>
+                        <div>strong answers</div>
                       </div>
                       <div className={`text-center ${accuracy >= next.gate.minAcc * 100 ? 'text-green-600' : 'text-amber-600'}`}>
                         <div className="font-semibold">{accuracy.toFixed(0)}%/{(next.gate.minAcc * 100).toFixed(0)}%</div>

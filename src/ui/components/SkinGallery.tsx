@@ -80,7 +80,169 @@ function GallerySlime({ skin, size = "normal", instanceId }: { skin: UnifiedSkin
       "bubblegum_prod": "bubblegum",
       "lava_prod": "lava",
       "aurora_prod": "aurora",
-      "nebula_prod": "nebula"
+      "nebula_prod": "nebula",
+      // Enhanced variants (all tiers)
+      "moss_enhanced": "moss_enhanced",
+      "sky_enhanced": "sky_enhanced", 
+      "coral_enhanced": "coral_enhanced",
+      "charcoal_enhanced": "charcoal_enhanced",
+      "clover_enhanced": "clover_enhanced",
+      "spring_fade_enhanced": "spring_fade_enhanced",
+      "blue_lagoon_enhanced": "blue_lagoon_enhanced",
+      "sea_breeze_enhanced": "sea_breeze_enhanced",
+      "raindrop_enhanced": "raindrop_enhanced",
+      "acorn_buddy_enhanced": "acorn_buddy_enhanced",
+      "polka_mint_enhanced": "polka_mint_enhanced",
+      "ripple_enhanced": "ripple_enhanced",
+      "ocean_drift_enhanced": "ocean_drift_enhanced",
+      "moonlit_pool_enhanced": "moonlit_pool_enhanced",
+      "moss_quilt_enhanced": "moss_quilt_enhanced",
+      // Enhanced mythics merged into originals - removed
+      "mirage_enhanced": "mirage_enhanced",
+      "frog_chorus_enhanced": "frog_chorus_enhanced",
+      "biolume_veil_enhanced": "biolume_veil_enhanced",
+      "echo_rune_enhanced": "echo_rune_enhanced",
+      // "synthwave_enhanced": merged into original
+      // Pre-production commons
+      "murk": "murk",
+      "bluebird": "bluebird", 
+      "apple_shine": "apple_shine",
+      "honey": "honey",
+      "lilac": "lilac",
+      // Pre-production enhanced commons
+      "murk_enhanced": "murk_enhanced",
+      "bluebird_enhanced": "bluebird_enhanced",
+      "apple_shine_enhanced": "apple_shine_enhanced", 
+      "honey_enhanced": "honey_enhanced",
+      "lilac_enhanced": "lilac_enhanced",
+      // Missing production commons
+      "green": "green",
+      "mint": "mint",
+      "blueberry": "blueberry",
+      // Missing production enhanced commons
+      "green_enhanced": "green_enhanced",
+      "mint_enhanced": "mint_enhanced",
+      "blueberry_enhanced": "blueberry_enhanced",
+
+      // Inspiration Slimes - Cave / Shadow / Earth
+      "deep_dark_cave": "deep_dark_cave",
+      "never_ending_cave": "never_ending_cave", 
+      "spooky_cave": "spooky_cave",
+      "fault_glow": "fault_glow",
+      "aftershock": "aftershock",
+
+      // Inspiration Slimes - Fire / Heat / Ash
+      "ember_rim": "ember_rim",
+      "ashfall": "ashfall",
+      "volcanic_glass": "volcanic_glass",
+
+      // Inspiration Slimes - Sand / Wind
+      "sandstorm_wall": "sandstorm_wall",
+      "dune_surge": "dune_surge",
+      "whirlwind_edge": "whirlwind_edge",
+
+      // Inspiration Slimes - Water / Tides / Storm
+      "riptide_bowl": "riptide_bowl",
+      "whirlpool_eye": "whirlpool_eye",
+      "monsoon_sheet": "monsoon_sheet",
+
+      // Inspiration Slimes - Ice / Aurora / Cold
+      "crevasse_light": "crevasse_light",
+      "black_ice": "black_ice",
+      "aurora_curtain": "aurora_curtain",
+
+      // Inspiration Slimes - Sky / Lightning / Space
+      "thunder_shelf": "thunder_shelf",
+      "static_sheet": "static_sheet",
+      "solar_haze": "solar_haze",
+      "gravity_well": "gravity_well",
+      "prism_mist": "prism_mist",
+
+      // Inspiration Slimes - Metal / Forge / Industrial
+      "forge_heat": "forge_heat",
+      "quench_mist_inspiration": "quench_mist_inspiration",
+
+      // Epic Inspiration Slimes - Action & Adventure
+      "blaze_knight": "blaze_knight",
+      "jungle_raider": "jungle_raider", 
+      "cave_explorer": "cave_explorer",
+      "sky_racer": "sky_racer",
+      "desert_outrider": "desert_outrider",
+
+      // Epic Inspiration Slimes - Tech & Mech
+      "turbo_bot": "turbo_bot",
+      "neon_circuit": "neon_circuit",
+      "magnet_core": "magnet_core", 
+      "plasma_pilot": "plasma_pilot",
+
+      // Epic Inspiration Slimes - Creatures, Monsters, Dinos
+      "rex_roar": "rex_roar",
+      "thunder_lizard": "thunder_lizard",
+      "slimezilla_jr": "slimezilla_jr",
+
+      // Epic Inspiration Slimes - Sports & Speed
+      "goal_streak": "goal_streak",
+      "home_run": "home_run",
+      "drift_king": "drift_king",
+
+      // Epic Inspiration Slimes - Pirates, Space, Fantasy
+      "star_captain": "star_captain",
+      "coral_corsair": "coral_corsair",
+      "rune_sprinter": "rune_sprinter",
+      "meteor_glide": "meteor_glide",
+      "storm_rider": "storm_rider",
+
+      // Epic Enhanced Versions (existing production slimes)
+      "lava_flow_enhanced": "lava_flow_enhanced",
+      "aurora_veil_enhanced": "aurora_veil_enhanced", 
+      "glacier_enhanced": "glacier_enhanced",
+      "aurora_veil_plus_enhanced": "aurora_veil_plus_enhanced",
+
+      // Pre-Production Epics
+      "dune_drift": "dune_drift",
+      "bog_bubble": "bog_bubble",
+      "willow_glow": "willow_glow",
+      "geode_core": "geode_core",
+      "stalactite_drip": "stalactite_drip",
+      "sunshower": "sunshower",
+      "rainbow_arc": "rainbow_arc",
+      "subway_spark": "subway_spark",
+      "billboard_blink": "billboard_blink",
+      "haystack": "haystack",
+      "orchard_breeze": "orchard_breeze",
+
+      // Pre-Production Epic Enhanced
+      "dune_drift_enhanced": "dune_drift_enhanced",
+      "bog_bubble_enhanced": "bog_bubble_enhanced",
+      "willow_glow_enhanced": "willow_glow_enhanced",
+      "geode_core_enhanced": "geode_core_enhanced",
+      "stalactite_drip_enhanced": "stalactite_drip_enhanced",
+      "sunshower_enhanced": "sunshower_enhanced",
+      "rainbow_arc_enhanced": "rainbow_arc_enhanced",
+      "subway_spark_enhanced": "subway_spark_enhanced",
+      "billboard_blink_enhanced": "billboard_blink_enhanced",
+      "haystack_enhanced": "haystack_enhanced",
+      "orchard_breeze_enhanced": "orchard_breeze_enhanced",
+
+      // Fresh Epic Concepts
+      "harbor_wake": "harbor_wake",
+      "temple_incense": "temple_incense",
+      "canyon_shade": "canyon_shade",
+      "reef_bloom": "reef_bloom",
+      "savanna_mirage": "savanna_mirage",
+      "foundry_heatwave": "foundry_heatwave",
+      "tundra_halo": "tundra_halo",
+      "observatory_drift": "observatory_drift",
+
+      // Fresh Epic Enhanced
+      "harbor_wake_enhanced": "harbor_wake_enhanced",
+      "temple_incense_enhanced": "temple_incense_enhanced",
+      "canyon_shade_enhanced": "canyon_shade_enhanced",
+      "reef_bloom_enhanced": "reef_bloom_enhanced",
+      "savanna_mirage_enhanced": "savanna_mirage_enhanced",
+      "foundry_heatwave_enhanced": "foundry_heatwave_enhanced",
+      "tundra_halo_enhanced": "tundra_halo_enhanced",
+      "observatory_drift_enhanced": "observatory_drift_enhanced"
     };
     const skinId = mapping[skin.id] || "moss"; // Default to moss instead of green
     
@@ -188,12 +350,20 @@ function GallerySlime({ skin, size = "normal", instanceId }: { skin: UnifiedSkin
       >
         <svg viewBox="0 0 64 64" className="w-full h-full drop-shadow-sm">
           {/* Define gradient if needed */}
-          {skin.gradient && (
+          {(skin.gradient || (skin.colors && skin.colors.length > 1)) && (
             <defs>
               <linearGradient id={`grad-${skin.id}`} x1="0%" y1="0%" x2="100%" y2="100%">
-                {skin.gradient.stops.map(([color, pos], i) => (
-                  <stop key={i} offset={`${pos}%`} stopColor={color} />
-                ))}
+                {skin.gradient ? (
+                  skin.gradient.stops.map(([color, pos], i) => (
+                    <stop key={i} offset={`${pos}%`} stopColor={color} />
+                  ))
+                ) : (
+                  // Handle skin.colors array (for production and inspiration slimes)
+                  <>
+                    <stop offset="0%" stopColor={skin.colors?.[0] || "#22c55e"} />
+                    <stop offset="100%" stopColor={skin.colors?.[1] || skin.colors?.[0] || "#22c55e"} />
+                  </>
+                )}
               </linearGradient>
             </defs>
           )}
@@ -215,8 +385,59 @@ function GallerySlime({ skin, size = "normal", instanceId }: { skin: UnifiedSkin
           {/* Slime body path (blob shape) */}
           <motion.path 
             d="M8 34 C10 18 22 10 32 10 C42 10 54 18 56 34 C56 46 46 54 32 54 C18 54 8 46 8 34Z"
-            fill={skin.gradient ? `url(#grad-${skin.id})` : (skin.palette?.fill || skin.base?.fill || "#22c55e")}
-            stroke={skin.palette?.stroke || skin.base?.stroke || "#065f46"}
+            fill={(skin.gradient || (skin.colors && skin.colors.length > 1)) ? `url(#grad-${skin.id})` : (skin.palette?.fill || skin.base?.fill || skin.colors?.[0] || "#22c55e")}
+            stroke={skin.palette?.stroke || skin.base?.stroke || (function() {
+              // Special stroke colors for inspiration slimes based on design specs
+              const strokeColors: Record<string, string> = {
+                deep_dark_cave: "#0b1026",
+                never_ending_cave: "#111827", 
+                spooky_cave: "#0b1026",
+                fault_glow: "#1f2937",
+                aftershock: "#0b0f14",
+                ember_rim: "#3b0a02",
+                ashfall: "#3a1f0a",
+                volcanic_glass: "#06090f",
+                sandstorm_wall: "#6b3f0c",
+                dune_surge: "#5b3b0a", 
+                whirlwind_edge: "#5b3b0a",
+                riptide_bowl: "#12326a",
+                whirlpool_eye: "#0f2a2f",
+                monsoon_sheet: "#1e3a8a",
+                crevasse_light: "#1f2937",
+                black_ice: "#0b0f14",
+                aurora_curtain: "#083a63",
+                thunder_shelf: "#08343a",
+                static_sheet: "#0b1026",
+                solar_haze: "#7a4a0c",
+                gravity_well: "#070b13",
+                prism_mist: "#273341",
+                forge_heat: "#44220b",
+                quench_mist_inspiration: "#0b0f14",
+                
+                // Epic Inspiration Slimes Stroke Colors (from design specs)
+                blaze_knight: "#3b0a02",
+                jungle_raider: "#0f3a2a", 
+                cave_explorer: "#273341",
+                sky_racer: "#1e3a8a",
+                desert_outrider: "#6b3f0c",
+                turbo_bot: "#1f2937",
+                neon_circuit: "#0b1026",
+                magnet_core: "#0b0f14",
+                plasma_pilot: "#0e3a40",
+                rex_roar: "#0b3a2a",
+                thunder_lizard: "#3e2a12",
+                slimezilla_jr: "#07323a",
+                goal_streak: "#0b3a2a",
+                home_run: "#5b3b0a",
+                drift_king: "#1f2937",
+                star_captain: "#0b1026",
+                coral_corsair: "#0f2a2f",
+                rune_sprinter: "#3a1f0a",
+                meteor_glide: "#273341",
+                storm_rider: "#08343a"
+              };
+              return strokeColors[skin.id] || "#065f46";
+            })()}
             strokeWidth="1.5"
             initial={{ filter: "brightness(1)" }}
             animate={{ filter: "brightness(1.05)" }}
@@ -5329,7 +5550,137 @@ function GallerySlime({ skin, size = "normal", instanceId }: { skin: UnifiedSkin
             let faceColor: string;
             let eyeShine: string;
             
-            if (luminance < 0.4) {
+            // Epic Slimes Face Colors (from design specs) - override algorithmic logic
+            if (skin.id === "lava_flow" || skin.id === "lava_flow_enhanced") {
+              faceColor = "#065f46";
+              eyeShine = "#DCFCE7";
+            } else if (skin.id === "aurora_veil" || skin.id === "aurora_veil_enhanced") {
+              faceColor = "#064e3b";
+              eyeShine = "#DCFCE7";
+            } else if (skin.id === "glacier" || skin.id === "glacier_enhanced") {
+              faceColor = "#065f46";
+              eyeShine = "#DCFCE7";
+            } else if (skin.id === "aurora_veil_plus" || skin.id === "aurora_veil_plus_enhanced") {
+              faceColor = "#064e3b";
+              eyeShine = "#DCFCE7";
+            } else if (skin.id === "dune_drift" || skin.id === "dune_drift_enhanced") {
+              faceColor = "#7c2d12";
+              eyeShine = "#fed7aa";
+            } else if (skin.id === "bog_bubble" || skin.id === "bog_bubble_enhanced") {
+              faceColor = "#064e3b";
+              eyeShine = "#DCFCE7";
+            } else if (skin.id === "willow_glow" || skin.id === "willow_glow_enhanced") {
+              faceColor = "#0f3a2a";
+              eyeShine = "#DCFCE7";
+            } else if (skin.id === "geode_core" || skin.id === "geode_core_enhanced") {
+              faceColor = "#4c1d95";
+              eyeShine = "#ddd6fe";
+            } else if (skin.id === "stalactite_drip" || skin.id === "stalactite_drip_enhanced") {
+              faceColor = "#334155";
+              eyeShine = "#e2e8f0";
+            } else if (skin.id === "sunshower" || skin.id === "sunshower_enhanced") {
+              faceColor = "#ca8a04";
+              eyeShine = "#fef3c7";
+            } else if (skin.id === "rainbow_arc" || skin.id === "rainbow_arc_enhanced") {
+              faceColor = "#1f2937";
+              eyeShine = "#f3f4f6";
+            } else if (skin.id === "subway_spark" || skin.id === "subway_spark_enhanced") {
+              faceColor = "#0f172a";
+              eyeShine = "#f1f5f9";
+            } else if (skin.id === "billboard_blink" || skin.id === "billboard_blink_enhanced") {
+              faceColor = "#0b1026";
+              eyeShine = "#f1f5f9";
+            } else if (skin.id === "haystack" || skin.id === "haystack_enhanced") {
+              faceColor = "#7c2d12";
+              eyeShine = "#fed7aa";
+            } else if (skin.id === "orchard_breeze" || skin.id === "orchard_breeze_enhanced") {
+              faceColor = "#0f3a2a";
+              eyeShine = "#DCFCE7";
+            } else if (skin.id === "harbor_wake" || skin.id === "harbor_wake_enhanced") {
+              faceColor = "#0f2a2f";
+              eyeShine = "#ccfbf1";
+            } else if (skin.id === "temple_incense" || skin.id === "temple_incense_enhanced") {
+              faceColor = "#5b4630";
+              eyeShine = "#fef3c7";
+            } else if (skin.id === "canyon_shade" || skin.id === "canyon_shade_enhanced") {
+              faceColor = "#3b2012";
+              eyeShine = "#fed7aa";
+            } else if (skin.id === "reef_bloom" || skin.id === "reef_bloom_enhanced") {
+              faceColor = "#113046";
+              eyeShine = "#ccfbf1";
+            } else if (skin.id === "savanna_mirage" || skin.id === "savanna_mirage_enhanced") {
+              faceColor = "#6b4b1f";
+              eyeShine = "#fef3c7";
+            } else if (skin.id === "foundry_heatwave" || skin.id === "foundry_heatwave_enhanced") {
+              faceColor = "#3a1f0a";
+              eyeShine = "#fed7aa";
+            } else if (skin.id === "tundra_halo" || skin.id === "tundra_halo_enhanced") {
+              faceColor = "#1e3a8a";
+              eyeShine = "#dbeafe";
+            } else if (skin.id === "observatory_drift" || skin.id === "observatory_drift_enhanced") {
+              faceColor = "#0b1026";
+              eyeShine = "#f1f5f9";
+            } else if (skin.id === "blaze_knight") {
+              faceColor = "#064e3b";
+              eyeShine = "#DCFCE7";
+            } else if (skin.id === "jungle_raider") {
+              faceColor = "#052e25";
+              eyeShine = "#DCFCE7";
+            } else if (skin.id === "cave_explorer") {
+              faceColor = "#07423a";
+              eyeShine = "#DCFCE7";
+            } else if (skin.id === "sky_racer") {
+              faceColor = "#065f46";
+              eyeShine = "#DCFCE7";
+            } else if (skin.id === "desert_outrider") {
+              faceColor = "#064e3b";
+              eyeShine = "#DCFCE7";
+            } else if (skin.id === "turbo_bot") {
+              faceColor = "#064e3b";
+              eyeShine = "#DCFCE7";
+            } else if (skin.id === "neon_circuit") {
+              faceColor = "#059669";
+              eyeShine = "#DCFCE7";
+            } else if (skin.id === "magnet_core") {
+              faceColor = "#06b6d4";
+              eyeShine = "#ccfbf1";
+            } else if (skin.id === "plasma_pilot") {
+              faceColor = "#064e3b";
+              eyeShine = "#DCFCE7";
+            } else if (skin.id === "rex_roar") {
+              faceColor = "#052e25";
+              eyeShine = "#DCFCE7";
+            } else if (skin.id === "thunder_lizard") {
+              faceColor = "#0b3b2e";
+              eyeShine = "#DCFCE7";
+            } else if (skin.id === "slimezilla_jr") {
+              faceColor = "#022c22";
+              eyeShine = "#DCFCE7";
+            } else if (skin.id === "goal_streak") {
+              faceColor = "#064e3b";
+              eyeShine = "#DCFCE7";
+            } else if (skin.id === "home_run") {
+              faceColor = "#064e3b";
+              eyeShine = "#DCFCE7";
+            } else if (skin.id === "drift_king") {
+              faceColor = "#10b981";
+              eyeShine = "#DCFCE7";
+            } else if (skin.id === "star_captain") {
+              faceColor = "#10b981";
+              eyeShine = "#DCFCE7";
+            } else if (skin.id === "coral_corsair") {
+              faceColor = "#052e25";
+              eyeShine = "#DCFCE7";
+            } else if (skin.id === "rune_sprinter") {
+              faceColor = "#064e3b";
+              eyeShine = "#DCFCE7";
+            } else if (skin.id === "meteor_glide") {
+              faceColor = "#06b6d4";
+              eyeShine = "#ccfbf1";
+            } else if (skin.id === "storm_rider") {
+              faceColor = "#052e25";
+              eyeShine = "#DCFCE7";
+            } else if (luminance < 0.4) {
               // Dark bases → light face
               faceColor = "#EAF4FF";
               eyeShine = "#FFFFFF";
@@ -5375,9 +5726,563 @@ function GallerySlime({ skin, size = "normal", instanceId }: { skin: UnifiedSkin
   );
 }
 
+// Enhanced Comparison View Component
+function EnhancedComparisonView({ rarityFilter }: { rarityFilter: string }) {
+          // Map enhanced versions to their original counterparts
+        const comparisonPairs = [
+          // Common Slimes
+          { original: "moss", enhanced: "moss_enhanced", tier: "common" },
+          { original: "sky", enhanced: "sky_enhanced", tier: "common" },
+          { original: "coral", enhanced: "coral_enhanced", tier: "common" },
+          { original: "charcoal", enhanced: "charcoal_enhanced", tier: "common" },
+          { original: "clover", enhanced: "clover_enhanced", tier: "common" },
+          { original: "green", enhanced: "green_enhanced", tier: "common" },
+          { original: "mint", enhanced: "mint_enhanced", tier: "common" },
+          { original: "blueberry", enhanced: "blueberry_enhanced", tier: "common" },
+          
+          // Uncommon Slimes
+          { original: "spring_fade", enhanced: "spring_fade_enhanced", tier: "uncommon" },
+          { original: "blue_lagoon", enhanced: "blue_lagoon_enhanced", tier: "uncommon" },
+          { original: "sea_breeze", enhanced: "sea_breeze_enhanced", tier: "uncommon" },
+          { original: "raindrop", enhanced: "raindrop_enhanced", tier: "uncommon" },
+          { original: "acorn_buddy", enhanced: "acorn_buddy_enhanced", tier: "uncommon" },
+          
+          // Rare Slimes
+          { original: "polka_mint", enhanced: "polka_mint_enhanced", tier: "rare" },
+          { original: "ripple", enhanced: "ripple_enhanced", tier: "rare" },
+          { original: "ocean_drift", enhanced: "ocean_drift_enhanced", tier: "rare" },
+          { original: "moonlit_pool", enhanced: "moonlit_pool_enhanced", tier: "rare" },
+          { original: "moss_quilt", enhanced: "moss_quilt_enhanced", tier: "rare" },
+          
+          // Mythic Slimes (Production)
+          // Mythic enhanced versions merged into originals - removed from comparison view
+          
+          // Mythic Slimes (Pre-Production)
+          { original: "mirage", enhanced: "mirage_enhanced", tier: "mythic", isPreProd: true },
+          { original: "frog_chorus", enhanced: "frog_chorus_enhanced", tier: "mythic", isPreProd: true },
+          { original: "biolume_veil", enhanced: "biolume_veil_enhanced", tier: "mythic", isPreProd: true },
+          { original: "echo_rune", enhanced: "echo_rune_enhanced", tier: "mythic", isPreProd: true },
+          // { original: "synthwave", enhanced: "synthwave_enhanced", tier: "mythic", isPreProd: true }, // Merged into original
+          
+          // Common Slimes (Pre-Production)
+          { original: "murk", enhanced: "murk_enhanced", tier: "common", isPreProd: true },
+          { original: "bluebird", enhanced: "bluebird_enhanced", tier: "common", isPreProd: true },
+          { original: "apple_shine", enhanced: "apple_shine_enhanced", tier: "common", isPreProd: true },
+          { original: "honey", enhanced: "honey_enhanced", tier: "common", isPreProd: true },
+          { original: "lilac", enhanced: "lilac_enhanced", tier: "common", isPreProd: true },
+
+          // Epic Slimes - Production (existing slimes)
+          { original: "lava_flow", enhanced: "lava_flow_enhanced", tier: "epic" },
+          { original: "aurora_veil", enhanced: "aurora_veil_enhanced", tier: "epic" },
+          { original: "glacier", enhanced: "glacier_enhanced", tier: "epic" },
+          { original: "aurora_veil_plus", enhanced: "aurora_veil_plus_enhanced", tier: "epic" },
+
+          // Epic Slimes - Pre-Production
+          { original: "dune_drift", enhanced: "dune_drift_enhanced", tier: "epic", isPreProd: true },
+          { original: "bog_bubble", enhanced: "bog_bubble_enhanced", tier: "epic", isPreProd: true },
+          { original: "willow_glow", enhanced: "willow_glow_enhanced", tier: "epic", isPreProd: true },
+          { original: "geode_core", enhanced: "geode_core_enhanced", tier: "epic", isPreProd: true },
+          { original: "stalactite_drip", enhanced: "stalactite_drip_enhanced", tier: "epic", isPreProd: true },
+          { original: "sunshower", enhanced: "sunshower_enhanced", tier: "epic", isPreProd: true },
+          { original: "rainbow_arc", enhanced: "rainbow_arc_enhanced", tier: "epic", isPreProd: true },
+          { original: "subway_spark", enhanced: "subway_spark_enhanced", tier: "epic", isPreProd: true },
+          { original: "billboard_blink", enhanced: "billboard_blink_enhanced", tier: "epic", isPreProd: true },
+          { original: "haystack", enhanced: "haystack_enhanced", tier: "epic", isPreProd: true },
+          { original: "orchard_breeze", enhanced: "orchard_breeze_enhanced", tier: "epic", isPreProd: true },
+
+          // Epic Slimes - Fresh Concepts
+          { original: "harbor_wake", enhanced: "harbor_wake_enhanced", tier: "epic", isPreProd: true },
+          { original: "temple_incense", enhanced: "temple_incense_enhanced", tier: "epic", isPreProd: true },
+          { original: "canyon_shade", enhanced: "canyon_shade_enhanced", tier: "epic", isPreProd: true },
+          { original: "reef_bloom", enhanced: "reef_bloom_enhanced", tier: "epic", isPreProd: true },
+          { original: "savanna_mirage", enhanced: "savanna_mirage_enhanced", tier: "epic", isPreProd: true },
+          { original: "foundry_heatwave", enhanced: "foundry_heatwave_enhanced", tier: "epic", isPreProd: true },
+          { original: "tundra_halo", enhanced: "tundra_halo_enhanced", tier: "epic", isPreProd: true },
+          { original: "observatory_drift", enhanced: "observatory_drift_enhanced", tier: "epic", isPreProd: true },
+        ];
+
+  // Filter comparison pairs based on rarity filter
+  const filteredPairs = rarityFilter === "all" 
+    ? comparisonPairs 
+    : comparisonPairs.filter(pair => pair.tier === rarityFilter);
+
+  const promoteToProduction = (enhancedId: string) => {
+    // TODO: Implement promotion logic
+    console.log(`Promoting ${enhancedId} to production...`);
+    alert(`🚀 ${enhancedId} promoted to production! (This is a placeholder - promotion logic to be implemented)`);
+  };
+
+  return (
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="text-center">
+        <h3 className="text-2xl font-bold text-emerald-800 mb-2">🔧 Slime Workshop</h3>
+        <p className="text-emerald-600">
+          Compare production slimes with their enhanced variants side-by-side
+          {rarityFilter !== "all" && (
+            <span className="block text-sm mt-1 text-emerald-500">
+              Showing: {rarityFilter.charAt(0).toUpperCase() + rarityFilter.slice(1)} tier only
+            </span>
+          )}
+        </p>
+      </div>
+
+      {/* No results message */}
+      {filteredPairs.length === 0 && (
+        <div className="text-center py-12">
+          <div className="text-gray-400 text-6xl mb-4">🔍</div>
+          <h4 className="text-lg font-semibold text-gray-600 mb-2">No Enhanced Slimes Found</h4>
+          <p className="text-gray-500">
+            No enhanced slimes available for the "{rarityFilter}" tier.
+          </p>
+        </div>
+      )}
+
+      {/* Enhanced Commons */}
+      {(rarityFilter === "all" || rarityFilter === "common") && filteredPairs.some(pair => pair.tier === "common") && (
+      <div>
+        <h4 className="text-lg font-semibold text-green-700 mb-4">🟢 Enhanced Common Slimes</h4>
+        <div className="grid gap-4">
+          {filteredPairs.filter(pair => pair.tier === "common" && !pair.isPreProd).map((pair) => {
+            const originalSkin = ALL_SKINS.find(s => s.id === pair.original);
+            const enhancedSkin = ALL_SKINS.find(s => s.id === pair.enhanced);
+            
+            if (!originalSkin || !enhancedSkin) return null;
+
+            return (
+              <div key={pair.enhanced} className="bg-white border border-green-200 rounded-xl p-4">
+                <div className="grid md:grid-cols-3 gap-4 items-center">
+                  {/* Original Version */}
+                  <div className="text-center">
+                    <div className="text-sm font-medium text-gray-600 mb-2">Current Production</div>
+                    <div className="h-24 flex items-center justify-center mb-2">
+                      <GallerySlime skin={originalSkin} size="small" instanceId={`orig-${pair.original}`} />
+                    </div>
+                    <div className="text-sm font-semibold text-green-800">{originalSkin.name}</div>
+                    <div className="text-xs text-green-600 mt-1">{originalSkin.bio || "Original version"}</div>
+                  </div>
+
+                  {/* Comparison Arrow & Promote Button */}
+                  <div className="text-center">
+                    <div className="text-xl mb-2">→</div>
+                    <button
+                      onClick={() => promoteToProduction(pair.enhanced)}
+                      className="px-3 py-1.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm font-medium"
+                    >
+                      🚀 Promote
+                    </button>
+                  </div>
+
+                  {/* Enhanced Version */}
+                  <div className="text-center">
+                    <div className="text-sm font-medium text-purple-600 mb-2">✨ Enhanced</div>
+                    <div className="h-24 flex items-center justify-center mb-2">
+                      <GallerySlime skin={enhancedSkin} size="small" instanceId={`enh-${pair.enhanced}`} />
+                    </div>
+                    <div className="text-sm font-semibold text-green-800">{enhancedSkin.name}</div>
+                    <div className="text-xs text-green-600 mt-1">{enhancedSkin.bio || "Enhanced with micro-identity"}</div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      )}
+
+      {/* Enhanced Uncommons */}
+      {(rarityFilter === "all" || rarityFilter === "uncommon") && filteredPairs.some(pair => pair.tier === "uncommon") && (
+      <div>
+        <h4 className="text-lg font-semibold text-blue-700 mb-4">🔵 Enhanced Uncommon Slimes</h4>
+        <div className="grid gap-4">
+          {filteredPairs.filter(pair => pair.tier === "uncommon").map((pair) => {
+            const originalSkin = ALL_SKINS.find(s => s.id === pair.original);
+            const enhancedSkin = ALL_SKINS.find(s => s.id === pair.enhanced);
+            
+            if (!originalSkin || !enhancedSkin) return null;
+
+            return (
+              <div key={pair.enhanced} className="bg-white border border-blue-200 rounded-xl p-4">
+                <div className="grid md:grid-cols-3 gap-4 items-center">
+                  {/* Original Version */}
+                  <div className="text-center">
+                    <div className="text-sm font-medium text-gray-600 mb-2">Current Production</div>
+                    <div className="h-24 flex items-center justify-center mb-2">
+                      <GallerySlime skin={originalSkin} size="small" instanceId={`orig-${pair.original}`} />
+                    </div>
+                    <div className="text-sm font-semibold text-blue-800">{originalSkin.name}</div>
+                    <div className="text-xs text-blue-600 mt-1">{originalSkin.bio || "Original version"}</div>
+                  </div>
+
+                  {/* Comparison Arrow & Promote Button */}
+                  <div className="text-center">
+                    <div className="text-xl mb-2">→</div>
+                    <button
+                      onClick={() => promoteToProduction(pair.enhanced)}
+                      className="px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+                    >
+                      🚀 Promote
+                    </button>
+                  </div>
+
+                  {/* Enhanced Version */}
+                  <div className="text-center">
+                    <div className="text-sm font-medium text-purple-600 mb-2">✨ Enhanced</div>
+                    <div className="h-24 flex items-center justify-center mb-2">
+                      <GallerySlime skin={enhancedSkin} size="small" instanceId={`enh-${pair.enhanced}`} />
+                    </div>
+                    <div className="text-sm font-semibold text-blue-800">{enhancedSkin.name}</div>
+                    <div className="text-xs text-blue-600 mt-1">{enhancedSkin.bio || "Enhanced with gradients & effects"}</div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      )}
+
+      {/* Enhanced Rares */}
+      {(rarityFilter === "all" || rarityFilter === "rare") && filteredPairs.some(pair => pair.tier === "rare") && (
+      <div>
+        <h4 className="text-lg font-semibold text-purple-700 mb-4">🟣 Enhanced Rare Slimes</h4>
+        <div className="grid gap-4">
+          {filteredPairs.filter(pair => pair.tier === "rare").map((pair) => {
+            const originalSkin = ALL_SKINS.find(s => s.id === pair.original);
+            const enhancedSkin = ALL_SKINS.find(s => s.id === pair.enhanced);
+            
+            if (!originalSkin || !enhancedSkin) return null;
+
+            return (
+              <div key={pair.enhanced} className="bg-white border border-purple-200 rounded-xl p-4">
+                <div className="grid md:grid-cols-3 gap-4 items-center">
+                  {/* Original Version */}
+                  <div className="text-center">
+                    <div className="text-sm font-medium text-gray-600 mb-2">Current Production</div>
+                    <div className="h-24 flex items-center justify-center mb-2">
+                      <GallerySlime skin={originalSkin} size="small" instanceId={`orig-${pair.original}`} />
+                    </div>
+                    <div className="text-sm font-semibold text-purple-800">{originalSkin.name}</div>
+                    <div className="text-xs text-purple-600 mt-1">{originalSkin.bio || "Original version"}</div>
+                  </div>
+
+                  {/* Comparison Arrow & Promote Button */}
+                  <div className="text-center">
+                    <div className="text-xl mb-2">→</div>
+                    <button
+                      onClick={() => promoteToProduction(pair.enhanced)}
+                      className="px-3 py-1.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium"
+                    >
+                      🚀 Promote
+                    </button>
+                  </div>
+
+                  {/* Enhanced Version */}
+                  <div className="text-center">
+                    <div className="text-sm font-medium text-purple-600 mb-2">✨ Enhanced</div>
+                    <div className="h-24 flex items-center justify-center mb-2">
+                      <GallerySlime skin={enhancedSkin} size="small" instanceId={`enh-${pair.enhanced}`} />
+                    </div>
+                    <div className="text-sm font-semibold text-purple-800">{enhancedSkin.name}</div>
+                    <div className="text-xs text-purple-600 mt-1">{enhancedSkin.bio || "Enhanced with patterns & highlights"}</div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      )}
+
+      {/* Enhanced Epics (Production) */}
+      {(rarityFilter === "all" || rarityFilter === "epic") && filteredPairs.some(pair => pair.tier === "epic" && !pair.isPreProd) && (
+      <div>
+        <h4 className="text-lg font-semibold text-orange-700 mb-4">⚡ Enhanced Epic Slimes</h4>
+        <div className="grid gap-6">
+          {filteredPairs.filter(pair => pair.tier === "epic" && !pair.isPreProd).map((pair) => {
+            const originalSkin = ALL_SKINS.find(s => s.id === pair.original);
+            const enhancedSkin = ALL_SKINS.find(s => s.id === pair.enhanced);
+            
+            if (!originalSkin || !enhancedSkin) return null;
+
+            return (
+              <div key={pair.enhanced} className="bg-white border border-orange-200 rounded-xl p-4">
+                <div className="grid md:grid-cols-3 gap-4 items-center">
+                  {/* Original Version */}
+                  <div className="text-center">
+                    <div className="text-sm font-medium text-gray-600 mb-2">Current Production</div>
+                    <div className="h-24 flex items-center justify-center mb-2">
+                      <GallerySlime skin={originalSkin} size="small" instanceId={`orig-${pair.original}`} />
+                    </div>
+                    <div className="text-sm font-semibold text-orange-800">{originalSkin.name}</div>
+                    <div className="text-xs text-orange-600 mt-1">{originalSkin.bio || "Original version"}</div>
+                  </div>
+
+                  {/* Comparison Arrow & Promote Button */}
+                  <div className="text-center">
+                    <div className="text-xl mb-2">→</div>
+                    <button
+                      onClick={() => promoteToProduction(pair.enhanced)}
+                      className="px-3 py-1.5 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors text-sm font-medium"
+                    >
+                      🚀 Promote
+                    </button>
+                  </div>
+
+                  {/* Enhanced Version */}
+                  <div className="text-center">
+                    <div className="text-sm font-medium text-purple-600 mb-2">✨ Enhanced</div>
+                    <div className="h-24 flex items-center justify-center mb-2">
+                      <GallerySlime skin={enhancedSkin} size="small" instanceId={`enh-${pair.enhanced}`} />
+                    </div>
+                    <div className="text-sm font-semibold text-orange-800">{enhancedSkin.name}</div>
+                    <div className="text-xs text-orange-600 mt-1">{enhancedSkin.bio || "Enhanced with micro-identity"}</div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      )}
+
+      {/* Pre-Production Enhanced Epics */}
+      {(rarityFilter === "all" || rarityFilter === "epic") && filteredPairs.some(pair => pair.tier === "epic" && pair.isPreProd) && (
+      <div>
+        <h4 className="text-lg font-semibold text-orange-700 mb-4">🧪 Pre-Production Enhanced Epics</h4>
+        <div className="grid gap-6">
+          {filteredPairs.filter(pair => pair.tier === "epic" && pair.isPreProd).map((pair) => {
+            const originalSkin = ALL_SKINS.find(s => s.id === pair.original);
+            const enhancedSkin = ALL_SKINS.find(s => s.id === pair.enhanced);
+            
+            if (!originalSkin || !enhancedSkin) return null;
+
+            return (
+              <div key={pair.enhanced} className="bg-white border border-orange-200 rounded-xl p-4">
+                <div className="grid md:grid-cols-3 gap-4 items-center">
+                  {/* Original Version */}
+                  <div className="text-center">
+                    <div className="text-sm font-medium text-gray-600 mb-2">Current Pre-Production</div>
+                    <div className="h-24 flex items-center justify-center mb-2">
+                      <GallerySlime skin={originalSkin} size="small" instanceId={`orig-${pair.original}`} />
+                    </div>
+                    <div className="text-sm font-semibold text-orange-800">{originalSkin.name}</div>
+                    <div className="text-xs text-orange-600 mt-1">{originalSkin.bio || "Original version"}</div>
+                  </div>
+
+                  {/* Comparison Arrow & Promote Button */}
+                  <div className="text-center">
+                    <div className="text-xl mb-2">→</div>
+                    <button
+                      onClick={() => promoteToProduction(pair.enhanced)}
+                      className="px-3 py-1.5 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors text-sm font-medium"
+                    >
+                      🚀 Promote
+                    </button>
+                  </div>
+
+                  {/* Enhanced Version */}
+                  <div className="text-center">
+                    <div className="text-sm font-medium text-purple-600 mb-2">✨ Enhanced</div>
+                    <div className="h-24 flex items-center justify-center mb-2">
+                      <GallerySlime skin={enhancedSkin} size="small" instanceId={`enh-${pair.enhanced}`} />
+                    </div>
+                    <div className="text-sm font-semibold text-orange-800">{enhancedSkin.name}</div>
+                    <div className="text-xs text-orange-600 mt-1">{enhancedSkin.bio || "Enhanced with micro-identity"}</div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      )}
+
+      {/* Enhanced Mythics (Production) */}
+      {(rarityFilter === "all" || rarityFilter === "mythic") && filteredPairs.some(pair => pair.tier === "mythic" && !pair.isPreProd) && (
+      <div>
+        <h4 className="text-lg font-semibold text-emerald-700 mb-4">🌟 Enhanced Mythic Slimes</h4>
+        <div className="grid gap-6">
+          {filteredPairs.filter(pair => pair.tier === "mythic" && !pair.isPreProd).map((pair) => {
+            const originalSkin = ALL_SKINS.find(s => s.id === pair.original);
+            const enhancedSkin = ALL_SKINS.find(s => s.id === pair.enhanced);
+            
+            if (!originalSkin || !enhancedSkin) return null;
+
+            return (
+              <div key={pair.enhanced} className="bg-white border border-emerald-200 rounded-xl p-6">
+                <div className="grid md:grid-cols-3 gap-6 items-center">
+                  {/* Original Version */}
+                  <div className="text-center">
+                    <div className="text-sm font-medium text-gray-600 mb-2">Current Production</div>
+                    <div className="h-32 flex items-center justify-center mb-3">
+                      <GallerySlime skin={originalSkin} size="normal" instanceId={`orig-${pair.original}`} />
+                    </div>
+                    <div className="text-sm font-semibold text-emerald-800">{originalSkin.name}</div>
+                    <div className="text-xs text-emerald-600 mt-1">{originalSkin.bio || "Original version"}</div>
+                  </div>
+
+                  {/* Comparison Arrow & Promote Button */}
+                  <div className="text-center">
+                    <div className="text-2xl mb-2">→</div>
+                    <button
+                      onClick={() => promoteToProduction(pair.enhanced)}
+                      className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors text-sm font-medium"
+                    >
+                      🚀 Promote Enhanced
+                    </button>
+                  </div>
+
+                  {/* Enhanced Version */}
+                  <div className="text-center">
+                    <div className="text-sm font-medium text-purple-600 mb-2">✨ Enhanced Version</div>
+                    <div className="h-32 flex items-center justify-center mb-3">
+                      <GallerySlime skin={enhancedSkin} size="normal" instanceId={`enh-${pair.enhanced}`} />
+                    </div>
+                    <div className="text-sm font-semibold text-emerald-800">{enhancedSkin.name}</div>
+                    <div className="text-xs text-emerald-600 mt-1">{enhancedSkin.bio || "Enhanced with advanced effects"}</div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      )}
+
+      {/* Pre-Production Enhanced Mythics */}
+      {(rarityFilter === "all" || rarityFilter === "mythic") && filteredPairs.some(pair => pair.tier === "mythic" && pair.isPreProd) && (
+      <div>
+        <h4 className="text-lg font-semibold text-purple-700 mb-4">🔬 Pre-Production Enhanced Mythics</h4>
+        <div className="grid gap-6">
+          {filteredPairs.filter(pair => pair.tier === "mythic" && pair.isPreProd).map((pair) => {
+            const enhancedSkin = ALL_SKINS.find(s => s.id === pair.enhanced);
+            
+            if (!enhancedSkin) return null;
+
+            return (
+              <div key={pair.enhanced} className="bg-purple-50 border border-purple-200 rounded-xl p-6">
+                <div className="grid md:grid-cols-3 gap-6 items-center">
+                  {/* Placeholder for Original */}
+                  <div className="text-center">
+                    <div className="text-sm font-medium text-gray-600 mb-2">Original (TBD)</div>
+                    <div className="h-32 flex items-center justify-center mb-3 bg-gray-100 rounded-lg">
+                      <div className="text-gray-400 text-sm">Not yet created</div>
+                    </div>
+                    <div className="text-sm text-gray-500">Placeholder</div>
+                  </div>
+
+                  {/* Promote Button */}
+                  <div className="text-center">
+                    <div className="text-2xl mb-2">🔬</div>
+                    <button
+                      onClick={() => promoteToProduction(pair.enhanced)}
+                      className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium"
+                    >
+                      📦 Stage for Production
+                    </button>
+                  </div>
+
+                  {/* Enhanced Version */}
+                  <div className="text-center">
+                    <div className="text-sm font-medium text-purple-600 mb-2">✨ Enhanced Concept</div>
+                    <div className="h-32 flex items-center justify-center mb-3">
+                      <GallerySlime skin={enhancedSkin} size="normal" instanceId={`concept-${pair.enhanced}`} />
+                    </div>
+                    <div className="text-sm font-semibold text-purple-800">{enhancedSkin.name}</div>
+                    <div className="text-xs text-purple-600 mt-1">{enhancedSkin.bio || "Concept with advanced effects"}</div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      )}
+
+      {/* Pre-Production Enhanced Commons */}
+      {(rarityFilter === "all" || rarityFilter === "common") && filteredPairs.some(pair => pair.tier === "common" && pair.isPreProd) && (
+      <div>
+        <h4 className="text-lg font-semibold text-green-700 mb-4">🌱 Pre-Production Enhanced Commons</h4>
+        <div className="grid gap-4">
+          {filteredPairs.filter(pair => pair.tier === "common" && pair.isPreProd).map((pair) => {
+            const originalSkin = ALL_SKINS.find(s => s.id === pair.original);
+            const enhancedSkin = ALL_SKINS.find(s => s.id === pair.enhanced);
+            
+            if (!originalSkin || !enhancedSkin) return null;
+
+            return (
+              <div key={pair.enhanced} className="bg-white border border-green-200 rounded-xl p-4">
+                <div className="grid md:grid-cols-3 gap-4 items-center">
+                  {/* Original Version */}
+                  <div className="text-center">
+                    <div className="text-sm font-medium text-gray-600 mb-2">Current Pre-Production</div>
+                    <div className="h-24 flex items-center justify-center mb-2">
+                      <GallerySlime skin={originalSkin} size="small" instanceId={`orig-${pair.original}`} />
+                    </div>
+                    <div className="text-sm font-semibold text-green-800">{originalSkin.name}</div>
+                    <div className="text-xs text-green-600 mt-1">{originalSkin.bio || "Original version"}</div>
+                  </div>
+
+                  {/* Comparison Arrow & Promote Button */}
+                  <div className="text-center">
+                    <div className="text-xl mb-2">→</div>
+                    <button
+                      onClick={() => promoteToProduction(pair.enhanced)}
+                      className="px-3 py-1.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm font-medium"
+                    >
+                      🚀 Promote
+                    </button>
+                  </div>
+
+                  {/* Enhanced Version */}
+                  <div className="text-center">
+                    <div className="text-sm font-medium text-purple-600 mb-2">✨ Enhanced</div>
+                    <div className="h-24 flex items-center justify-center mb-2">
+                      <GallerySlime skin={enhancedSkin} size="small" instanceId={`enh-${pair.enhanced}`} />
+                    </div>
+                    <div className="text-sm font-semibold text-green-800">{enhancedSkin.name}</div>
+                    <div className="text-xs text-green-600 mt-1">{enhancedSkin.bio || "Enhanced with micro-identity"}</div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      )}
+
+      {/* Implementation Notes */}
+      <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-6">
+        <h4 className="font-semibold text-emerald-800 mb-3">🎨 Enhanced Implementation Notes</h4>
+        <div className="grid md:grid-cols-2 gap-4 text-sm text-emerald-700">
+          <div>
+            <strong>Visual Enhancements:</strong>
+            <ul className="list-disc list-inside mt-1 space-y-1">
+              <li>Layered parallax motion</li>
+              <li>Particle effects (stars, embers, notes)</li>
+              <li>Advanced color gradients</li>
+              <li>GPU-friendly transforms</li>
+            </ul>
+          </div>
+          <div>
+            <strong>Performance Features:</strong>
+            <ul className="list-disc list-inside mt-1 space-y-1">
+              <li>≤20 lightweight particles active</li>
+              <li>Burst to 40 on celebration</li>
+              <li>Reduced motion support</li>
+              <li>Low/Med/High effect tiers</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // Main Gallery Component
 export default function SkinGallery({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const [filter, setFilter] = useState<"all" | "production" | "pre-production" | "inspiration">("all");
+  const [filter, setFilter] = useState<"all" | "production" | "pre-production" | "inspiration" | "enhanced">("all");
   const [rarityFilter, setRarityFilter] = useState<"all" | keyof typeof SKINS_BY_TIER | "seasonal">("all");
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -5392,6 +6297,9 @@ export default function SkinGallery({ open, onClose }: { open: boolean; onClose:
         skins = SKINS_BY_SOURCE["pre-production"];
       } else if (filter === "inspiration") {
         skins = SKINS_BY_SOURCE.inspiration;
+      } else if (filter === "enhanced") {
+        // Show only enhanced versions
+        skins = SKINS_BY_SOURCE.production.filter(skin => skin.id.includes("_enhanced"));
       }
     }
     
@@ -5411,11 +6319,6 @@ export default function SkinGallery({ open, onClose }: { open: boolean; onClose:
         s.id.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
-    
-    // Debug logging
-    console.log('Filter state:', { filter, rarityFilter, searchTerm });
-    console.log('Filtered skins count:', skins.length);
-    console.log('First 3 skins:', skins.slice(0, 3).map(s => ({ id: s.id, name: s.name, source: s.source })));
     
     return skins;
   }, [filter, rarityFilter, searchTerm]);
@@ -5472,7 +6375,7 @@ export default function SkinGallery({ open, onClose }: { open: boolean; onClose:
           <div className="flex flex-wrap gap-4">
             {/* Source filter */}
             <div className="flex gap-2">
-              {["all", "production", "pre-production", "inspiration"].map(f => (
+              {["all", "production", "pre-production", "inspiration", "enhanced"].map(f => (
                 <button
                   key={f}
                   onClick={() => setFilter(f as any)}
@@ -5483,7 +6386,8 @@ export default function SkinGallery({ open, onClose }: { open: boolean; onClose:
                   }`}
                 >
                   {f === "all" ? "All Sources" : 
-                   f === "pre-production" ? "Pre-Production" : 
+                   f === "pre-production" ? "Pre-Production" :
+                   f === "enhanced" ? "🔧 Workshop" :
                    f.charAt(0).toUpperCase() + f.slice(1)}
                 </button>
               ))}
@@ -5523,39 +6427,45 @@ export default function SkinGallery({ open, onClose }: { open: boolean; onClose:
 
         {/* Skin Grid */}
         <div className="flex-1 overflow-auto p-4">
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-            {filteredSkins.map((skin) => (
-              <div
-                key={skin.id}
-                className="bg-white border border-emerald-100 rounded-xl p-3 hover:shadow-lg transition-shadow"
-              >
-                <div className="h-32 flex items-center justify-center mb-3">
-                  <GallerySlime skin={skin} size="normal" />
-                </div>
-                <div className="text-center">
-                  <div className="text-sm font-semibold text-emerald-800 mb-1">{skin.name}</div>
-                  <div className={`text-xs font-medium capitalize ${RARITY_COLORS[skin.tier]}`}>
-                    {skin.tier}
-                  </div>
-                  <div className="text-xs text-emerald-600 mt-1">
-                    {skin.source}
-                  </div>
-                  {skin.origin && (
-                    <div className="text-xs text-emerald-600/80 flex items-center justify-center gap-1 mt-1">
-                      <MapPin className="w-3 h-3" />
-                      <span>{skin.origin.displayName}</span>
+          {filter === "enhanced" ? (
+            <EnhancedComparisonView rarityFilter={rarityFilter} />
+          ) : (
+            <>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                {filteredSkins.map((skin, index) => (
+                  <div
+                    key={`${skin.source}-${skin.id}-${index}`}
+                    className="bg-white border border-emerald-100 rounded-xl p-3 hover:shadow-lg transition-shadow"
+                  >
+                    <div className="h-32 flex items-center justify-center mb-3">
+                      <GallerySlime skin={skin} size="normal" instanceId={`gallery-${index}`} />
                     </div>
-                  )}
-                </div>
+                    <div className="text-center">
+                      <div className="text-sm font-semibold text-emerald-800 mb-1">{skin.name}</div>
+                      <div className={`text-xs font-medium capitalize ${RARITY_COLORS[skin.tier]}`}>
+                        {skin.tier}
+                      </div>
+                      <div className="text-xs text-emerald-600 mt-1">
+                        {skin.source}
+                      </div>
+                      {skin.origin && (
+                        <div className="text-xs text-emerald-600/80 flex items-center justify-center gap-1 mt-1">
+                          <MapPin className="w-3 h-3" />
+                          <span>{skin.origin.displayName}</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-          
-          {filteredSkins.length === 0 && (
-            <div className="text-center py-12">
-              <Sparkles className="w-12 h-12 text-emerald-300 mx-auto mb-4" />
-              <div className="text-emerald-600">No skins found matching your filters</div>
-            </div>
+              
+              {filteredSkins.length === 0 && (
+                <div className="text-center py-12">
+                  <Sparkles className="w-12 h-12 text-emerald-300 mx-auto mb-4" />
+                  <div className="text-emerald-600">No skins found matching your filters</div>
+                </div>
+              )}
+            </>
           )}
         </div>
         </div>

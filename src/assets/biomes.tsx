@@ -577,6 +577,109 @@ function getBiomeDecorations(biome: BiomeId) {
     case "desert":
       return (
         <>
+          {/* Sunset glow in background */}
+          <motion.div
+            key={`sunset-${key}`}
+            className="absolute w-32 h-32 rounded-full"
+            style={{
+              background: 'radial-gradient(circle, rgba(251, 146, 60, 0.4) 0%, rgba(252, 211, 77, 0.3) 50%, transparent 100%)',
+              right: '10%', 
+              top: '5%'
+            }}
+            animate={{ 
+              scale: [1, 1.1, 1],
+              opacity: [0.6, 0.8, 0.6]
+            }}
+            transition={{ repeat: Infinity, duration: 8, ease: "easeInOut" }}
+          />
+          
+          {/* Sand dunes - layered background shapes */}
+          <motion.div
+            key={`dune1-${key}`}
+            className="absolute w-40 h-12 bg-gradient-to-t from-amber-300/30 to-transparent rounded-full"
+            style={{ left: '20%', bottom: '15%' }}
+            animate={{ 
+              scaleX: [1, 1.05, 1],
+              opacity: [0.5, 0.7, 0.5]
+            }}
+            transition={{ repeat: Infinity, duration: 12, ease: "easeInOut" }}
+          />
+          <motion.div
+            key={`dune2-${key}`}
+            className="absolute w-32 h-8 bg-gradient-to-t from-yellow-300/25 to-transparent rounded-full"
+            style={{ right: '25%', bottom: '20%' }}
+            animate={{ 
+              scaleX: [1, 1.03, 1],
+              opacity: [0.4, 0.6, 0.4]
+            }}
+            transition={{ repeat: Infinity, duration: 14, ease: "easeInOut", delay: 2 }}
+          />
+          <motion.div
+            key={`dune3-${key}`}
+            className="absolute w-24 h-6 bg-gradient-to-t from-amber-400/20 to-transparent rounded-full"
+            style={{ left: '60%', bottom: '18%' }}
+            animate={{ 
+              scaleX: [1, 1.07, 1],
+              opacity: [0.3, 0.5, 0.3]
+            }}
+            transition={{ repeat: Infinity, duration: 16, ease: "easeInOut", delay: 4 }}
+          />
+
+          {/* Multiple cacti for perspective */}
+          {/* Large foreground cactus */}
+          <motion.div
+            key={`cactus-large-${key}`}
+            className="absolute"
+            style={{ left: '12%', bottom: '8%' }}
+            animate={{ 
+              x: [0, 1, 0],
+              y: [0, -1, 0]
+            }}
+            transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+          >
+            <div className="w-4 h-20 bg-green-800/80 rounded-t-lg relative">
+              <div className="absolute w-3 h-10 bg-green-800/80 rounded-t-lg -left-2.5 top-4 transform -rotate-15"></div>
+              <div className="absolute w-2.5 h-8 bg-green-800/80 rounded-t-lg -right-2 top-7 transform rotate-12"></div>
+              {/* Small details */}
+              <div className="absolute w-0.5 h-1 bg-green-900 rounded top-2 left-1"></div>
+              <div className="absolute w-0.5 h-1 bg-green-900 rounded top-4 right-1"></div>
+            </div>
+          </motion.div>
+          
+          {/* Medium middle-ground cactus */}
+          <motion.div
+            key={`cactus-medium-${key}`}
+            className="absolute"
+            style={{ right: '20%', bottom: '12%' }}
+            animate={{ 
+              x: [0, 0.5, 0],
+              y: [0, -0.5, 0]
+            }}
+            transition={{ repeat: Infinity, duration: 5, ease: "easeInOut", delay: 1 }}
+          >
+            <div className="w-3 h-14 bg-green-700/70 rounded-t-lg relative">
+              <div className="absolute w-2 h-7 bg-green-700/70 rounded-t-lg -left-1.5 top-3 transform -rotate-10"></div>
+              <div className="absolute w-1.5 h-5 bg-green-700/70 rounded-t-lg -right-1.5 top-6 transform rotate-8"></div>
+            </div>
+          </motion.div>
+          
+          {/* Small background cactus */}
+          <motion.div
+            key={`cactus-small-${key}`}
+            className="absolute"
+            style={{ left: '75%', bottom: '15%' }}
+            animate={{ 
+              x: [0, 0.3, 0],
+              y: [0, -0.3, 0]
+            }}
+            transition={{ repeat: Infinity, duration: 6, ease: "easeInOut", delay: 2 }}
+          >
+            <div className="w-2 h-8 bg-green-600/60 rounded-t-lg relative">
+              <div className="absolute w-1 h-4 bg-green-600/60 rounded-t-lg -left-1 top-2 transform -rotate-8"></div>
+              <div className="absolute w-1 h-3 bg-green-600/60 rounded-t-lg -right-0.5 top-3 transform rotate-6"></div>
+            </div>
+          </motion.div>
+          
           {/* Heat shimmer */}
           <motion.div
             key={`heat1-${key}`}
@@ -600,17 +703,88 @@ function getBiomeDecorations(biome: BiomeId) {
             }}
             transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut", delay: 1 }}
           />
-          {/* Sand particles */}
+          
+          {/* Enhanced blowing sand - more dramatic movement */}
+          {/* Large sand cloud */}
           <motion.div
-            key={`sand-${key}`}
-            className="absolute w-1 h-1 bg-yellow-400/60 rounded-full"
+            key={`sandcloud-${key}`}
+            className="absolute w-8 h-3 bg-yellow-400/20 rounded-full blur-sm"
+            style={{ left: '10%', top: '55%' }}
+            animate={{ 
+              x: [0, 60, 120],
+              y: [0, -8, -15],
+              opacity: [0, 0.6, 0],
+              scaleX: [1, 1.5, 2]
+            }}
+            transition={{ repeat: Infinity, duration: 8, ease: "easeOut" }}
+          />
+          
+          {/* Individual sand particles */}
+          <motion.div
+            key={`sand1-${key}`}
+            className="absolute w-1 h-1 bg-yellow-400/70 rounded-full"
             style={{ left: '40%', top: '60%' }}
             animate={{ 
-              x: [0, 30, 0],
-              y: [0, -5, 0],
+              x: [0, 35, 70],
+              y: [0, -8, -12],
               opacity: [0, 1, 0]
             }}
             transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
+          />
+          <motion.div
+            key={`sand2-${key}`}
+            className="absolute w-1.5 h-1.5 bg-amber-400/60 rounded-full"
+            style={{ left: '60%', top: '70%' }}
+            animate={{ 
+              x: [0, -30, -60],
+              y: [0, -10, -18],
+              opacity: [0, 0.8, 0]
+            }}
+            transition={{ repeat: Infinity, duration: 5, ease: "easeInOut", delay: 2 }}
+          />
+          <motion.div
+            key={`sand3-${key}`}
+            className="absolute w-0.5 h-0.5 bg-yellow-300/80 rounded-full"
+            style={{ left: '25%', top: '50%' }}
+            animate={{ 
+              x: [0, 45, 90],
+              y: [0, -15, -25],
+              opacity: [0, 1, 0]
+            }}
+            transition={{ repeat: Infinity, duration: 7, ease: "easeInOut", delay: 4 }}
+          />
+          <motion.div
+            key={`sand4-${key}`}
+            className="absolute w-0.5 h-0.5 bg-amber-300/70 rounded-full"
+            style={{ right: '30%', top: '65%' }}
+            animate={{ 
+              x: [0, 25, 50],
+              y: [0, -6, -10],
+              opacity: [0, 0.9, 0]
+            }}
+            transition={{ repeat: Infinity, duration: 4, ease: "easeInOut", delay: 1 }}
+          />
+          <motion.div
+            key={`sand5-${key}`}
+            className="absolute w-1 h-1 bg-yellow-500/50 rounded-full"
+            style={{ left: '80%', top: '75%' }}
+            animate={{ 
+              x: [0, -40, -80],
+              y: [0, -12, -20],
+              opacity: [0, 0.7, 0]
+            }}
+            transition={{ repeat: Infinity, duration: 9, ease: "easeInOut", delay: 6 }}
+          />
+          <motion.div
+            key={`sand6-${key}`}
+            className="absolute w-0.5 h-0.5 bg-orange-300/60 rounded-full"
+            style={{ left: '15%', top: '45%' }}
+            animate={{ 
+              x: [0, 55, 110],
+              y: [0, -18, -30],
+              opacity: [0, 0.8, 0]
+            }}
+            transition={{ repeat: Infinity, duration: 10, ease: "easeInOut", delay: 3 }}
           />
         </>
       );

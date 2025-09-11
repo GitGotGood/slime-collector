@@ -26,21 +26,57 @@ import EdgeBlendingExperiments from "../dev/EdgeBlendingExperiments";
 import WorldMap from "../dev/WorldMap";
 import ProgressDashboard from "../dev/ProgressDashboard";
 import Starburst, { EmojiBurst } from "../ui/components/Starburst";
-import { Volume2, VolumeX, ShoppingBag, UserCircle2, Power } from "lucide-react";
+import { Volume2, VolumeX, ShoppingBag, UserCircle2, Power, Users } from "lucide-react";
 import { motion } from "framer-motion";
 
+import { AuthProvider, useAuth } from "../ui/auth/AuthProvider";
+import { ProfileSelector, CreateProfileModal } from "../ui/auth/ProfileSelector";
+import { loadSave, saveGame } from "../lib/saves";
+
 
 // ------------------------------------------------------------
-// Slime Collector – App Orchestrator
+// Slime Collector – App Orchestrator (Auth-aware)
 // ------------------------------------------------------------
-export default function SlimeCollectorApp() {
-  // persistent store (profiles etc.)
+function SlimeCollectorAppInner() {
+  const { user, activeProfile, profiles, selectProfile, signOut, isOfflineMode, exitOfflineMode, createProfile, refreshOfflineProfiles } = useAuth();
+
+  // persistent store (profiles etc.) - now hybrid localStorage + cloud
   const [store, setStore] = useState<any>(() => loadState());
-  const current = store.profiles.find((p: any) => p.id === store.currentId) || null;
+  const current = activeProfile ? store.profiles.find((p: any) => p.id === activeProfile.id) || mkProfile(activeProfile.id, activeProfile.name, '#22c55e') : store.profiles.find((p: any) => p.id === store.currentId) || null;
+  
+  // Detect if we're effectively in offline mode (no user OR using offline profile)
+  const effectivelyOffline = !user || (current && current.id.startsWith('offline-'));
+  
+  // Debug logging
+  console.log('🎮 CURRENT PROFILE DEBUG:', {
+    activeProfile: activeProfile ? { id: activeProfile.id, name: activeProfile.name } : null,
+    storeCurrentId: store.currentId,
+    storeProfilesCount: store.profiles.length,
+    storeProfileNames: store.profiles.map((p: any) => ({ id: p.id, name: p.name })),
+    current: current ? { id: current.id, name: current.name } : null,
+    isOfflineMode,
+    effectivelyOffline,
+    hasUser: !!user,
+    derivationPath: activeProfile ? 'activeProfile' : 'store.currentId'
+  });
 
   // gameplay state
   const [gameState, setGameState] = useState<"ready" | "playing" | "over">("ready");
-  const [skill, setSkill] = useState<SkillID>("add_1_10");
+  // Use current profile's skill, fallback to add_1_10
+  const skill = (current?.settings?.currentSkill as SkillID) || "add_1_10";
+  
+  // Function to update skill in profile data
+  const updateCurrentSkill = (newSkill: SkillID) => {
+    if (!current) return;
+    setStore((S: any) => ({
+      ...S,
+      profiles: S.profiles.map((p: any) => 
+        p.id === current.id 
+          ? { ...p, settings: { ...p.settings, currentSkill: newSkill } }
+          : p
+      )
+    }));
+  };
   const [lives, setLives] = useState(3);
   const [streak, setStreak] = useState(0);
   const [bestStreak, setBestStreak] = useState(0);
@@ -66,7 +102,9 @@ export default function SlimeCollectorApp() {
   const [openShop, setOpenShop] = useState(false);
   const [openProgress, setOpenProgress] = useState(false);
   const [openSummary, setOpenSummary] = useState(false);
-  const [openPicker, setOpenPicker] = useState(true); // Always show ProfilePicker on start
+  const [openPicker, setOpenPicker] = useState(false); // Disabled by default - cloud auth is primary
+  const [showProfileSwitcher, setShowProfileSwitcher] = useState(false);
+  const [showCreateProfile, setShowCreateProfile] = useState(false);
   const [openSkinGallery, setOpenSkinGallery] = useState(false);
   const [openExperiments, setOpenExperiments] = useState(false);
   const [openLayoutPreview, setOpenLayoutPreview] = useState(false);
@@ -138,8 +176,141 @@ export default function SlimeCollectorApp() {
     setBurstId(0);
   };
 
-  // persist on store change
-  useEffect(() => saveState(store), [store]);
+  // Auto-save integration - cloud or local depending on mode
+  useEffect(() => {
+    console.log('🔧 Auto-save useEffect triggered:', {
+      hasCurrent: !!current,
+      currentName: current?.name,
+      isOfflineMode,
+      hasActiveProfile: !!activeProfile
+    });
+    
+    if (current) {
+      console.log('⏰ Setting up auto-save interval for:', current.name, 'isOfflineMode:', isOfflineMode);
+      const saveInterval = setInterval(async () => {
+        try {
+          if (effectivelyOffline) {
+            // Save to localStorage in offline mode
+            console.log('💾 Auto-saving to localStorage:', current.name, 'Goo:', current.goo, 'XP:', current.xp);
+            const currentStore = loadState();
+            const updatedStore = {
+              ...currentStore,
+              profiles: currentStore.profiles.map((p: any) => 
+                p.id === current.id ? { ...current } : p
+              )
+            };
+            saveState(updatedStore);
+            setStore(updatedStore); // Update React state too
+            console.log('✅ Auto-save to localStorage completed');
+          } else if (activeProfile) {
+            // Save to cloud in online mode
+            console.log('💾 Auto-saving to cloud:', current.name, 'Goo:', current.goo, 'XP:', current.xp);
+            await saveGame(current);
+            console.log('✅ Auto-save to cloud completed');
+          } else {
+            console.log('⏭️ Skipping auto-save: no activeProfile and not effectively offline');
+          }
+        } catch (error) {
+          console.error('❌ Failed to auto-save:', error);
+        }
+      }, 5000); // Save every 5 seconds
+
+      return () => {
+        console.log('🛑 Clearing auto-save interval for:', current.name);
+        clearInterval(saveInterval);
+      };
+    } else {
+      console.log('⏭️ No current profile, skipping auto-save setup');
+    }
+  }, [activeProfile, current, isOfflineMode, effectivelyOffline]);
+
+  // Load from cloud when active profile changes (only in online mode)
+  useEffect(() => {
+    if (activeProfile && !isOfflineMode) {
+      console.log('🔄 Loading data for profile:', activeProfile.name, activeProfile.id);
+      loadSave().then(async (cloudProfile) => {
+        if (cloudProfile) {
+          console.log('☁️ Loaded cloud profile:', cloudProfile.name, 'Goo:', cloudProfile.goo, 'XP:', cloudProfile.xp, 'OwnedSkins:', cloudProfile.unlocks?.skins?.length || 0);
+          
+          // Ensure cloud profile has complete structure with migrateProfile
+          const { migrateProfile } = await import('../core/storage');
+          const migratedProfile = migrateProfile({
+            ...cloudProfile,
+            id: activeProfile.id, // Ensure ID matches
+            name: activeProfile.name // Sync name from cloud profile
+          });
+          
+          console.log('🔧 Migrated cloud profile with complete structure:', migratedProfile.name);
+          
+          // Update store with migrated cloud data
+          setStore((prev: any) => ({
+            ...prev,
+            currentId: activeProfile.id,
+            profiles: [migratedProfile]
+          }));
+        } else {
+          console.log('📝 Creating new profile for:', activeProfile.name);
+          // Create new profile for this cloud account
+          const newProfile = mkProfile(activeProfile.id, activeProfile.name, '#22c55e');
+          setStore((prev: any) => ({
+            ...prev,
+            currentId: activeProfile.id,
+            profiles: [newProfile]
+          }));
+        }
+      }).catch(error => {
+        console.error('Failed to load from cloud:', error);
+      });
+    } else if (activeProfile && isOfflineMode) {
+      console.log('📱 Offline mode: Using local profile data for:', activeProfile.name);
+      // In offline mode, sync the activeProfile (which contains full profile data) to store
+      setStore((prev: any) => {
+        const existingProfileIndex = prev.profiles.findIndex((p: any) => p.id === activeProfile.id);
+        
+        if (existingProfileIndex >= 0) {
+          // Update existing profile
+          return {
+            ...prev,
+            currentId: activeProfile.id,
+            profiles: prev.profiles.map((p: any) => 
+              p.id === activeProfile.id ? { ...activeProfile } : p
+            )
+          };
+        } else {
+          // Add new profile
+          return {
+            ...prev,
+            currentId: activeProfile.id,
+            profiles: [...prev.profiles, { ...activeProfile }]
+          };
+        }
+      });
+    }
+  }, [activeProfile, isOfflineMode]);
+
+  // Only enable old ProfilePicker when cloud auth is completely unavailable
+  useEffect(() => {
+    if (user) {
+      // Cloud auth is active - disable old picker
+      setOpenPicker(false);
+    } else {
+      // Cloud auth not active - only show old picker if no current profile exists
+      if (!current) {
+        setOpenPicker(true);
+      }
+    }
+  }, [user, current]);
+
+  // persist on store change (localStorage backup)
+  useEffect(() => {
+    console.log('💾 Saving to localStorage:', {
+      profiles: store.profiles.length,
+      currentId: store.currentId,
+      isOfflineMode,
+      user: !!user
+    });
+    saveState(store);
+  }, [store]);
 
   // hydrate local sound from profile
   useEffect(() => {
@@ -161,13 +332,22 @@ export default function SlimeCollectorApp() {
       if (!current.mastered?.[id]) break;
     }
     
+    // RELEASE FEATURE: Always unlock new math tiers regardless of mastery progression
+    const alwaysUnlockedSkills: SkillID[] = ['sub_3digit_triple', 'sub_4digit_quad'];
+    for (const alwaysUnlocked of alwaysUnlockedSkills) {
+      if (!list.includes(alwaysUnlocked)) {
+        list.push(alwaysUnlocked);
+      }
+    }
+    
     // Debug logging for skill unlock logic
     console.log(`🔓 SKILL UNLOCK DEBUG:`, {
       skillOrder: SKILL_ORDER.slice(0, 5), // first 5 for brevity
       mastered: current.mastered,
       unlockedSkills: list,
       currentSkill: skill,
-      masteredFlags: Object.entries(current.mastered || {}).filter(([_, v]) => v)
+      masteredFlags: Object.entries(current.mastered || {}).filter(([_, v]) => v),
+      alwaysUnlocked: alwaysUnlockedSkills
     });
     
     return list;
@@ -175,7 +355,16 @@ export default function SlimeCollectorApp() {
 
   // start / end
   const startGame = () => {
-    if (!current) { setOpenPicker(true); return; }
+    if (!current) { 
+      // If using cloud auth, show cloud profile switcher
+      if (user) {
+        setShowProfileSwitcher(true);
+      } else {
+        // No cloud auth and no current profile - show local picker only as fallback
+        setOpenPicker(true);
+      }
+      return; 
+    }
     const lf = levelFromTotalXP(current.xp).level;
     setRunStartLevel(lf);
 
@@ -404,6 +593,8 @@ export default function SlimeCollectorApp() {
         }),
       }));
 
+
+
       setRunXP((v) => v + Math.round(addXP));
       setRunGoo((v) => v + Math.round(basePart + streakPart + speedBonusGoo));
       setGooBase((v) => v + Math.round(basePart));
@@ -541,8 +732,8 @@ return (
 
     {/* Foreground app layer */}
     <div className="relative z-10 w-full max-w-5xl mx-auto p-4">
-      {/* profile picker on boot if no current */}
-      {openPicker && (
+      {/* profile picker - ONLY for pure local storage mode (no auth system) */}
+      {openPicker && !user && !activeProfile && !isOfflineMode && (
         <ProfilePicker
           open={openPicker}
           state={store}
@@ -565,6 +756,19 @@ return (
 
       {/* Main card (slightly translucent so global biome softly shines through) */}
       <div className="relative w-full max-w-3xl mx-auto rounded-2xl shadow-xl bg-white/80 backdrop-blur-sm border border-emerald-100">
+        
+        {/* Sign Out Button - Top Right Corner */}
+        {user && (
+          <button
+            onClick={signOut}
+            className="absolute top-4 right-4 z-20 flex items-center gap-1 px-3 py-1.5 text-xs text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors shadow-sm bg-white/70 backdrop-blur-sm border border-gray-200"
+            title="Sign out of family account"
+          >
+            <Power className="w-3 h-3" />
+            <span className="hidden sm:inline">Sign Out</span>
+          </button>
+        )}
+        
         {/* Game Title */}
         <div className="text-center pt-6 pb-3">
           <h1 className="text-2xl sm:text-3xl font-extrabold text-emerald-700">Slime Collector</h1>
@@ -574,16 +778,18 @@ return (
         {current && (
           <div className="mx-6 mb-6 p-4">
             <div className="flex items-center justify-between">
-              {/* Player indicator */}
-              <div className="flex items-center gap-3">
-                <button 
-                  onClick={() => setOpenPicker(true)}
-                  className="text-emerald-700 font-semibold hover:text-emerald-800 cursor-pointer text-sm"
-                  title="Switch Player"
-                >
-                  {current.name} - switch
-                </button>
-              </div>
+              {/* Player indicator - only show if not using cloud auth */}
+              {!user && !activeProfile && (
+                <div className="flex items-center gap-3">
+                  <button 
+                    onClick={() => setOpenPicker(true)}
+                    className="text-emerald-700 font-semibold hover:text-emerald-800 cursor-pointer text-sm"
+                    title="Switch Player"
+                  >
+                    {current.name} - switch
+                  </button>
+                </div>
+              )}
 
               <div className="flex items-center gap-6">
                 {/* Hearts */}
@@ -622,6 +828,8 @@ return (
                   </div>
                 </div>
 
+                {/* Logout Button moved to top right corner */}
+
                 {/* Next World Indicator / Recent Unlock */}
                 {showWorldUnlockFX ? (
                   <div className="text-xs text-purple-700 text-center animate-pulse">
@@ -634,14 +842,17 @@ return (
                   const next = nextWorld(current);
                   if (next) {
                     // V1: Simple linear progression - always show primary skill progress
-                    const progress = current.skillStats[next.primarySkill];
+                    const progress = current.skillStats?.[next.primarySkill];
                     const attempts = progress?.attempts || 0;
                     
                     return (
                       <div className="text-xs text-emerald-700/80 text-center">
-                        <div className="font-medium">Next: {next.title}</div>
-                        <div className="text-[10px] text-emerald-600/60">
-                          {attempts}/{next.gate.attempts} attempts
+                        <div className="font-medium">{next.title} Math Progress</div>
+                        <div 
+                          className="text-[10px] text-emerald-600/60 cursor-help" 
+                          title={`Strong answers are correct in under ${next.gate.maxAvgMs/1000}s with ${(next.gate.minAcc*100).toFixed(0)}% accuracy`}
+                        >
+                          {attempts}/{next.gate.attempts} strong answers
                         </div>
                       </div>
                     );
@@ -769,7 +980,7 @@ return (
                                     const nextSkillIndex = SKILL_ORDER.findIndex(s => s === skill) + 1;
                                     if (nextSkillIndex < SKILL_ORDER.length && nextSkillIndex > 0) {
                                       const nextSkill = SKILL_ORDER[nextSkillIndex];
-                                      setSkill(nextSkill);
+                                      updateCurrentSkill(nextSkill);
                                       console.log(`🚀 AUTO-ADVANCE: Moving to next skill ${nextSkill}`);
                                     }
                                     
@@ -818,7 +1029,7 @@ return (
             {/* Skill Selector */}
             <select
               value={skill}
-              onChange={(e) => setSkill(e.target.value as SkillID)}
+              onChange={(e) => updateCurrentSkill(e.target.value as SkillID)}
               className="rounded-xl bg-white px-4 py-2 text-emerald-800 text-sm border border-emerald-200"
               title="Select math skill and world progression"
             >
@@ -859,6 +1070,31 @@ return (
               {soundOn ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
               <span className="hidden sm:inline">Sound</span>
             </button>
+
+            {/* Profile Switcher Button - for both online and offline modes */}
+            {(user || isOfflineMode) && activeProfile && (
+              <button
+                onClick={() => {
+                  // Refresh profile data if in offline mode to show latest progress
+                  if (isOfflineMode && refreshOfflineProfiles) {
+                    refreshOfflineProfiles();
+                  }
+                  setShowProfileSwitcher(true);
+                }}
+                className={`inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm border ${
+                  isOfflineMode
+                    ? 'bg-gray-50 hover:bg-gray-100 text-gray-700 border-gray-200'
+                    : 'bg-blue-50 hover:bg-blue-100 text-blue-700 border-blue-200'
+                }`}
+                title={isOfflineMode ? "Switch Player (Offline)" : "Switch Player"}
+              >
+                <Users className="w-4 h-4" />
+                <span className="hidden sm:inline">
+                  {activeProfile.name}
+                  {isOfflineMode && <span className="ml-1 text-xs">📵</span>}
+                </span>
+              </button>
+            )}
 
             {/* Shop Button */}
             <button
@@ -946,6 +1182,45 @@ return (
           bestStreak={bestStreak}
         />
       )}
+
+      {/* Profile Switcher Modal - for both online and offline modes */}
+      {showProfileSwitcher && (user || isOfflineMode) && (
+        <div 
+          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+          onClick={(e) => {
+            // Close if clicking the backdrop
+            if (e.target === e.currentTarget) {
+              setShowProfileSwitcher(false);
+            }
+          }}
+        >
+          <ProfileSelector
+            profiles={profiles}
+            activeProfileId={activeProfile?.id || null}
+            onSelectProfile={async (profileId) => {
+              await selectProfile(profileId);
+              setShowProfileSwitcher(false);
+            }}
+            onCreateProfile={() => {
+              setShowCreateProfile(true);
+            }}
+            onClose={() => setShowProfileSwitcher(false)}
+            onExitOfflineMode={exitOfflineMode}
+            parentEmail={user?.email}
+            isOfflineMode={isOfflineMode}
+          />
+        </div>
+      )}
+
+      {/* Create Profile Modal */}
+      <CreateProfileModal
+        isOpen={showCreateProfile}
+        onClose={() => setShowCreateProfile(false)}
+        onCreateProfile={async (name: string) => {
+          await createProfile(name);
+          setShowCreateProfile(false);
+        }}
+      />
     </div>
 
     {import.meta.env.DEV && (
@@ -986,7 +1261,7 @@ return (
               <ProgressDashboard 
                 profile={current}
                 onStartSkill={(skillId) => {
-                  setSkill(skillId);
+                  updateCurrentSkill(skillId);
                   setOpenProgressDashboard(false);
                   if (gameState !== "playing") {
                     setGameState("playing");
@@ -1001,4 +1276,13 @@ return (
     )}
   </div>
 );
+}
+
+// Main export with Auth wrapper
+export default function SlimeCollectorApp() {
+  return (
+    <AuthProvider>
+      <SlimeCollectorAppInner />
+    </AuthProvider>
+  );
 }

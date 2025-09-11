@@ -49,7 +49,7 @@ export default function ShopModal({
 
   const { daily, evergreen, biasInfo } = useMemo(() => {
     return getShopPicks(profile, ALL_SHOP_ITEMS);
-  }, [profile.shopBiasUntil, profile.shopBiasBiome, profile.unlocks.skins]);
+  }, [profile.shopBiasUntil, profile.shopBiasBiome, profile.unlocks?.skins]);
 
   const cost = nextRefreshCost(profile);
   const canRefresh = cost !== null && profile.goo >= (cost ?? 0);
@@ -173,7 +173,7 @@ function ShopCard({
   onBuy: (item: ShopItem) => void;
   onEquip: (skinId: string) => void;
 }) {
-  const owned = profile.unlocks.skins.includes(item.skin);
+  const owned = profile.unlocks?.skins?.includes(item.skin) || false;
   const active = profile.settings.activeSkin === item.skin;
   const price = priceOf(item);
 
