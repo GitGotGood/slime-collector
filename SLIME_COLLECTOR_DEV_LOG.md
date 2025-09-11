@@ -5,10 +5,100 @@
 
 ---
 
+## 🧠 **Recent Context (Last 5 Changes)**
+*Updated: September 11, 2025 - For session continuity and micro memory*
+
+1. **[Sep-11] OAuth Redirect Fix**: Changed hardcoded Supabase URL to env var due to typo causing 404s during iPad login
+2. **[Sep-11] Environment Variable Debugging**: Added comprehensive debug logging to diagnose Netlify deployment white screen  
+3. **[Sep-11] Enhanced Mythic Deployment**: Merged enhanced visual properties into original mythic IDs for V1.1 production
+4. **[Sep-11] iPad Debug Tool**: Created `/debug.html` page for checking localStorage on mobile devices
+5. **[Sep-11] Context Comment System**: Implemented SHORT/LONG comment templates for future session memory
+
+## 📝 **Context Comment Templates**
+*For maintaining micro memory across sessions*
+
+**SHORT Format** (straightforward changes):
+```
+// [Sep-11] User: Fix issue | Changed: specific change | Why: brief reason
+```
+
+**LONG Format** (complex/iterative fixes):
+```
+// Context [Sep-11-2025]: User's original request/problem description
+// What: Specific technical change made
+// Why: Root cause or detailed reasoning  
+// Goal: Broader purpose/desired outcome
+```
+
+---
+
 ## 🎯 **Current Status (Latest Session)**
 
+### ✅ **V1.1 PRODUCTION RELEASE - DEPLOYED! (COMPLETED)** 
+**Date**: September 11, 2025
+**Goal**: Ship enhanced visual slimes, new math tiers, and authentication system
+
+#### **🚀 Release Day Accomplishments**
+
+1. **🎨 Enhanced Mythic Visual Overhaul**
+   - **Phoenix Heart**: Synchronized fire flicker effects (eyes + mouth), randomized rare yellow flashes, darker default face with brighter flicker
+   - **Nebula**: Purple star spiral effects contained within slime body, purple/white fading eyes with transparency
+   - **Galaxy Swirl**: Teal/orange rotating center gradient, white swirling dots, Crab Nebula color palette
+   - **Star Parade**: Enhanced visual effects (retained existing design)
+   - **Ionōsong**: Audio equalizer bars with floating musical notes (replaced pond ripples)
+   - **Synthwave**: Refined scanline effects that respect slime outline
+
+2. **📈 New Math Skills Implementation**
+   - **Triple Digit Subtraction**: `sub_3digit_triple` with proper problem generation
+   - **Quadruple Digit Subtraction**: `sub_4digit_quad` with proper problem generation  
+   - **Always Available**: Both skills enabled by default in dropdown (not biome-locked)
+   - **Skill Order Integration**: Added to `SKILL_ORDER` for proper progression
+
+3. **🎯 Epic/Rare/Uncommon Promotions**
+   - **Epic Tier**: Promoted Ocean (animated) and Will-o-Glow from Inspiration to Production
+   - **Rare Tier**: Promoted Sprinkles from Inspiration to Production
+   - **Uncommon Tier**: Promoted Berry Fizz, Citrus Pop, and Sunset Beach from Inspiration to Production
+   - **Enhanced Replacements**: All mythic enhanced versions now replace original production versions
+
+4. **🌵 Desert Biome Enhancement**
+   - **Sunset Glow**: Added warm gradient background effect
+   - **Multiple Cacti**: 2-3 cacti at different scales with corrected upward-curving arms
+   - **Dramatic Sand**: Enhanced sand dune effects with multiple particle layers and varied movement
+   - **Visual Depth**: Improved perspective and environmental immersion
+
+5. **🎮 UX Polish & Deployment**
+   - **Sign Out Button**: Moved to top-right corner of main game box
+   - **Progress Language**: Changed "attempts" to "strong answers" with explanatory tooltip
+   - **Favicon & Title**: Added favicon.ico and updated tab title to "Slime Collector - Math Learning Game"
+   - **Profile Management**: Commented out delete button (scoped for future pin-protected feature)
+
+6. **🌐 Netlify Deployment Success**
+   - **SPA Routing**: Created `public/_redirects` file for proper single-page app routing
+   - **Environment Variables**: Successfully imported Supabase credentials via Netlify dashboard
+   - **Authentication**: Full Google OAuth login system deployed and functional
+   - **Offline Mode**: Local storage fallback working properly in production
+
+#### **🐛 Critical Deployment Debugging**
+
+**White Screen Issue Resolution:**
+- **Root Cause**: Missing Supabase environment variables in Netlify production environment
+- **Secondary Issue**: Missing `_redirects` file for SPA routing
+- **Solution Timeline**:
+  1. Confirmed `npm run build` completed successfully
+  2. Verified `dist` folder contents were properly generated
+  3. Created `public/_redirects` with `/* /index.html 200` for SPA routing
+  4. Identified Supabase client initialization failing due to undefined env vars
+  5. User imported environment variables via Netlify dashboard interface
+  6. Successful deployment with full functionality restored
+
+**Technical Details:**
+- **Build Process**: Vite build completing without errors
+- **Asset Generation**: All static assets properly compiled to `dist/`
+- **Environment Variables**: `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` required for auth
+- **Routing**: Netlify SPA redirects essential for React Router compatibility
+
 ### ✅ **Rare Tier System - Complete Implementation (COMPLETED)**
-**Date**: 12/19/2024
+**Date**: December 19, 2024
 **Goal**: Implement comprehensive Rare tier slime system with static patterns and sophisticated design
 
 #### **Major Rare Tier Accomplishments**
@@ -334,17 +424,27 @@ src/
 
 ## 📅 **Session History**
 
-### **Today's Session**
-- ✅ **Phase 1**: Core curriculum implementation (25 skills, 16 worlds)
-- ✅ **Bug Fixes**: Double counting, problem generation, world progression
-- ✅ **Phase 2**: Visual feedback, enhanced UI, shop bias, biome unlocking
-- 🎯 **Next**: Complete integration testing
+### **September 11, 2025 - V1.1 PRODUCTION RELEASE**
+- ✅ **Enhanced Mythic Slimes**: Phoenix Heart fire flicker, Nebula star spiral, Galaxy Swirl gradient, Ionōsong audio bars, Synthwave scanlines
+- ✅ **New Math Skills**: Triple & Quadruple digit subtraction with proper problem generation
+- ✅ **Epic/Rare/Uncommon Promotions**: Ocean, Will-o-Glow, Sprinkles, Berry Fizz, Citrus Pop, Sunset Beach moved to production
+- ✅ **Desert Biome Enhancement**: Sunset glow, multiple cacti, dramatic sand dunes
+- ✅ **UX Polish**: Sign out button repositioned, progress language improved, favicon added
+- ✅ **Profile Management**: Delete button commented out (scoped for v1.2 with PIN protection)
+- ✅ **Netlify Deployment**: White screen debugging, environment variables, SPA routing, successful production deployment
 
-### **Previous Sessions** *(Approximate)*
-- 🎨 **Skin System**: 120+ slime designs with style guides
-- 🎨 **Animation System**: Feather blur, auras, eye tracking
-- 🏗️ **Core Gameplay**: Question system, streak tracking, slime feedback
-- 🎨 **UI Foundation**: Layout redesign, progress modal, shop system
+### **December 19, 2024 - Rare Tier Implementation**
+- ✅ **Rare Tier System**: 26 production rares + 12 pre-production with static pattern system
+- ✅ **Pattern Types**: 12 unique pattern types (dots, rings, waves, stars, diamond, stripes, fern, varnish, crown, blades, dashes, vine, spiral, runes)
+- ✅ **Visual Enhancement**: Pattern visibility increased 5-12x, proper contrast ratios, glossy highlights
+
+### **Previous Sessions** *(Historical)*
+- 🎨 **Authentication System**: Google OAuth, Supabase integration, offline mode, profile management
+- 🎨 **Core Curriculum**: 25 math skills, 16 world progression, mastery gates, visual celebrations
+- 🎨 **Skin System**: 120+ slime designs with comprehensive tier system
+- 🎨 **Animation System**: Feather blur, auras, eye tracking, motion effects
+- 🏗️ **Core Gameplay**: Question system, streak tracking, slime feedback, shop integration
+- 🎨 **UI Foundation**: Layout redesign, progress modal, biome system
 
 ---
 
@@ -379,20 +479,26 @@ src/
 
 ---
 
-## 🚀 **Ready for Deployment**
+## 🚀 **DEPLOYED TO PRODUCTION!**
 
-The V1 Core Curriculum with Authentication is **95% complete**. All major systems are integrated and functional:
+**Live URL**: https://slime-collector.netlify.app/ ✅
 
-- ✅ **25 Math Skills** with proper problem generation
-- ✅ **16 World Progression** with mastery gates
+The V1.1 Release is **100% COMPLETE** and successfully deployed! All major systems are live and functional:
+
+- ✅ **25 Math Skills** with proper problem generation + 2 new advanced skills
+- ✅ **16 World Progression** with mastery gates and enhanced desert biome
 - ✅ **Visual Celebrations** for major achievements
-- ✅ **Enhanced UX** with world context throughout
+- ✅ **Enhanced UX** with world context and improved language
 - ✅ **Shop Integration** with biome-based item bias
-- ✅ **Authentication System** with Google Login and offline mode
-- ✅ **Profile Management** with family account support
-- 🔧 **Remaining**: Fix online profile deletion functionality
+- ✅ **Authentication System** with Google Login and offline mode working in production
+- ✅ **Profile Management** with family account support (delete feature scoped for v1.2)
+- ✅ **Enhanced Mythic Slimes** with advanced visual effects deployed
+- ✅ **Epic/Rare/Uncommon Promotions** live in production
+- ✅ **Favicon & Title** properly configured
 
-**Next Phase**: Complete profile deletion, polish, and user testing! 🎉
+**Major Technical Achievement**: Successful debugging and resolution of Netlify deployment white screen issue through systematic analysis of build process, environment variables, and SPA routing requirements.
+
+**Next Phase**: Monitor user engagement, gather feedback on enhanced slimes, and plan v1.2 features! 🎉
 
 ---
 

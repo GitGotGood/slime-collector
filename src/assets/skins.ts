@@ -27,7 +27,7 @@ export const SKINS: Record<string, Skin> = {
   lava_flow: { id: "lava_flow", name: "Lava Flow", tier: "epic", kind: "animated", colors: ["#3A1D0E", "#FFF0DD", "#dc2626"] },
   aurora_veil: { id: "aurora_veil", name: "Aurora Veil", tier: "epic", kind: "animated", colors: ["#101424", "#F3FAFF", "#0ea5e9"] },
 
-  // V1 Launch Mythics (animated)
+  // [Sep-11] User: Deploy enhanced mythic visuals for V1.1 | Changed: merged enhanced properties into original IDs | Why: replace originals in production
   nebula: { id: "nebula", name: "Nebula", tier: "mythic", kind: "animated", colors: ["#5b2d8f", "#1b1e4b", "#0f1530"] },
   phoenix_heart: { id: "phoenix_heart", name: "Phoenix Heart", tier: "mythic", kind: "animated", colors: ["#ff7a3c", "#d12525", "#571616"] },
 
