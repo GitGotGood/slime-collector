@@ -154,8 +154,9 @@ export const PRODUCTION_SKINS: UnifiedSkin[] = [
     tier: "epic", 
     source: "production", 
     origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
-    anim: "lava_flow", 
-    base: { fill: "#3A1D0E", stroke: "#200E08", shine: "#FFF0DD" } 
+    anim: "lava_flow_enhanced", 
+    base: { fill: "#3A1D0E", stroke: "#200E08", shine: "#FFF0DD" },
+    bio: "Enhanced lava flow with hotter gradient, floating ember sparks, and deep red face. The molten core pulses with life as tiny embers rise like bubbles from the depths."
   },
   { 
     id: "aurora_veil", 
@@ -163,8 +164,9 @@ export const PRODUCTION_SKINS: UnifiedSkin[] = [
     tier: "epic", 
     source: "production", 
     origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
-    anim: "aurora_veil", 
-    base: { fill: "#101424", stroke: "#0A0F1C", shine: "#F3FAFF" } 
+    anim: "aurora_veil_plus_enhanced", 
+    base: { fill: "#43e0c6", stroke: "#0A0F1C", shine: "#b189ff" },
+    bio: "Enhanced aurora veil with flowing curtain effects that cascade down like the northern lights. Sparkling particles dance across the surface as the aurora borealis comes to life."
   },
 
   // Mythics - Always unlocked on day 1 (daily rotation)
