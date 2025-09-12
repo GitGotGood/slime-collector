@@ -76,6 +76,16 @@ export const PRODUCTION_SKINS: UnifiedSkin[] = [
     base: { fill: "#B7F8C6", stroke: "#2E6A3A", shine: "#0E2A16" } 
   },
   { 
+    id: "autumn_fade", 
+    name: "Autumn Fade", 
+    tier: "uncommon", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
+    gradient: { stops: [["#22c55e", 0], ["#dc2626", 100]], dir: "180deg" }, 
+    base: { fill: "#22c55e", stroke: "#0f172a", shine: "#0E2A16" },
+    bio: "Perfect companion to Spring Fade. Captures the complete autumn transformation - from vibrant summer green through golden yellow and warm orange to deep crimson red. Like watching a single leaf change through the entire season."
+  },
+  { 
     id: "blue_lagoon", 
     name: "Blue Lagoon", 
     tier: "uncommon", 
@@ -83,6 +93,38 @@ export const PRODUCTION_SKINS: UnifiedSkin[] = [
     origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
     gradient: { stops: [["#68E0FF", 0], ["#3D78C1", 100]], dir: "180deg" }, 
     base: { fill: "#68E0FF", stroke: "#1E3A8A", shine: "#0B2140" } 
+  },
+  { 
+    id: "cotton_candy", 
+    name: "Cotton Candy", 
+    tier: "uncommon", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
+    gradient: { stops: [["#60a5fa", 0], ["#f472b6", 100]], dir: "180deg" }, 
+    base: { fill: "#60a5fa", stroke: "#ec4899", shine: "#dbeafe" },
+    bio: "Sweet and dreamy like spun sugar at the carnival. This delightful slime captures the whimsical magic of cotton candy with its soft blue-to-pink gradient that melts hearts."
+  },
+  { 
+    id: "rainbow", 
+    name: "Rainbow", 
+    tier: "uncommon", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
+    kind: "gradient",
+    colors: ["#ef4444", "#f97316", "#fbbf24", "#22c55e", "#3b82f6", "#6366f1", "#8b5cf6"],
+    base: { fill: "#ef4444", stroke: "#0f172a", shine: "#fef2f2" },
+    bio: "A spectacular display of all colors in perfect harmony. This magical slime embodies the full ROYGBV spectrum, bringing joy and wonder wherever it appears."
+  },
+  { 
+    id: "sunset", 
+    name: "Sunset", 
+    tier: "uncommon", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
+    kind: "gradient",
+    colors: ["#8b5cf6", "#ec4899", "#f97316", "#fbbf24"],
+    base: { fill: "#8b5cf6", stroke: "#7c2d12", shine: "#fef3c7" },
+    bio: "Captures the breathtaking beauty of golden hour. This magical slime flows from deep purple through vibrant pink and orange to golden yellow, like watching the most spectacular sunset paint the sky."
   },
 
   // Rares - Always unlocked on day 1
@@ -977,6 +1019,7 @@ export const INSPIRATION_UNCOMMON: UnifiedSkin[] = [
   { id: "citrus_pop", name: "Citrus Pop", tier: "uncommon", source: "production", gradient: { stops: [["#fef08a", 0], ["#84cc16", 100]], dir: "diag" } },
   { id: "lavender_drift", name: "Lavender Drift", tier: "uncommon", source: "inspiration", gradient: { stops: [["#e9d5ff", 0], ["#a78bfa", 100]], dir: "diag" } },
   { id: "copper_patina", name: "Copper Patina", tier: "uncommon", source: "inspiration", gradient: { stops: [["#2dd4bf", 0], ["#b45309", 100]], dir: "diag" } },
+
 ];
 
 // Rare skins (static patterns)

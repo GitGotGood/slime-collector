@@ -141,8 +141,13 @@ export default function Slime({
         defs: (
           <defs>
             <linearGradient id={`${uid}-grad`} x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor={skin.colors[0]} />
-              <stop offset="100%" stopColor={skin.colors[1] ?? skin.colors[0]} />
+              {skin.colors.map((color, index) => (
+                <stop 
+                  key={index}
+                  offset={`${(index / (skin.colors.length - 1)) * 100}%`} 
+                  stopColor={color} 
+                />
+              ))}
             </linearGradient>
           </defs>
         ),
@@ -282,10 +287,11 @@ export default function Slime({
             if (id === "storm_rider") return "#052e25";
             
             // Epic Slimes Face Colors (from design specs)
-            if (id === "lava_flow_enhanced") return "#065f46";
+            if (id === "lava_flow_enhanced") return "#dc2626"; // Brighter red for better visibility
             if (id === "aurora_veil_enhanced") return "#064e3b";
             if (id === "glacier_enhanced") return "#065f46";
-            if (id === "aurora_veil_plus_enhanced") return "#064e3b";
+            if (id === "aurora_veil_plus_enhanced") return "#000000"; // Black for contrast against aurora
+            if (id === "ripple_enhanced") return "#000000"; // Black for contrast against ripple pattern
             if (id === "dune_drift" || id === "dune_drift_enhanced") return "#7c2d12";
             if (id === "bog_bubble" || id === "bog_bubble_enhanced") return "#064e3b";
             if (id === "willow_glow" || id === "willow_glow_enhanced") return "#0f3a2a";
@@ -305,6 +311,35 @@ export default function Slime({
             if (id === "foundry_heatwave" || id === "foundry_heatwave_enhanced") return "#3a1f0a";
             if (id === "tundra_halo" || id === "tundra_halo_enhanced") return "#1e3a8a";
             if (id === "observatory_drift" || id === "observatory_drift_enhanced") return "#0b1026";
+            
+            // Enhanced common slimes with specific face colors
+            if (id === "moss") return "#09402A"; // Dark forest green for moss
+            if (id === "sky") return "#16345A"; // Deep blue-navy for sky contrast
+            if (id === "coral") return "#1F2A2E"; // Dark charcoal for coral contrast
+            if (id === "clover") return "#0C4B2B"; // Deep forest green for clover
+            if (id === "charcoal") return "#4a5568"; // Dark grey for charcoal ash look
+            
+            // Enhanced uncommon slimes with specific face colors
+            if (id === "spring_fade" || id === "spring_fade_enhanced") return "#0F5132"; // Deep forest green
+            if (id === "blue_lagoon" || id === "blue_lagoon_enhanced") return "#0A2752"; // Deep navy blue
+            if (id === "sea_breeze" || id === "sea_breeze_enhanced") return "#094A45"; // Deep teal
+            if (id === "raindrop" || id === "raindrop_enhanced") return "#213B79"; // Deep blue
+            if (id === "acorn_buddy" || id === "acorn_buddy_enhanced") return "#1A4B2A"; // Deep forest green
+            if (id === "tide_glass") return "#264D5A"; // Blue-grey
+            if (id === "drift_puff") return "#2B4C5A"; // Steel blue
+            if (id === "swallow_sweep") return "#4E2D1E"; // Warm brown
+            if (id === "sun_drum") return "#165A33"; // Dark green contrast
+            if (id === "shell_gleam") return "#0E5248"; // Deep sea green
+            if (id === "incense_drift") return "#53331E"; // Warm brown
+            if (id === "foam_crest") return "#143B57"; // Deep blue
+            if (id === "quench_mist") return "#0D524F"; // Steel teal
+            if (id === "berry_fizz") return "#4A1A4A"; // Deep purple
+            if (id === "citrus_pop") return "#7A4A1A"; // Deep orange-brown
+            if (id === "sunset_beach") return "#2A1A4A"; // Deep purple
+            if (id === "autumn_fade") return "#0f172a"; // Deep charcoal for contrast across full spectrum
+            if (id === "cotton_candy") return "#831843"; // Deep pink for vibrant contrast
+            if (id === "rainbow") return "#0f172a"; // Deep charcoal for multi-color contrast
+            if (id === "sunset") return "#1e1b4b"; // Deep indigo for vibrant sunset contrast
             
             return "#064e3b"; // Default emerald
           };
@@ -574,7 +609,37 @@ export default function Slime({
                              id === "frog_chorus_enhanced" ? "#15803d" :
                              id === "biolume_veil_enhanced" ? "#06b6d4" :
                              id === "echo_rune_enhanced" ? "#0f766e" :
-                             id === "synthwave" ? "#ec4899" : "#064e3b";
+                             id === "synthwave" ? "#ec4899" : 
+                             id === "lava_flow_enhanced" ? "#dc2626" :  // Same as eyes
+                             id === "aurora_veil_plus_enhanced" ? "#000000" :  // Same as eyes
+                             id === "ripple_enhanced" ? "#000000" :  // Same as eyes
+                             id === "moss" ? "#09402A" :  // Dark forest green for moss
+                             id === "sky" ? "#16345A" :  // Deep blue-navy for sky contrast
+                             id === "coral" ? "#1F2A2E" :  // Dark charcoal for coral contrast
+                             id === "clover" ? "#0C4B2B" :  // Deep forest green for clover
+                             id === "charcoal" ? "#4a5568" :  // Dark grey for charcoal ash look
+                             // Enhanced uncommon slimes
+                             (id === "spring_fade" || id === "spring_fade_enhanced") ? "#0F5132" :
+                             (id === "blue_lagoon" || id === "blue_lagoon_enhanced") ? "#0A2752" :
+                             (id === "sea_breeze" || id === "sea_breeze_enhanced") ? "#094A45" :
+                             (id === "raindrop" || id === "raindrop_enhanced") ? "#213B79" :
+                             (id === "acorn_buddy" || id === "acorn_buddy_enhanced") ? "#1A4B2A" :
+                             id === "tide_glass" ? "#264D5A" :
+                             id === "drift_puff" ? "#2B4C5A" :
+                             id === "swallow_sweep" ? "#4E2D1E" :
+                             id === "sun_drum" ? "#165A33" :
+                             id === "shell_gleam" ? "#0E5248" :
+                             id === "incense_drift" ? "#53331E" :
+                             id === "foam_crest" ? "#143B57" :
+                             id === "quench_mist" ? "#0D524F" :
+                             id === "berry_fizz" ? "#4A1A4A" :
+                             id === "citrus_pop" ? "#7A4A1A" :
+                             id === "sunset_beach" ? "#2A1A4A" :
+                             id === "autumn_fade" ? "#0f172a" :  // Deep charcoal for contrast across full spectrum
+                             id === "cotton_candy" ? "#831843" :  // Deep pink for vibrant contrast
+                             id === "rainbow" ? "#0f172a" :  // Deep charcoal for multi-color contrast
+                             id === "sunset" ? "#1e1b4b" :  // Deep indigo for vibrant sunset contrast
+                             "#064e3b";
             return (
               <path 
                 d={mouthPath} 
@@ -1818,51 +1883,110 @@ export default function Slime({
               <clipPath id="lava-enhanced-clip">
                 <path d="M8 34 C10 18 22 10 32 10 C42 10 54 18 56 34 C56 46 46 54 32 54 C18 54 8 46 8 34Z" />
               </clipPath>
-            </defs>
-            <g clipPath="url(#lava-enhanced-clip)">
-              {/* Enhanced ember rings */}
-              {Array.from({ length: 3 }).map((_, i) => (
-                <motion.circle
-                  key={`ember-ring-${i}`}
-                  cx={32}
-                  cy={34}
-                  r={12 + (i * 8)}
-                  fill="none"
-                  stroke="#ea580c"
-                  strokeWidth="1.5"
-                  opacity={0.6}
+              {/* Animated gradient for body */}
+              <radialGradient id="lava-animated-gradient" cx="50%" cy="40%">
+                <motion.stop
+                  offset="0%"
+                  stopColor="#ef4444"
                   animate={{
-                    r: [12 + (i * 8), 28 + (i * 8)],
-                    opacity: [0.6, 0.2, 0]
+                    stopColor: ["#ef4444", "#dc2626", "#ef4444"]
                   }}
                   transition={{
                     repeat: Infinity,
-                    duration: 3.5 + (i * 0.5),
-                    delay: i * 1.2,
+                    duration: 4,
+                    ease: "easeInOut"
+                  }}
+                />
+                <motion.stop
+                  offset="40%"
+                  stopColor="#dc2626"
+                  animate={{
+                    stopColor: ["#dc2626", "#f97316", "#dc2626"]
+                  }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: 4.5,
+                    delay: 0.5,
+                    ease: "easeInOut"
+                  }}
+                />
+                <motion.stop
+                  offset="80%"
+                  stopColor="#f97316"
+                  animate={{
+                    stopColor: ["#f97316", "#fb923c", "#f97316"]
+                  }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: 5,
+                    delay: 1,
+                    ease: "easeInOut"
+                  }}
+                />
+                <motion.stop
+                  offset="100%"
+                  stopColor="#b45309"
+                  animate={{
+                    stopColor: ["#b45309", "#7c2d12", "#b45309"]
+                  }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: 5.5,
+                    delay: 1.5,
+                    ease: "easeInOut"
+                  }}
+                />
+              </radialGradient>
+            </defs>
+            
+            {/* Animated gradient body overlay */}
+            <path 
+              d="M8 34 C10 18 22 10 32 10 C42 10 54 18 56 34 C56 46 46 54 32 54 C18 54 8 46 8 34Z"
+              fill="url(#lava-animated-gradient)"
+              opacity={0.6}
+            />
+            
+            <g clipPath="url(#lava-enhanced-clip)">
+              {/* Orange ember sparks floating upward slowly */}
+              {Array.from({ length: 6 }).map((_, i) => (
+                <motion.circle
+                  key={`orange-ember-${i}`}
+                  cx={20 + (i * 4) + (i % 2) * 6}
+                  r={1.2}
+                  fill="#dc2626"
+                  opacity={0.8}
+                  animate={{
+                    cy: [52, 15],
+                    opacity: [0.8, 0.4, 0],
+                    scale: [1, 0.6, 0.3]
+                  }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: 7 + (i * 0.5),
+                    delay: i * 1.3,
                     ease: "easeOut"
                   }}
                 />
               ))}
               
-              {/* Floating ash flecks */}
-              {Array.from({ length: 8 }).map((_, i) => (
+              {/* Yellow ember sparks floating upward slowly */}
+              {Array.from({ length: 4 }).map((_, i) => (
                 <motion.circle
-                  key={`ash-fleck-${i}`}
-                  cx={16 + (i * 6)}
-                  cy={20 + (i % 3) * 8}
+                  key={`yellow-ember-${i}`}
+                  cx={24 + (i * 5)}
                   r={0.8}
-                  fill="#7c2d12"
-                  opacity={0.7}
+                  fill="#fde047"
+                  opacity={0.9}
                   animate={{
-                    y: [-3, 3, -3],
-                    opacity: [0.7, 0.3, 0.7],
-                    scale: [1, 0.6, 1]
+                    cy: [48, 12],
+                    opacity: [0.9, 0.5, 0],
+                    scale: [1, 0.4, 0.2]
                   }}
                   transition={{
                     repeat: Infinity,
-                    duration: 2.5 + (i % 3) * 0.4,
-                    delay: i * 0.3,
-                    ease: "easeInOut"
+                    duration: 8 + (i * 0.7),
+                    delay: i * 1.8 + 2,
+                    ease: "easeOut"
                   }}
                 />
               ))}
@@ -1995,58 +2119,259 @@ export default function Slime({
               <clipPath id="aurora-plus-enhanced-clip">
                 <path d="M8 34 C10 18 22 10 32 10 C42 10 54 18 56 34 C56 46 46 54 32 54 C18 54 8 46 8 34Z" />
               </clipPath>
-            </defs>
-            <g clipPath="url(#aurora-plus-enhanced-clip)">
-              {/* Shifting aurora bands */}
-              {Array.from({ length: 6 }).map((_, i) => (
-                <motion.ellipse
-                  key={`aurora-band-${i}`}
-                  cx={32}
-                  cy={34}
-                  rx={8 + (i * 4)}
-                  ry={4 + (i * 2)}
-                  fill="none"
-                  stroke={["#60a5fa", "#8b5cf6", "#22d3ee"][i % 3]}
-                  strokeWidth="1.5"
-                  opacity={0.5}
+              {/* Flowing aurora gradient */}
+              <linearGradient id="aurora-flow-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <motion.stop
+                  offset="0%"
+                  stopColor="#43e0c6"
+                  stopOpacity="0.6"
                   animate={{
-                    rx: [8 + (i * 4), 16 + (i * 4), 8 + (i * 4)],
-                    ry: [4 + (i * 2), 8 + (i * 2), 4 + (i * 2)],
-                    opacity: [0.5, 0.2, 0.5]
+                    stopOpacity: [0.6, 0.8, 0.6],
+                    stopColor: ["#43e0c6", "#22d3ee", "#43e0c6"]
                   }}
                   transition={{
                     repeat: Infinity,
-                    duration: 4.5 + (i * 0.3),
-                    delay: i * 0.7,
+                    duration: 4,
+                    ease: "easeInOut"
+                  }}
+                />
+                <motion.stop
+                  offset="30%"
+                  stopColor="#22d3ee"
+                  stopOpacity="0.5"
+                  animate={{
+                    stopOpacity: [0.5, 0.7, 0.5],
+                    stopColor: ["#22d3ee", "#60a5fa", "#22d3ee"]
+                  }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: 4.5,
+                    delay: 0.8,
+                    ease: "easeInOut"
+                  }}
+                />
+                <motion.stop
+                  offset="70%"
+                  stopColor="#8b5cf6"
+                  stopOpacity="0.4"
+                  animate={{
+                    stopOpacity: [0.4, 0.6, 0.4],
+                    stopColor: ["#8b5cf6", "#b189ff", "#8b5cf6"]
+                  }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: 5,
+                    delay: 1.5,
+                    ease: "easeInOut"
+                  }}
+                />
+                <motion.stop
+                  offset="100%"
+                  stopColor="#b189ff"
+                  stopOpacity="0.3"
+                  animate={{
+                    stopOpacity: [0.3, 0.5, 0.3],
+                    stopColor: ["#b189ff", "#c4b5fd", "#b189ff"]
+                  }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: 5.5,
+                    delay: 2,
+                    ease: "easeInOut"
+                  }}
+                />
+              </linearGradient>
+              
+              {/* Secondary flowing gradient with offset */}
+              <linearGradient id="aurora-flow-gradient-2" x1="0%" y1="0%" x2="0%" y2="100%">
+                <motion.stop
+                  offset="0%"
+                  stopColor="#b189ff"
+                  stopOpacity="0.3"
+                />
+                <motion.stop
+                  offset="50%"
+                  stopColor="#43e0c6"
+                  stopOpacity="0.5"
+                />
+                <motion.stop
+                  offset="100%"
+                  stopColor="#22d3ee"
+                  stopOpacity="0.2"
+                />
+              </linearGradient>
+            </defs>
+            
+            {/* Flowing aurora curtains */}
+            <g clipPath="url(#aurora-plus-enhanced-clip)">
+              {/* Main flowing aurora bands */}
+              {Array.from({ length: 4 }).map((_, i) => (
+                <motion.rect
+                  key={`aurora-flow-${i}`}
+                  x={12 + (i * 8)}
+                  y={6}
+                  width={12}
+                  height={52}
+                  fill="url(#aurora-flow-gradient)"
+                  opacity={0.5}
+                  animate={{
+                    y: [4, 8, 4],
+                    opacity: [0.5, 0.2, 0.5],
+                    height: [52, 48, 52]
+                  }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: 6 + (i * 0.5),
+                    delay: i * 1.2,
                     ease: "easeInOut"
                   }}
                 />
               ))}
               
-              {/* Aurora particles */}
-              {Array.from({ length: 10 }).map((_, i) => (
-                <motion.circle
-                  key={`aurora-particle-${i}`}
-                  cx={20 + (i * 2.5)}
-                  cy={18 + (i % 4) * 6}
-                  r={0.8}
-                  fill={["#60a5fa", "#c4b5fd", "#22d3ee"][i % 3]}
-                  opacity={0.7}
+              {/* Secondary aurora bands with different timing */}
+              {Array.from({ length: 3 }).map((_, i) => (
+                <motion.rect
+                  key={`aurora-flow-2-${i}`}
+                  x={16 + (i * 10)}
+                  y={8}
+                  width={8}
+                  height={50}
+                  fill="url(#aurora-flow-gradient-2)"
+                  opacity={0.3}
                   animate={{
-                    scale: [1, 0.3, 1],
-                    opacity: [0.7, 0.2, 0.7],
+                    y: [6, 2, 6],
+                    opacity: [0.3, 0.1, 0.3],
+                    scaleX: [1, 1.2, 1]
+                  }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: 7 + (i * 0.7),
+                    delay: i * 1.8 + 3,
+                    ease: "easeInOut"
+                  }}
+                />
+              ))}
+              
+              {/* Aurora sparkle particles (kept from original) */}
+              {Array.from({ length: 12 }).map((_, i) => (
+                <motion.circle
+                  key={`aurora-sparkle-${i}`}
+                  cx={18 + (i * 2.8)}
+                  cy={16 + (i % 5) * 6}
+                  r={0.6}
+                  fill={["#43e0c6", "#b189ff", "#22d3ee", "#c4b5fd"][i % 4]}
+                  opacity={0.8}
+                  animate={{
+                    scale: [1, 0.2, 1],
+                    opacity: [0.8, 0.3, 0.8],
                     fill: [
-                      ["#60a5fa", "#c4b5fd", "#22d3ee"][i % 3],
-                      ["#8b5cf6", "#60a5fa", "#c4b5fd"][(i + 1) % 3],
-                      ["#60a5fa", "#c4b5fd", "#22d3ee"][i % 3]
+                      ["#43e0c6", "#b189ff", "#22d3ee", "#c4b5fd"][i % 4],
+                      ["#22d3ee", "#c4b5fd", "#43e0c6", "#b189ff"][(i + 1) % 4],
+                      ["#43e0c6", "#b189ff", "#22d3ee", "#c4b5fd"][i % 4]
                     ]
                   }}
                   transition={{
                     repeat: Infinity,
-                    duration: 3.0 + (i % 4) * 0.5,
-                    delay: i * 0.25,
+                    duration: 2.5 + (i % 4) * 0.4,
+                    delay: i * 0.2,
                     ease: "easeInOut"
                   }}
+                />
+              ))}
+            </g>
+          </g>
+        )}
+        
+        {/* Enhanced Rare Effects - Static Patterns Only */}
+        {id === "ripple_enhanced" && (
+          <g>
+            <defs>
+              <clipPath id="ripple-enhanced-clip">
+                <path d="M8 34 C10 18 22 10 32 10 C42 10 54 18 56 34 C56 46 46 54 32 54 C18 54 8 46 8 34Z" />
+              </clipPath>
+            </defs>
+            <g clipPath="url(#ripple-enhanced-clip)">
+              {/* Static concentric ripple rings */}
+              <circle
+                cx={32}
+                cy={34}
+                r={12}
+                fill="none"
+                stroke="#0F5C57"
+                strokeWidth="1.2"
+                opacity={0.25}
+              />
+              <circle
+                cx={32}
+                cy={34}
+                r={18}
+                fill="none"
+                stroke="#0F5C57"
+                strokeWidth="1"
+                opacity={0.20}
+              />
+              <circle
+                cx={32}
+                cy={34}
+                r={24}
+                fill="none"
+                stroke="#0F5C57"
+                strokeWidth="0.8"
+                opacity={0.15}
+              />
+              
+              {/* Secondary ripple pattern with lighter color */}
+              <circle
+                cx={32}
+                cy={34}
+                r={9}
+                fill="none"
+                stroke="#6FC6BE"
+                strokeWidth="0.8"
+                opacity={0.30}
+              />
+              <circle
+                cx={32}
+                cy={34}
+                r={15}
+                fill="none"
+                stroke="#6FC6BE"
+                strokeWidth="0.6"
+                opacity={0.25}
+              />
+              <circle
+                cx={32}
+                cy={34}
+                r={21}
+                fill="none"
+                stroke="#6FC6BE"
+                strokeWidth="0.5"
+                opacity={0.20}
+              />
+              
+              {/* Static water surface texture */}
+              {Array.from({ length: 8 }).map((_, i) => (
+                <ellipse
+                  key={`water-texture-${i}`}
+                  cx={16 + (i * 3)}
+                  cy={26 + (i % 3) * 4}
+                  rx={1.2}
+                  ry={0.6}
+                  fill="#BDEDE4"
+                  opacity={0.35}
+                  transform={`rotate(${(i * 25) % 360} ${16 + (i * 3)} ${26 + (i % 3) * 4})`}
+                />
+              ))}
+              
+              {/* Static droplet pattern */}
+              {Array.from({ length: 6 }).map((_, i) => (
+                <circle
+                  key={`static-droplet-${i}`}
+                  cx={22 + (i * 4)}
+                  cy={28 + (i % 2) * 8}
+                  r={0.8}
+                  fill="#BDEDE4"
+                  opacity={0.40}
                 />
               ))}
             </g>

@@ -14,7 +14,7 @@ import { useSounds } from "../assets/sounds";
 import { loadState, saveState, mkProfile } from "../core/storage";
 import { SKILL_ORDER, SKILLS, makeProblemForSkill, difficultyMultiplier } from "../core/skills";
 import type { SkillID, ShopItem } from "../core/types";
-import { getMasteryBonus, levelFromTotalXP, applyXP, updateStatsAndCheckMastery, worldIdOf, onWorldMastered, WORLDS, nextWorld } from "../core/progression";
+import { getMasteryBonus, levelFromTotalXP, applyXP, updateStatsAndCheckMastery, worldIdOf, onWorldMastered, WORLDS, nextWorld, getStrongAnswerCount } from "../core/progression";
 import { priceOf } from "../core/economy";
 import { evaluateBadges, getBadgeName } from "../core/badges";
 import { useBadgeToasts } from "../ui/components/Toaster";
@@ -32,6 +32,8 @@ import { motion } from "framer-motion";
 import { AuthProvider, useAuth } from "../ui/auth/AuthProvider";
 import { ProfileSelector, CreateProfileModal } from "../ui/auth/ProfileSelector";
 import { loadSave, saveGame } from "../lib/saves";
+import { saveLogger, gameLogger, authLogger } from "../lib/debug";
+import { initAutosave } from "../core/autosave";
 
 
 // ------------------------------------------------------------
@@ -76,6 +78,7 @@ function SlimeCollectorAppInner() {
           : p
       )
     }));
+    markDirty(); // Trigger autosave after skill change
   };
   const [lives, setLives] = useState(3);
   const [streak, setStreak] = useState(0);
@@ -111,6 +114,20 @@ function SlimeCollectorAppInner() {
   const [openEdgeBlending, setOpenEdgeBlending] = useState(false);
   const [openWorldMap, setOpenWorldMap] = useState(false);
   const [openProgressDashboard, setOpenProgressDashboard] = useState(false);
+  
+  // Save status indicator
+  const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
+  const [saveTimer, setSaveTimer] = useState<NodeJS.Timeout | null>(null);
+  
+  // Autosave instance
+  const [autosaveInstance, setAutosaveInstance] = useState<any>(null);
+  
+  // Helper to safely mark data as dirty for autosave
+  const markDirty = () => {
+    if (autosaveInstance) {
+      autosaveInstance.markDirty();
+    }
+  };
 
   // Slime visual feedback (squish & grow)
   const [slimeMood, setSlimeMood] = useState<'idle'|'happy'|'sad'>('idle');
@@ -176,51 +193,53 @@ function SlimeCollectorAppInner() {
     setBurstId(0);
   };
 
-  // Auto-save integration - cloud or local depending on mode
+  // Event-driven autosave system
   useEffect(() => {
-    console.log('🔧 Auto-save useEffect triggered:', {
-      hasCurrent: !!current,
-      currentName: current?.name,
-      isOfflineMode,
-      hasActiveProfile: !!activeProfile
-    });
-    
     if (current) {
-      console.log('⏰ Setting up auto-save interval for:', current.name, 'isOfflineMode:', isOfflineMode);
-      const saveInterval = setInterval(async () => {
-        try {
+      const autosave = initAutosave({
+        getCurrentData: () => current,
+        save: async (data) => {
           if (effectivelyOffline) {
             // Save to localStorage in offline mode
-            console.log('💾 Auto-saving to localStorage:', current.name, 'Goo:', current.goo, 'XP:', current.xp);
             const currentStore = loadState();
             const updatedStore = {
               ...currentStore,
               profiles: currentStore.profiles.map((p: any) => 
-                p.id === current.id ? { ...current } : p
+                p.id === data.id ? { ...data } : p
               )
             };
             saveState(updatedStore);
             setStore(updatedStore); // Update React state too
-            console.log('✅ Auto-save to localStorage completed');
           } else if (activeProfile) {
             // Save to cloud in online mode
-            console.log('💾 Auto-saving to cloud:', current.name, 'Goo:', current.goo, 'XP:', current.xp);
-            await saveGame(current);
-            console.log('✅ Auto-save to cloud completed');
-          } else {
-            console.log('⏭️ Skipping auto-save: no activeProfile and not effectively offline');
+            await saveGame(data);
           }
-        } catch (error) {
-          console.error('❌ Failed to auto-save:', error);
+        },
+        onSaveStart: () => {
+          setSaveStatus('saving');
+        },
+        onSaveSuccess: () => {
+          setSaveStatus('saved');
+          // Clear save status after 2 seconds
+          if (saveTimer) clearTimeout(saveTimer);
+          const timer = setTimeout(() => setSaveStatus('idle'), 2000);
+          setSaveTimer(timer);
+        },
+        onSaveError: (error) => {
+          setSaveStatus('error');
+          // Clear error status after 3 seconds
+          if (saveTimer) clearTimeout(saveTimer);
+          const timer = setTimeout(() => setSaveStatus('idle'), 3000);
+          setSaveTimer(timer);
         }
-      }, 5000); // Save every 5 seconds
+      });
+
+      setAutosaveInstance(autosave);
 
       return () => {
-        console.log('🛑 Clearing auto-save interval for:', current.name);
-        clearInterval(saveInterval);
+        autosave.destroy();
+        if (saveTimer) clearTimeout(saveTimer);
       };
-    } else {
-      console.log('⏭️ No current profile, skipping auto-save setup');
     }
   }, [activeProfile, current, isOfflineMode, effectivelyOffline]);
 
@@ -422,6 +441,7 @@ function SlimeCollectorAppInner() {
         return np;
       }),
     }));
+    markDirty(); // Trigger autosave after session end
   };
 
   // choosing an answer
@@ -651,6 +671,7 @@ function SlimeCollectorAppInner() {
         return left;
       });
     }
+    markDirty(); // Trigger autosave after any answer (correct/incorrect)
   };
 
   // shop + profile helpers
@@ -690,6 +711,7 @@ function SlimeCollectorAppInner() {
         return np;
       }),
     }));
+    markDirty(); // Trigger autosave after purchase
   };
 
   const handleEquip = (skinId: string) => {
@@ -700,6 +722,7 @@ function SlimeCollectorAppInner() {
         p.id !== current.id ? p : { ...p, settings: { ...p.settings, activeSkin: skinId } }
       ),
     }));
+    markDirty(); // Trigger autosave after equipping skin
   };
 
   const spendAndRefresh = (updated: any) => {
@@ -757,17 +780,48 @@ return (
       {/* Main card (slightly translucent so global biome softly shines through) */}
       <div className="relative w-full max-w-3xl mx-auto rounded-2xl shadow-xl bg-white/80 backdrop-blur-sm border border-emerald-100">
         
-        {/* Sign Out Button - Top Right Corner */}
-        {user && (
-          <button
-            onClick={signOut}
-            className="absolute top-4 right-4 z-20 flex items-center gap-1 px-3 py-1.5 text-xs text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors shadow-sm bg-white/70 backdrop-blur-sm border border-gray-200"
-            title="Sign out of family account"
-          >
-            <Power className="w-3 h-3" />
-            <span className="hidden sm:inline">Sign Out</span>
-          </button>
-        )}
+        {/* Top Right Controls */}
+        <div className="absolute top-4 right-4 z-20 flex items-center gap-2">
+          {/* Save Status Indicator */}
+          {current && saveStatus !== 'idle' && (
+            <div className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium ${
+              saveStatus === 'saving' ? 'bg-blue-50 text-blue-700 border border-blue-200' :
+              saveStatus === 'saved' ? 'bg-green-50 text-green-700 border border-green-200' :
+              'bg-red-50 text-red-700 border border-red-200'
+            }`}>
+              {saveStatus === 'saving' && (
+                <>
+                  <div className="w-3 h-3 border-2 border-blue-700 border-t-transparent rounded-full animate-spin" />
+                  <span>Saving...</span>
+                </>
+              )}
+              {saveStatus === 'saved' && (
+                <>
+                  <div className="w-3 h-3 rounded-full bg-green-500" />
+                  <span>Saved</span>
+                </>
+              )}
+              {saveStatus === 'error' && (
+                <>
+                  <div className="w-3 h-3 rounded-full bg-red-500" />
+                  <span>Save Failed</span>
+                </>
+              )}
+            </div>
+          )}
+          
+          {/* Sign Out Button */}
+          {user && (
+            <button
+              onClick={signOut}
+              className="flex items-center gap-1 px-3 py-1.5 text-xs text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors shadow-sm bg-white/70 backdrop-blur-sm border border-gray-200"
+              title="Sign out of family account"
+            >
+              <Power className="w-3 h-3" />
+              <span className="hidden sm:inline">Sign Out</span>
+            </button>
+          )}
+        </div>
         
         {/* Game Title */}
         <div className="text-center pt-6 pb-3">
@@ -842,17 +896,16 @@ return (
                   const next = nextWorld(current);
                   if (next) {
                     // V1: Simple linear progression - always show primary skill progress
-                    const progress = current.skillStats?.[next.primarySkill];
-                    const attempts = progress?.attempts || 0;
+                    const strongAnswers = getStrongAnswerCount(current, next.primarySkill);
                     
                     return (
                       <div className="text-xs text-emerald-700/80 text-center">
                         <div className="font-medium">{next.title} Math Progress</div>
                         <div 
                           className="text-[10px] text-emerald-600/60 cursor-help" 
-                          title={`Strong answers are correct in under ${next.gate.maxAvgMs/1000}s with ${(next.gate.minAcc*100).toFixed(0)}% accuracy`}
+                          title={`Strong answers are correct AND answered in under ${next.gate.maxAvgMs/1000}s. You need ${next.gate.attempts} strong answers with ${(next.gate.minAcc*100).toFixed(0)}% overall accuracy to master this skill.`}
                         >
-                          {attempts}/{next.gate.attempts} strong answers
+                          {strongAnswers}/{next.gate.attempts} strong answers
                         </div>
                       </div>
                     );
@@ -910,7 +963,7 @@ return (
                       : skillLabel;
                   })()}
                 </div>
-              </div>
+            </div>
 
               <div className="flex items-center justify-center py-4">
                 {/* active skin with celebrations */}
@@ -1209,7 +1262,7 @@ return (
             parentEmail={user?.email}
             isOfflineMode={isOfflineMode}
           />
-        </div>
+    </div>
       )}
 
       {/* Create Profile Modal */}

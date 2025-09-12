@@ -1,6 +1,7 @@
 import { supabase } from "./supabase";
 import { getActiveProfileId } from "./profiles";
 import type { Profile } from "../core/types";
+import { saveLogger } from "./debug";
 
 // Save data structure
 export interface CloudSave {
@@ -65,11 +66,11 @@ export async function saveGame(gameState: Profile): Promise<void> {
     };
     
     saveState(updatedStore);
-    console.log('💾 Dual-write: Saved to both cloud and localStorage for profile:', profileId);
+    saveLogger.log('Dual-write completed', { profileId, cloudSave: true, localBackup: true });
     
   } catch (localError) {
     // Don't fail the cloud save if localStorage fails
-    console.warn('⚠️ Failed to save to localStorage backup:', localError);
+    saveLogger.warn('Local backup failed', { profileId, error: localError });
   }
 }
 
