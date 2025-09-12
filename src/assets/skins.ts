@@ -27,9 +27,9 @@ export const SKINS: Record<string, Skin> = {
   polka_mint: { id: "polka_mint", name: "Polka Mint", tier: "rare", kind: "gradient", colors: ["#B6E3B6", "#FFFFFF"] },
   ripple: { id: "ripple", name: "Ripple", tier: "rare", kind: "gradient", colors: ["#7FECD8", "#134E4A"] },
 
-  // V1 Launch Epics (animated)
-  lava_flow: { id: "lava_flow", name: "Lava Flow", tier: "epic", kind: "animated", colors: ["#3A1D0E", "#FFF0DD", "#dc2626"] },
-  aurora_veil: { id: "aurora_veil", name: "Aurora Veil", tier: "epic", kind: "animated", colors: ["#101424", "#F3FAFF", "#0ea5e9"] },
+  // V1 Launch Epics (animated) - Enhanced versions promoted to production
+  lava_flow: { id: "lava_flow", name: "Lava Flow", tier: "epic", kind: "animated", colors: ["#3A1D0E", "#FFF0DD", "#dc2626", "#dc2626"] }, // Enhanced: hotter gradient, red face
+  aurora_veil: { id: "aurora_veil", name: "Aurora Veil", tier: "epic", kind: "animated", colors: ["#43e0c6", "#b189ff"] }, // Enhanced: Aurora Veil+ colors, flowing curtains
 
   // [Sep-11] User: Deploy enhanced mythic visuals for V1.1 | Changed: merged enhanced properties into original IDs | Why: replace originals in production
   nebula: { id: "nebula", name: "Nebula", tier: "mythic", kind: "animated", colors: ["#5b2d8f", "#1b1e4b", "#0f1530"] },
