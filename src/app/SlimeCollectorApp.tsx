@@ -44,7 +44,7 @@ function SlimeCollectorAppInner() {
 
   // persistent store (profiles etc.) - now hybrid localStorage + cloud
   const [store, setStore] = useState<any>(() => loadState());
-  const current = activeProfile ? store.profiles.find((p: any) => p.id === activeProfile.id) || mkProfile(activeProfile.id, activeProfile.name, '#22c55e') : store.profiles.find((p: any) => p.id === store.currentId) || null;
+  const current = activeProfile ? store.profiles.find((p: any) => p.id === activeProfile.id) : store.profiles.find((p: any) => p.id === store.currentId) || null;
   
   // Detect if we're effectively in offline mode (no user OR using offline profile)
   const effectivelyOffline = !user || (current && current.id.startsWith('offline-'));
