@@ -31,7 +31,7 @@ import { motion } from "framer-motion";
 
 import { AuthProvider, useAuth } from "../ui/auth/AuthProvider";
 import { ProfileSelector, CreateProfileModal } from "../ui/auth/ProfileSelector";
-import { loadSave, saveGame } from "../lib/saves";
+import { loadSave, saveGame, debugSaveStatus } from "../lib/saves";
 import { saveLogger, gameLogger, authLogger } from "../lib/debug";
 import { initAutosave } from "../core/autosave";
 
@@ -235,6 +235,32 @@ function SlimeCollectorAppInner() {
       });
 
       setAutosaveInstance(autosave);
+
+      // Debug function to check save status
+      if (typeof window !== 'undefined') {
+        (window as any).SC_debugSave = async (profileId?: string) => {
+          const id = profileId || activeProfile?.id;
+          if (!id) {
+            console.log('❌ No profile ID provided or active profile');
+            return;
+          }
+          
+          try {
+            const status = await debugSaveStatus(id);
+            console.log('🔍 Save Status for', id, ':', {
+              hasCloudSave: status.hasCloudSave,
+              lastUpdated: status.lastUpdated,
+              goo: status.profileData?.goo || 0,
+              xp: status.profileData?.xp || 0,
+              level: status.profileData?.level || 1,
+              ownedSkins: status.profileData?.unlocks?.skins?.length || 0
+            });
+            return status;
+          } catch (error) {
+            console.error('❌ Failed to check save status:', error);
+          }
+        };
+      }
 
       return () => {
         autosave.destroy();
