@@ -81,7 +81,8 @@ export function meetsMastery(profile: any, skillId: SkillID, gate: MasteryGate):
   const st = profile?.skillStats?.[skillId];
   if (!st) return false;
   const acc = st.attempts ? st.correct / st.attempts : 0;
-  const avg = st.attempts ? st.totalMs / st.attempts : Infinity;
+  // Use smart average if available, fallback to simple average
+  const avg = st.avgMs ?? (st.attempts ? st.totalMs / st.attempts : Infinity);
   return st.attempts >= gate.attempts && acc >= gate.minAcc && avg <= gate.maxAvgMs;
 }
 
@@ -160,15 +161,15 @@ function removeOutliers(times: number[]): number[] {
   const variance = times.map(t => (t - mean) ** 2).reduce((a, b) => a + b) / times.length;
   const stdDev = Math.sqrt(variance);
   
-  // Remove times more than 2.5 standard deviations from mean
-  return times.filter(time => Math.abs(time - mean) <= 2.5 * stdDev);
+  // Remove times more than 3.0 standard deviations from mean (less aggressive)
+  return times.filter(time => Math.abs(time - mean) <= 3.0 * stdDev);
 }
 
 // Calculate smart average using rolling window + outlier removal
-function calculateSmartAverage(responseTimes: number[], windowSize: number = 15): number {
+function calculateSmartAverage(responseTimes: number[], windowSize: number = 20): number {
   if (responseTimes.length === 0) return 999999;
   
-  // Use rolling window (most recent attempts)
+  // Use rolling window (most recent attempts) - increased from 15 to 20
   const recentTimes = responseTimes.slice(-windowSize);
   
   // Remove outliers from the recent window
@@ -181,7 +182,12 @@ function calculateSmartAverage(responseTimes: number[], windowSize: number = 15)
     return cappedTimes.reduce((a, b) => a + b) / cappedTimes.length;
   }
   
-  return cleanTimes.reduce((a, b) => a + b) / cleanTimes.length;
+  // Give more weight to recent answers (exponential decay)
+  const weights = cleanTimes.map((_, i) => Math.pow(1.1, i)); // 10% more weight for each recent answer
+  const weightedSum = cleanTimes.reduce((sum, time, i) => sum + time * weights[i], 0);
+  const totalWeight = weights.reduce((sum, w) => sum + w, 0);
+  
+  return weightedSum / totalWeight;
 }
 
 export function updateStatsAndCheckMastery(profile: Profile, skillId: SkillID, correct: boolean, ms: number) {
@@ -251,11 +257,22 @@ export function getStrongAnswerCount(profile: Profile, skillId: SkillID): number
   const world = WORLDS.find(w => w.primarySkill === skillId);
   const gate = world?.gate || GATES.EARLY;
   
-  // Count response times that are fast enough (under the gate limit)
-  const fastEnoughCount = stats.responseTimes.filter(time => time <= gate.maxAvgMs).length;
+  // We need to track which answers were correct AND fast
+  // Since we don't have that data directly, we estimate based on the smart average
+  // If the smart average is under the gate limit, we assume most recent answers are strong
   
-  // Strong answers = fast answers that were also correct
-  // We estimate this as the minimum of (fast answers, correct answers)
-  // This gives us a conservative count of answers that contributed to mastery
-  return Math.min(fastEnoughCount, stats.correct);
+  // Use smart average if available, fallback to simple average
+  const avgMs = stats.avgMs ?? (stats.attempts ? stats.totalMs / stats.attempts : Infinity);
+  
+  if (avgMs <= gate.maxAvgMs) {
+    // If average is good, estimate strong answers based on recent performance
+    // This is a conservative estimate: assume recent answers are more representative
+    const recentCount = Math.min(stats.responseTimes.length, 20); // Last 20 answers
+    const recentFastCount = stats.responseTimes.slice(-recentCount).filter(time => time <= gate.maxAvgMs).length;
+    const estimatedStrongAnswers = Math.min(recentFastCount, stats.correct);
+    return Math.max(0, estimatedStrongAnswers);
+  } else {
+    // If average is too slow, no strong answers
+    return 0;
+  }
 }
