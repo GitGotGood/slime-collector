@@ -14,7 +14,7 @@ import { useSounds } from "../assets/sounds";
 import { loadState, saveState, mkProfile } from "../core/storage";
 import { SKILL_ORDER, SKILLS, makeProblemForSkill, difficultyMultiplier } from "../core/skills";
 import type { SkillID, ShopItem } from "../core/types";
-import { getMasteryBonus, levelFromTotalXP, applyXP, updateStatsAndCheckMastery, worldIdOf, onWorldMastered, WORLDS, nextWorld, getStrongAnswerCount } from "../core/progression";
+import { getMasteryBonus, levelFromTotalXP, applyXP, updateStatsAndCheckMastery, worldIdOf, onWorldMastered, WORLDS, nextWorld, getStrongAnswerCount, meetsMastery } from "../core/progression";
 import { priceOf } from "../core/economy";
 import { evaluateBadges, getBadgeName } from "../core/badges";
 import { useBadgeToasts } from "../ui/components/Toaster";
@@ -895,6 +895,25 @@ return (
                 ) : (() => {
                   const next = nextWorld(current);
                   if (next) {
+                    // Check if current skill is already mastered but player is still on it
+                    const currentSkillWorld = WORLDS.find(w => w.primarySkill === skill);
+                    const isCurrentSkillMastered = currentSkillWorld && meetsMastery(current, skill, currentSkillWorld.gate);
+                    
+                    if (isCurrentSkillMastered && skill !== next.primarySkill) {
+                      // Player is on a mastered skill but should be working on the next one
+                      return (
+                        <div className="text-xs text-amber-700/80 text-center">
+                          <div className="font-medium">🎯 Ready for {next.title}!</div>
+                          <div 
+                            className="text-[10px] text-amber-600/60 cursor-help" 
+                            title={`You've mastered ${currentSkillWorld?.title || 'this skill'}! Switch to ${next.title} to continue your journey.`}
+                          >
+                            Switch to {next.title} skill above
+                          </div>
+                        </div>
+                      );
+                    }
+                    
                     // V1: Simple linear progression - always show primary skill progress
                     const strongAnswers = getStrongAnswerCount(current, next.primarySkill);
                     
