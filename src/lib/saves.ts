@@ -111,6 +111,27 @@ export async function getSaveMetadata(profileId: string): Promise<{ updated_at: 
   return data;
 }
 
+// Debug function to check save status
+export async function debugSaveStatus(profileId: string): Promise<{
+  hasCloudSave: boolean;
+  lastUpdated: string | null;
+  profileData: any | null;
+}> {
+  const { data, error } = await supabase
+    .from("saves")
+    .select("data, updated_at")
+    .eq("profile_id", profileId)
+    .maybeSingle();
+  
+  if (error) throw error;
+  
+  return {
+    hasCloudSave: !!data,
+    lastUpdated: data?.updated_at || null,
+    profileData: data?.data || null
+  };
+}
+
 // Delete save data for a profile
 export async function deleteSave(profileId: string): Promise<void> {
   const { error } = await supabase
