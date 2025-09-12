@@ -261,11 +261,17 @@ function SlimeCollectorAppInner() {
           
           console.log('🔧 Migrated cloud profile with complete structure:', migratedProfile.name);
           
-          // Update store with migrated cloud data
+          // Update store with migrated cloud data (preserve other profiles)
           setStore((prev: any) => ({
             ...prev,
             currentId: activeProfile.id,
-            profiles: [migratedProfile]
+            profiles: prev.profiles.map((p: any) => 
+              p.id === activeProfile.id ? migratedProfile : p
+            ).concat(
+              prev.profiles.find((p: any) => p.id === activeProfile.id) 
+                ? [] 
+                : [migratedProfile]
+            )
           }));
         } else {
           console.log('📝 Creating new profile for:', activeProfile.name);
@@ -274,7 +280,13 @@ function SlimeCollectorAppInner() {
           setStore((prev: any) => ({
             ...prev,
             currentId: activeProfile.id,
-            profiles: [newProfile]
+            profiles: prev.profiles.map((p: any) => 
+              p.id === activeProfile.id ? newProfile : p
+            ).concat(
+              prev.profiles.find((p: any) => p.id === activeProfile.id) 
+                ? [] 
+                : [newProfile]
+            )
           }));
         }
       }).catch(error => {
