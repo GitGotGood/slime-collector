@@ -240,3 +240,22 @@ export function getMasteryBonus(profile: Profile): number {
   const masteredCount = Object.values(profile.mastered ?? {}).filter(Boolean).length;
   return Math.max(1, Math.min(1.25, 1 + masteredCount * 0.05));
 }
+
+// Helper function to calculate strong answers for a skill
+// A strong answer is one that is correct AND fast enough to contribute to mastery
+export function getStrongAnswerCount(profile: Profile, skillId: SkillID): number {
+  const stats = profile.skillStats?.[skillId];
+  if (!stats || !stats.responseTimes) return 0;
+  
+  // Find the gate for this skill
+  const world = WORLDS.find(w => w.primarySkill === skillId);
+  const gate = world?.gate || GATES.EARLY;
+  
+  // Count response times that are fast enough (under the gate limit)
+  const fastEnoughCount = stats.responseTimes.filter(time => time <= gate.maxAvgMs).length;
+  
+  // Strong answers = fast answers that were also correct
+  // We estimate this as the minimum of (fast answers, correct answers)
+  // This gives us a conservative count of answers that contributed to mastery
+  return Math.min(fastEnoughCount, stats.correct);
+}

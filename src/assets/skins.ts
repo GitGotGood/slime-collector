@@ -17,7 +17,11 @@ export const SKINS: Record<string, Skin> = {
 
   // V1 Launch Uncommons
   spring_fade: { id: "spring_fade", name: "Spring Fade", tier: "uncommon", kind: "gradient", colors: ["#B7F8C6", "#FFF4A8"] },
+  autumn_fade: { id: "autumn_fade", name: "Autumn Fade", tier: "uncommon", kind: "gradient", colors: ["#22c55e", "#dc2626"] },
   blue_lagoon: { id: "blue_lagoon", name: "Blue Lagoon", tier: "uncommon", kind: "gradient", colors: ["#68E0FF", "#3D78C1"] },
+  cotton_candy: { id: "cotton_candy", name: "Cotton Candy", tier: "uncommon", kind: "gradient", colors: ["#60a5fa", "#f472b6"] },
+  rainbow: { id: "rainbow", name: "Rainbow", tier: "uncommon", kind: "gradient", colors: ["#ef4444", "#f97316", "#fbbf24", "#22c55e", "#3b82f6", "#6366f1", "#8b5cf6"] },
+  sunset: { id: "sunset", name: "Sunset", tier: "uncommon", kind: "gradient", colors: ["#8b5cf6", "#ec4899", "#f97316", "#fbbf24"] },
 
   // V1 Launch Rares (patterns - simplified as gradient for now)
   polka_mint: { id: "polka_mint", name: "Polka Mint", tier: "rare", kind: "gradient", colors: ["#B6E3B6", "#FFFFFF"] },
@@ -528,6 +532,7 @@ export const SKINS: Record<string, Skin> = {
     kind: "gradient", 
     colors: ["#1f2937", "#0f172a"] 
   },
+
 
   // === EPIC TIER SLIMES ===
   

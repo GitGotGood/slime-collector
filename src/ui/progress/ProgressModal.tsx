@@ -2,7 +2,8 @@ import { useState } from "react";
 import Dialog from "../components/Dialog";
 import Slime from "../components/Slime";
 import { SKINS } from "../../assets/skins";
-import { PRODUCTION_SKINS } from "../../assets/all-skins";
+import { PRODUCTION_SKINS, RARITY_COLORS } from "../../assets/all-skins";
+import RarityPill from "../components/RarityPill";
 import type { Profile } from "../../core/types";
 import { BADGES } from "../../core/badges";
 import { WORLDS, meetsMastery, nextWorld } from "../../core/progression";
@@ -91,47 +92,10 @@ export default function ProgressModal({
       </div>
 
       {tab === "collection" && (
-        <div className="h-[400px] overflow-y-auto">
-          <div className="mb-2 text-sm text-emerald-700/80">Tap a slime to equip. Locked ones are greyed out.</div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-4">
-            {Object.keys(SKINS).map((id) => {
-              const owned = profile.unlocks.skins.includes(id);
-              const isActive = profile.settings.activeSkin === id;
-              const pal = (SKINS as any)[id];
-              
-              // Find origin information from production skins
-              const unifiedSkin = PRODUCTION_SKINS.find(skin => skin.id === id);
-              const origin = unifiedSkin?.origin;
-              
-              return (
-                <button
-                  key={id}
-                  disabled={!owned}
-                  onClick={() => onEquipSkin(id)}
-                  className={`rounded-xl border p-3 text-center ${
-                    owned ? "bg-white border-emerald-200 hover:bg-emerald-50" : "bg-slate-50 border-slate-200 opacity-60 cursor-not-allowed"
-                  }`}
-                >
-                  <div className="aspect-square grid place-items-center">
-                    <Slime paletteId={id as any} className="w-20" eyeTracking={profile.settings.eyeTracking} />
-                  </div>
-                  <div className="mt-2 text-sm font-semibold text-emerald-800">{pal.label ?? id}</div>
-                  
-                  {/* Origin info for owned slimes */}
-                  {owned && origin && (
-                    <div className="mt-1 text-xs text-emerald-600/80 flex items-center justify-center gap-1">
-                      <MapPin className="w-3 h-3" />
-                      <span>{origin.displayName}</span>
-                    </div>
-                  )}
-                  
-                  {isActive && <div className="mt-1 text-xs text-emerald-700 font-semibold">Equipped</div>}
-                  {!owned && <div className="mt-1 text-xs text-slate-600">Locked</div>}
-                </button>
-              );
-            })}
-          </div>
-        </div>
+        <CollectionTab 
+          profile={profile} 
+          onEquipSkin={onEquipSkin} 
+        />
       )}
 
       {tab === "badges" && (
@@ -330,6 +294,110 @@ export default function ProgressModal({
         </div>
       )}
     </Dialog>
+  );
+}
+
+// Collection Tab Component with filters and rarity pills
+function CollectionTab({ profile, onEquipSkin }: { 
+  profile: Profile; 
+  onEquipSkin: (skinId: string) => void; 
+}) {
+  const [rarityFilter, setRarityFilter] = useState<string>('all');
+  
+  // Get owned slimes and their tiers
+  const ownedSlimes = Object.keys(SKINS).filter((id) => profile.unlocks.skins.includes(id));
+  const ownedTiers = [...new Set(ownedSlimes.map((id) => (SKINS as any)[id].tier))].sort();
+  
+  // Filter slimes by rarity
+  const filteredSlimes = ownedSlimes.filter((id) => {
+    if (rarityFilter === 'all') return true;
+    return (SKINS as any)[id].tier === rarityFilter;
+  });
+  
+  return (
+    <div className="h-[400px] overflow-y-auto">
+      <div className="mb-3">
+        <div className="mb-2 text-sm text-emerald-700/80">Tap a slime to equip it as your active skin.</div>
+        
+        {/* Rarity Filters */}
+        <div className="flex flex-wrap gap-2 mb-3">
+          <button
+            onClick={() => setRarityFilter('all')}
+            className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
+              rarityFilter === 'all' 
+                ? 'bg-emerald-500 text-white' 
+                : 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200'
+            }`}
+          >
+            All ({ownedSlimes.length})
+          </button>
+          {ownedTiers.map((tier) => {
+            const count = ownedSlimes.filter((id) => (SKINS as any)[id].tier === tier).length;
+            return (
+              <button
+                key={tier}
+                onClick={() => setRarityFilter(tier)}
+                className={`px-3 py-1 rounded-full text-xs font-medium transition-colors capitalize ${
+                  rarityFilter === tier 
+                    ? 'bg-emerald-500 text-white' 
+                    : `${RARITY_COLORS[tier as keyof typeof RARITY_COLORS]} hover:opacity-80`
+                }`}
+              >
+                {tier} ({count})
+              </button>
+            );
+          })}
+        </div>
+      </div>
+      
+      <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-4">
+        {filteredSlimes.map((id) => {
+          const isActive = profile.settings.activeSkin === id;
+          const pal = (SKINS as any)[id];
+          
+          // Find origin information from production skins
+          const unifiedSkin = PRODUCTION_SKINS.find(skin => skin.id === id);
+          const origin = unifiedSkin?.origin;
+          
+          return (
+            <button
+              key={id}
+              onClick={() => onEquipSkin(id)}
+              className="rounded-xl border p-3 text-center bg-white border-emerald-200 hover:bg-emerald-50 transition-colors relative"
+            >
+              {/* Rarity pill in top-right corner of the card */}
+              <div className="absolute top-2 right-2">
+                <RarityPill tier={pal.tier} className="text-[10px] px-1.5 py-0.5" />
+              </div>
+              
+              <div className="aspect-square grid place-items-center">
+                <Slime paletteId={id as any} className="w-20" eyeTracking={profile.settings.eyeTracking} />
+              </div>
+              
+              <div className="mt-2 text-sm font-semibold text-emerald-800">{pal.name ?? id}</div>
+              
+              {/* Origin info */}
+              {origin && (
+                <div className="mt-1 text-xs text-emerald-600/80 flex items-center justify-center gap-1">
+                  <MapPin className="w-3 h-3" />
+                  <span>{origin.displayName}</span>
+                </div>
+              )}
+              
+              {isActive && <div className="mt-1 text-xs text-emerald-700 font-semibold">Equipped</div>}
+            </button>
+          );
+        })}
+      </div>
+      
+      {/* Show count of filtered slimes */}
+      <div className="mt-4 text-center text-xs text-emerald-600/80">
+        {rarityFilter === 'all' 
+          ? `${ownedSlimes.length} slimes in your collection`
+          : `${filteredSlimes.length} ${rarityFilter} slimes`
+        }
+      </div>
+    </div>
   );
 }
 

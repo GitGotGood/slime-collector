@@ -14,10 +14,10 @@ const CATEGORY_ORDER: FilterKey[] = [
 ];
 
 const TIER_CLASS: Record<BadgeTier, string> = {
-  bronze:  "bg-amber-50 text-amber-800 border-amber-200",
-  silver:  "bg-slate-100 text-slate-800 border-slate-300",
-  gold:    "bg-yellow-50 text-yellow-800 border-yellow-200",
-  diamond: "bg-indigo-50 text-indigo-800 border-indigo-200",
+  bronze:  "bg-orange-100 text-orange-900 border-orange-300", // More copper/bronze-like
+  silver:  "bg-slate-100 text-slate-800 border-slate-300",     // Keep existing gray
+  gold:    "bg-yellow-50 text-yellow-800 border-yellow-200",   // Keep existing gold
+  diamond: "bg-sky-100 text-sky-900 border-sky-300",          // Bright blue like #4cd0ff
 };
 
 export default function BadgesGrid({ defs, unlocked, counters }: Props) {
@@ -97,29 +97,41 @@ function BadgeCard({
 
   const tierInfo = getTierInfo(def, counters, unlocked?.tier);
   const isEarned = !!unlocked;
+  
+  // Get container styling based on earned tier
+  const containerClass = isEarned && unlocked?.tier 
+    ? TIER_CLASS[unlocked.tier]
+    : "bg-white border-slate-200";
 
   return (
-    <div className={`rounded-xl border p-3 bg-white ${isEarned ? "border-emerald-200" : "border-slate-200"}`}>
+    <div className={`relative rounded-xl border p-3 ${containerClass}`}>
       <div className="flex items-start gap-3">
-        <div className="text-2xl select-none">{icon}</div>
-        <div className="flex-1">
+        {/* Badge icon on the left */}
+        <div className="text-2xl select-none flex-shrink-0">{icon}</div>
+        
+        <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <div className="font-semibold text-emerald-900 line-clamp-1">{name}</div>
-            {isEarned && unlocked?.tier && <TierPill tier={unlocked.tier} />}
+            <div className="font-semibold line-clamp-1 flex-1">{name}</div>
+            {/* Tier medal in top-right corner of the card */}
+            {isEarned && unlocked?.tier && (
+              <div className="absolute top-2 right-2 text-lg select-none">
+                {tierEmoji(unlocked.tier)}
+              </div>
+            )}
             {!isEarned && tierInfo.nextTier && <TierPill tier={tierInfo.nextTier.tier} muted />}
           </div>
-          <div className="mt-0.5 text-xs text-emerald-700/80 line-clamp-2">{desc}</div>
+          <div className="mt-0.5 text-xs line-clamp-2 opacity-90">{desc}</div>
 
           {/* Progress */}
           {tierInfo.showProgress && (
             <div className="mt-2">
-              <div className="h-2 w-full rounded-full bg-emerald-100 border border-emerald-200 overflow-hidden">
+              <div className="h-2 w-full rounded-full bg-black/10 border border-black/20 overflow-hidden">
                 <div
-                  className="h-full bg-emerald-500 transition-all"
+                  className="h-full bg-white/60 transition-all"
                   style={{ width: `${Math.min(100, Math.round(100 * tierInfo.have / tierInfo.need))}%` }}
                 />
               </div>
-              <div className="mt-1 flex justify-between text-[11px] text-emerald-700/80">
+              <div className="mt-1 flex justify-between text-[11px] opacity-80">
                 <span>{tierInfo.label}</span>
                 <span>{tierInfo.have}/{tierInfo.need}</span>
               </div>
@@ -128,7 +140,7 @@ function BadgeCard({
 
           {/* Earned line */}
           {isEarned && (
-            <div className="mt-2 text-[11px] text-emerald-700/70">
+            <div className="mt-2 text-[11px] opacity-70">
               Earned {formatDate(unlocked!.at)}{unlocked?.tier ? ` • ${capitalize(unlocked.tier)} tier` : ""}
             </div>
           )}

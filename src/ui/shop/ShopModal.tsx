@@ -186,18 +186,22 @@ function ShopCard({
   const origin = unifiedSkin?.origin;
 
   return (
-    <div className="rounded-xl border border-emerald-200 bg-white p-3 text-center transition-all">
-      <div className="aspect-square w-full overflow-hidden grid place-items-center">
+    <div className="rounded-xl border border-emerald-200 bg-white p-3 text-center transition-all relative">
+      {/* Rarity pill in top-right corner of the card */}
+      <div className="absolute top-2 right-2">
+        <RarityPill tier={item.tier as any} className="text-[10px] px-1.5 py-0.5" />
+      </div>
+      
+      <div className="aspect-square w-full grid place-items-center">
         <div className="scale-90">
           {/* Use skinId (new Slime prop) */}
           <Slime skinId={item.skin as any} className="w-24" eyeTracking={profile.settings.eyeTracking} />
         </div>
       </div>
 
-      {/* name + rarity pill */}
-      <div className="mt-2 text-sm font-semibold text-emerald-800 flex items-center justify-center gap-2">
+      {/* name only (rarity pill moved to corner) */}
+      <div className="mt-2 text-sm font-semibold text-emerald-800">
         <span className="capitalize">{displayName}</span>
-        <RarityPill tier={item.tier as any} />
       </div>
 
       {/* origin info */}

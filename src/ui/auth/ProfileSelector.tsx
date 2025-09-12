@@ -40,6 +40,10 @@ function ProfileCard({ profile, isActive, onSelect, onDelete, isOfflineMode = fa
 }) {
   const [stats, setStats] = React.useState<ProfileStats | null>(null);
   const [loading, setLoading] = React.useState(true);
+  // Delete functionality state variables commented out
+  // const [pressTimer, setPressTimer] = React.useState<NodeJS.Timeout | null>(null);
+  // const [showDeleteConfirm, setShowDeleteConfirm] = React.useState(false);
+  // const [pressProgress, setPressProgress] = React.useState(0);
   
   // Debug logging removed - delete functionality working
 
@@ -106,17 +110,117 @@ function ProfileCard({ profile, isActive, onSelect, onDelete, isOfflineMode = fa
     loadStats();
   }, [profile.id, isOfflineMode]);
 
+  // TEMPORARILY COMMENTED OUT - DELETE FUNCTIONALITY DISABLED AFTER PROFILE CLEANUP
+  // const handlePressStart = () => {
+  //   if (!onDelete) return;
+  //   
+  //   const timer = setTimeout(() => {
+  //     setShowDeleteConfirm(true);
+  //     setPressProgress(0);
+  //   }, 10000); // 10 seconds
+  //   
+  //   setPressTimer(timer);
+  //   
+  //   // Animate progress
+  //   const progressTimer = setInterval(() => {
+  //     setPressProgress(prev => {
+  //       if (prev >= 100) {
+  //         clearInterval(progressTimer);
+  //         return 100;
+  //       }
+  //       return prev + 1; // 100 steps over 10 seconds = 100ms per step
+  //     });
+  //   }, 100);
+  // };
+
+  // const handlePressEnd = () => {
+  //   if (pressTimer) {
+  //     clearTimeout(pressTimer);
+  //     setPressTimer(null);
+  //   }
+  //   setPressProgress(0);
+  // };
+
+  // const handleDeleteConfirm = () => {
+  //   if (onDelete) {
+  //     onDelete();
+  //   }
+  //   setShowDeleteConfirm(false);
+  // };
+
+  // const handleDeleteCancel = () => {
+  //   setShowDeleteConfirm(false);
+  // };
+
+  // Show delete confirmation modal
+  // if (showDeleteConfirm) {
+  //   return (
+  //     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+  //       <motion.div
+  //         initial={{ scale: 0.9, opacity: 0 }}
+  //         animate={{ scale: 1, opacity: 1 }}
+  //         className="bg-white rounded-xl p-6 max-w-md w-full mx-4 shadow-2xl"
+  //       >
+  //         <div className="text-center space-y-4">
+  //           <div className="w-16 h-16 mx-auto bg-red-100 rounded-full flex items-center justify-center">
+  //             <Trash2 className="w-8 h-8 text-red-600" />
+  //           </div>
+  //           <h3 className="text-xl font-bold text-gray-900">Delete Profile?</h3>
+  //           <p className="text-gray-600">
+  //             Are you sure you want to delete <strong>{profile.name}</strong>'s profile? 
+  //             This will permanently remove all progress and cannot be undone.
+  //           </p>
+  //           <div className="flex gap-3">
+  //             <button
+  //               onClick={handleDeleteCancel}
+  //               className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+  //             >
+  //               Cancel
+  //             </button>
+  //             <button
+  //               onClick={handleDeleteConfirm}
+  //               className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+  //             >
+  //               Delete Profile
+  //             </button>
+  //           </div>
+  //         </div>
+  //       </motion.div>
+  //     </div>
+  //   );
+  // }
+
   return (
     <motion.button
       onClick={onSelect}
+      // DELETE HANDLERS COMMENTED OUT
+      // onMouseDown={handlePressStart}
+      // onMouseUp={handlePressEnd}
+      // onMouseLeave={handlePressEnd}
+      // onTouchStart={handlePressStart}
+      // onTouchEnd={handlePressEnd}
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
-      className={`w-full p-4 rounded-xl border-2 transition-all ${
+      className={`relative w-full p-4 rounded-xl border-2 transition-all ${
         isActive
           ? 'border-emerald-500 bg-emerald-50'
           : 'border-emerald-200 hover:border-emerald-300 bg-white hover:bg-emerald-50'
       }`}
     >
+      {/* PRESS AND HOLD PROGRESS INDICATOR COMMENTED OUT */}
+      {/* {pressProgress > 0 && onDelete && (
+        <div className="absolute inset-0 rounded-xl overflow-hidden">
+          <div 
+            className="h-full bg-red-200/50 transition-all duration-100"
+            style={{ width: `${pressProgress}%` }}
+          />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="bg-red-100 px-3 py-1 rounded-full text-xs text-red-700 font-medium">
+              Hold to delete... {Math.ceil((100 - pressProgress) / 10)}s
+            </div>
+          </div>
+        </div>
+      )} */}
       <div className="flex items-center gap-4">
         {/* Slime Avatar */}
         <div className="w-16 h-16 flex items-center justify-center">
@@ -152,24 +256,8 @@ function ProfileCard({ profile, isActive, onSelect, onDelete, isOfflineMode = fa
           )}
         </div>
 
-        {/* Delete & Selection Indicator */}
+        {/* Selection Indicator */}
         <div className="flex items-center gap-2">
-          {/* TEMPORARILY COMMENTED OUT FOR RELEASE - DELETE FEATURE NEEDS PIN SYSTEM
-          {onDelete && (
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                if (confirm(`Delete ${profile.name}'s profile? This cannot be undone.`)) {
-                  onDelete();
-                }
-              }}
-              className="w-8 h-8 rounded-full hover:bg-red-100 flex items-center justify-center text-red-500 hover:text-red-700 transition-colors border border-red-300"
-              title="Delete profile"
-            >
-              <Trash2 className="w-4 h-4" />
-            </button>
-          )}
-          */}
           {isActive && (
             <div className="w-6 h-6 bg-emerald-500 rounded-full flex items-center justify-center">
               <div className="w-2 h-2 bg-white rounded-full" />

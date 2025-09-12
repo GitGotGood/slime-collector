@@ -1,5 +1,6 @@
 import React from 'react';
 import { onAuthChange, signOutUser } from '../../lib/supabase';
+import { authLogger } from '../../lib/debug';
 import { 
   listProfiles, 
   createProfile, 
@@ -50,7 +51,7 @@ interface AuthProviderProps {
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  console.log('🚀 AuthProvider: Component initialized');
+  authLogger.log('AuthProvider initialized', { timestamp: new Date().toISOString() });
   const [user, setUser] = React.useState<any>(null);
   const [profiles, setProfiles] = React.useState<KidProfile[]>([]);
   const [activeProfile, setActiveProfile] = React.useState<KidProfile | null>(null);
@@ -71,7 +72,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const refreshProfiles = async (currentUser?: any) => {
     const userToCheck = currentUser || user;
     if (!userToCheck) {
-      console.log('🚫 RefreshProfiles: No user provided, skipping');
+      if (import.meta.env.DEV) console.log('🚫 RefreshProfiles: No user provided, skipping');
       setProfiles([]);
       setActiveProfile(null);
       setProfilesLoading(false);
@@ -80,9 +81,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     try {
       setProfilesLoading(true);
-      console.log('📋 Loading profiles from database for user:', userToCheck.email);
+      authLogger.log('Loading profiles from database', { userEmail: userToCheck.email });
       const userProfiles = await listProfiles();
-      console.log('📋 Found profiles:', userProfiles.length, 'profiles:', userProfiles.map(p => `${p.name} (${p.id})`));
+      authLogger.log('Profiles loaded', { 
+        count: userProfiles.length, 
+        profiles: userProfiles.map(p => ({ name: p.name, id: p.id }))
+      });
       setProfiles(userProfiles);
 
       // Handle profile selection
@@ -90,7 +94,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       if (activeId) {
         const activeProf = userProfiles.find(p => p.id === activeId);
         if (activeProf) {
-          console.log('✅ Restored active profile:', activeProf.name);
+          authLogger.log('Active profile restored', { profileName: activeProf.name, profileId: activeProf.id });
           setActiveProfile(activeProf);
           setProfilesLoading(false);
           return userProfiles;
