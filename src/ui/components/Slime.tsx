@@ -287,10 +287,10 @@ export default function Slime({
             if (id === "storm_rider") return "#052e25";
             
             // Epic Slimes Face Colors (from design specs)
-            if (id === "lava_flow_enhanced") return "#dc2626"; // Brighter red for better visibility
+            if (id === "lava_flow" || id === "lava_flow_enhanced") return "#dc2626"; // Brighter red for better visibility
             if (id === "aurora_veil_enhanced") return "#064e3b";
             if (id === "glacier_enhanced") return "#065f46";
-            if (id === "aurora_veil_plus_enhanced") return "#000000"; // Black for contrast against aurora
+            if (id === "aurora_veil" || id === "aurora_veil_plus_enhanced") return "#000000"; // Black for contrast against aurora
             if (id === "ripple_enhanced") return "#000000"; // Black for contrast against ripple pattern
             if (id === "dune_drift" || id === "dune_drift_enhanced") return "#7c2d12";
             if (id === "bog_bubble" || id === "bog_bubble_enhanced") return "#064e3b";
@@ -610,8 +610,8 @@ export default function Slime({
                              id === "biolume_veil_enhanced" ? "#06b6d4" :
                              id === "echo_rune_enhanced" ? "#0f766e" :
                              id === "synthwave" ? "#ec4899" : 
-                             id === "lava_flow_enhanced" ? "#dc2626" :  // Same as eyes
-                             id === "aurora_veil_plus_enhanced" ? "#000000" :  // Same as eyes
+                             (id === "lava_flow" || id === "lava_flow_enhanced") ? "#dc2626" :  // Same as eyes
+                             (id === "aurora_veil" || id === "aurora_veil_plus_enhanced") ? "#000000" :  // Same as eyes
                              id === "ripple_enhanced" ? "#000000" :  // Same as eyes
                              id === "moss" ? "#09402A" :  // Dark forest green for moss
                              id === "sky" ? "#16345A" :  // Deep blue-navy for sky contrast
@@ -1876,7 +1876,7 @@ export default function Slime({
         )}
         
         {/* Enhanced Epic Effects */}
-        {id === "lava_flow_enhanced" && (
+        {(id === "lava_flow" || id === "lava_flow_enhanced") && (
           <g>
             {/* Clip path to keep effects inside slime body */}
             <defs>
@@ -2113,7 +2113,7 @@ export default function Slime({
           </g>
         )}
         
-        {id === "aurora_veil_plus_enhanced" && (
+        {(id === "aurora_veil" || id === "aurora_veil_plus_enhanced") && (
           <g>
             <defs>
               <clipPath id="aurora-plus-enhanced-clip">
