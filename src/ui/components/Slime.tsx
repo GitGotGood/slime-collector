@@ -287,7 +287,7 @@ export default function Slime({
             if (id === "storm_rider") return "#052e25";
             
             // Epic Slimes Face Colors (from design specs)
-            if (id === "lava_flow" || id === "lava_flow_enhanced") return "#dc2626"; // Brighter red for better visibility
+            if (id === "lava_flow" || id === "lava_flow_enhanced") return "#000000"; // Standard black
             if (id === "aurora_veil_enhanced") return "#064e3b";
             if (id === "glacier_enhanced") return "#065f46";
             if (id === "aurora_veil" || id === "aurora_veil_plus_enhanced") return "#000000"; // Black for contrast against aurora
@@ -610,7 +610,7 @@ export default function Slime({
                              id === "biolume_veil_enhanced" ? "#06b6d4" :
                              id === "echo_rune_enhanced" ? "#0f766e" :
                              id === "synthwave" ? "#ec4899" : 
-                             (id === "lava_flow" || id === "lava_flow_enhanced") ? "#dc2626" :  // Same as eyes
+                             (id === "lava_flow" || id === "lava_flow_enhanced") ? "#000000" :  // Standard black
                              (id === "aurora_veil" || id === "aurora_veil_plus_enhanced") ? "#000000" :  // Same as eyes
                              id === "ripple_enhanced" ? "#000000" :  // Same as eyes
                              id === "moss" ? "#09402A" :  // Dark forest green for moss

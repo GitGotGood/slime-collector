@@ -11,7 +11,7 @@ type Props = {
 
 // Mock progress data for proof of concept
 const MOCK_PROGRESS: BiomeProgress = {
-  meadow: { stars: 3, masteredAt: "2024-01-15" },
+  meadow: { stars: 3, masteredAt: "2025-01-15" },
   beach: { stars: 2 },
   forest: { stars: 1 },
   // desert: unlocked but not started

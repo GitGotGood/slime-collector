@@ -403,7 +403,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   
   const mergeProfileProgress = async (localProfile: any, cloudProfile: any) => {
     // Timestamp-based conflict resolution with fallbacks
-    const localTimestamp = new Date(localProfile.updated_at || '2024-01-01'); // Assume recent if no timestamp
+    const localTimestamp = new Date(localProfile.updated_at || '2025-01-01'); // Assume recent if no timestamp
     const cloudTimestamp = new Date(cloudProfile.updated_at || '1970-01-01'); // Assume old if no timestamp
     
     console.log('📊 Timestamp comparison:', {

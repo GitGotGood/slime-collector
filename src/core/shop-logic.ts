@@ -24,7 +24,6 @@ export const ALL_SHOP_ITEMS: ShopItem[] = [
   { id: 'skin_aurora_veil', type: 'skin', skin: 'aurora_veil', tier: 'epic', biome: 'shop' },
   
   // Launch Mythics - Daily rotation marquee
-  { id: 'skin_nebula_prime', type: 'skin', skin: 'nebula_prime', tier: 'mythic', biome: 'shop' },
   { id: 'skin_phoenix_heart', type: 'skin', skin: 'phoenix_heart', tier: 'mythic', biome: 'shop' },
 ];
 

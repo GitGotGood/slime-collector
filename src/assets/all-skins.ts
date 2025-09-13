@@ -1333,7 +1333,7 @@ export const MY_MYTHIC: UnifiedSkin[] = [
   { id: "nebula_hybrid", name: "Nebula (Hybrid)", tier: "mythic", source: "inspiration", anim: "nebula_hybrid", base: { fill: "#6d28d9", stroke: "#3b0764", shine: "#f5d0fe" } },
 ];
 
-// ===== BATCH 2024: MASSIVE EXPANSION =====
+// ===== BATCH 2025: MASSIVE EXPANSION =====
 
 // NEW COMMON (solid colors — clean, readable) — 20
 export const NEW_COMMON: UnifiedSkin[] = [
@@ -1844,7 +1844,7 @@ export const ALL_SKINS: UnifiedSkin[] = [
   ...MY_RARE,
   ...MY_EPIC,
   ...MY_MYTHIC,
-  // NEW BATCH 2024 EXPANSION
+  // NEW BATCH 2025 EXPANSION
   ...NEW_COMMON,
   ...NEW_UNCOMMON,
   ...NEW_RARE,
