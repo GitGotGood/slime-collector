@@ -153,10 +153,12 @@ export default function ShopModal({
             </button>
           </div>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          {daily.map((it) => (
-            <ShopCard key={it.id} item={it} profile={profile} onBuy={onBuy} onEquip={onEquip} />
-          ))}
+        <div className="max-h-96 overflow-y-auto pr-2 -mr-2">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            {daily.map((it) => (
+              <ShopCard key={it.id} item={it} profile={profile} onBuy={onBuy} onEquip={onEquip} />
+            ))}
+          </div>
         </div>
       </section>
     </Dialog>

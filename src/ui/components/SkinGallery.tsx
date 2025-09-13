@@ -31,7 +31,6 @@ function GallerySlime({ skin, size = "normal", instanceId }: { skin: UnifiedSkin
       "ripple": "ripple",
       "lava_flow": "lava_flow",
       "aurora_veil": "aurora_veil",
-      "nebula_prime": "nebula_prime",
       "phoenix_heart": "phoenix_heart",
       // Biome unlock slimes
       "clover": "clover",
@@ -470,7 +469,7 @@ function GallerySlime({ skin, size = "normal", instanceId }: { skin: UnifiedSkin
                 </g>
               )}
               
-              {skin.pattern === "sprinkles" && (
+              {skin.pattern?.type === "confetti_dots" && (
                 <g opacity={0.5}>
                   {Array.from({ length: 25 }).map((_, i) => (
                     <rect 
@@ -2008,90 +2007,6 @@ function GallerySlime({ skin, size = "normal", instanceId }: { skin: UnifiedSkin
           )}
 
           {/* MYTHIC SLIMES - DETAILED IMPLEMENTATIONS */}
-          {skin.id === "nebula_prime" && (
-            <g clipPath={`url(#slime-body-clip-${skin.id})`}>
-              {/* Deep space gradient */}
-              <defs>
-                <linearGradient id="nebulaPrimeGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stopColor="#2A0E4F" />
-                  <stop offset="100%" stopColor="#0D0C28" />
-                </linearGradient>
-                <filter id="nebulaPrimeBlur">
-                  <feGaussianBlur stdDeviation="0.8" />
-                </filter>
-                <radialGradient id="nebulaWisp1" cx="70%" cy="30%">
-                  <stop offset="0%" stopColor="#6E3AC9" stopOpacity="0.2" />
-                  <stop offset="100%" stopColor="#6E3AC9" stopOpacity="0" />
-                </radialGradient>
-                <radialGradient id="nebulaWisp2" cx="30%" cy="70%">
-                  <stop offset="0%" stopColor="#FF7BD5" stopOpacity="0.15" />
-                  <stop offset="100%" stopColor="#FF7BD5" stopOpacity="0" />
-                </radialGradient>
-              </defs>
-              <motion.ellipse 
-                cx={32} cy={34} rx={22} ry={20} 
-                fill="url(#nebulaPrimeGrad)" 
-                filter="url(#nebulaPrimeBlur)"
-                opacity={0.8}
-                animate={{ filter: ["hue-rotate(0deg)", "hue-rotate(2deg)", "hue-rotate(0deg)"] }}
-                transition={{ repeat: Infinity, duration: 20, ease: "easeInOut" }}
-              />
-              
-              {/* Far starfield layer */}
-              {Array.from({ length: 12 }).map((_, i) => (
-                <motion.circle
-                  key={`far-${i}`}
-                  cx={14 + (i*5)%36}
-                  cy={18 + (i*7)%28}
-                  r={0.5}
-                  fill="#3AC6FF"
-                  opacity={0.4}
-                  animate={{ 
-                    x: [0, -4, 0],
-                    opacity: i < 2 ? [0.4, 0.8, 0.4] : 0.4 
-                  }}
-                  transition={{ 
-                    x: { repeat: Infinity, duration: 60, ease: "linear" },
-                    opacity: i < 2 ? { repeat: Infinity, duration: 0.2, delay: i*3, repeatDelay: 8 } : {}
-                  }}
-                />
-              ))}
-              
-              {/* Near starfield layer */}
-              {Array.from({ length: 8 }).map((_, i) => (
-                <motion.circle
-                  key={`near-${i}`}
-                  cx={16 + (i*6)%32}
-                  cy={20 + (i*8)%24}
-                  r={0.8}
-                  fill="#6E3AC9"
-                  opacity={0.6}
-                  animate={{ 
-                    x: [0, -8, 0],
-                    scale: i < 1 ? [1, 1.3, 1] : 1
-                  }}
-                  transition={{ 
-                    x: { repeat: Infinity, duration: 30, ease: "linear" },
-                    scale: i < 1 ? { repeat: Infinity, duration: 0.25, delay: i*5, repeatDelay: 6 } : {}
-                  }}
-                />
-              ))}
-              
-              {/* Nebula wisps */}
-              <motion.ellipse 
-                cx={42} cy={24} rx={12} ry={8} 
-                fill="url(#nebulaWisp1)"
-                animate={{ opacity: [0.2, 0.12, 0.2] }}
-                transition={{ repeat: Infinity, duration: 8, ease: "easeInOut" }}
-              />
-              <motion.ellipse 
-                cx={22} cy={44} rx={10} ry={6} 
-                fill="url(#nebulaWisp2)"
-                animate={{ opacity: [0.15, 0.08, 0.15] }}
-                transition={{ repeat: Infinity, duration: 8, ease: "easeInOut", delay: 2 }}
-              />
-            </g>
-          )}
 
           {skin.id === "phoenix_heart" && (
             <>
