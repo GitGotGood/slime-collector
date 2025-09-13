@@ -292,7 +292,7 @@ export function difficultyMultiplier(id: SkillID): number {
 export const SKILL_ORDER: SkillID[] = [
   'add_1_10', 'add_1_20',
   'sub_1_10', 'sub_1_20',
-  'mixed_20', 'missing_20',
+  'mixed_20',
   'mul_0_5_10', 'mul_0_10', 'div_facts',
   'add_3digit', 'sub_3digit',
   'sub_3digit_triple', 'sub_4digit_quad', // NEW: Enable by default for release
