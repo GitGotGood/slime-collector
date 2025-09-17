@@ -136,11 +136,22 @@ export default function Slime({
       return { fill: skin.colors[0], defs: null as React.ReactNode };
     }
     if (skin.kind === "gradient") {
+      // Check gradient direction
+      const direction = (skin as any).direction;
+      let gradientProps;
+      if (direction === "horizontal") {
+        gradientProps = { x1: "0", y1: "0", x2: "1", y2: "0" }; // Horizontal: left to right
+      } else if (direction === "vertical") {
+        gradientProps = { x1: "0", y1: "0", x2: "0", y2: "1" }; // Vertical: top to bottom
+      } else {
+        gradientProps = { x1: "0", y1: "0", x2: "1", y2: "1" }; // Diagonal: top-left to bottom-right (default)
+      }
+      
       return {
         fill: `url(#${uid}-grad)`,
         defs: (
           <defs>
-            <linearGradient id={`${uid}-grad`} x1="0" y1="0" x2="1" y2="1">
+            <linearGradient id={`${uid}-grad`} {...gradientProps}>
               {skin.colors.map((color, index) => (
                 <stop 
                   key={index}
@@ -151,6 +162,12 @@ export default function Slime({
             </linearGradient>
           </defs>
         ),
+      };
+    }
+    if (skin.kind === "pattern") {
+      return {
+        fill: skin.colors[0], // Base color for pattern
+        defs: null as React.ReactNode, // Pattern will be rendered separately
       };
     }
     return {
@@ -188,45 +205,248 @@ export default function Slime({
     >
       <svg viewBox="0 0 64 64" className="w-full h-auto drop-shadow">
         {defs}
+        
+        {/* Special rendering for Sprinkles, Polka Mint, and Confetti - separated stroke approach */}
+        {(id === "sprinkles" || id === "polka_mint" || id === "confetti") ? (
+          <>
+            {/* 1. Main slime body (fill only) */}
         <motion.path
           d="M8 34 C10 18 22 10 32 10 C42 10 54 18 56 34 C56 46 46 54 32 54 C18 54 8 46 8 34Z"
           fill={fill}
-          stroke={(() => {
-            // Epic Inspiration Slimes Stroke Colors (from design specs)
-            const strokeColors: Record<string, string> = {
-              blaze_knight: "#3b0a02",
-              jungle_raider: "#0f3a2a", 
-              cave_explorer: "#273341",
-              sky_racer: "#1e3a8a",
-              desert_outrider: "#6b3f0c",
-              turbo_bot: "#1f2937",
-              neon_circuit: "#0b1026",
-              magnet_core: "#0b0f14",
-              plasma_pilot: "#0e3a40",
-              rex_roar: "#0b3a2a",
-              thunder_lizard: "#3e2a12",
-              slimezilla_jr: "#07323a",
-              goal_streak: "#0b3a2a",
-              home_run: "#5b3b0a",
-              drift_king: "#1f2937",
-              star_captain: "#0b1026",
-              coral_corsair: "#0f2a2f",
-              rune_sprinter: "#3a1f0a",
-              meteor_glide: "#273341",
-              storm_rider: "#08343a"
-            };
-            return strokeColors[id] || "#1f2937";
-          })()}
+              initial={{ filter: "brightness(1)" }}
+              animate={{ filter: mood === "happy" ? "brightness(1.1)" : mood === "sad" ? "brightness(0.95)" : "brightness(1)" }}
+            />
+            
+            {/* 2. Sprinkles pattern */}
+            {id === "sprinkles" && (
+              <g>
+                <defs>
+                  <clipPath id={`${uid}-pattern-clip`}>
+                    <path d="M8 34 C10 18 22 10 32 10 C42 10 54 18 56 34 C56 46 46 54 32 54 C18 54 8 46 8 34Z" />
+                  </clipPath>
+                </defs>
+                <g clipPath={`url(#${uid}-pattern-clip)`}>
+                  {/* More sprinkles with better saturation and variety */}
+                  {Array.from({ length: 25 }).map((_, i) => (
+                    <rect 
+                      key={i}
+                      x={8 + (i * 11) % 48}
+                      y={16 + ((i * 7) % 32)}
+                      width={1.8}
+                      height={6}
+                      rx={0.8}
+                      transform={`rotate(${(i * 25 + i * 15) % 360} 32 32)`}
+                      fill={skin.pattern.colors[i % skin.pattern.colors.length]}
+                      opacity={0.8}
+                    />
+                  ))}
+                  {/* Additional smaller sprinkles for more coverage */}
+                  {Array.from({ length: 15 }).map((_, i) => (
+                    <rect 
+                      key={`small-${i}`}
+                      x={12 + (i * 17) % 40}
+                      y={20 + ((i * 11) % 28)}
+                      width={1.2}
+                      height={4}
+                      rx={0.6}
+                      transform={`rotate(${(i * 45 + i * 20) % 360} 32 32)`}
+                      fill={skin.pattern.colors[(i + 2) % skin.pattern.colors.length]}
+                      opacity={0.7}
+                    />
+                  ))}
+                </g>
+              </g>
+            )}
+            
+            {/* 2. Polka dot pattern for Polka Mint */}
+            {id === "polka_mint" && (
+              <g>
+                <defs>
+                  <clipPath id={`${uid}-polka-clip`}>
+                    <path d="M8 34 C10 18 22 10 32 10 C42 10 54 18 56 34 C56 46 46 54 32 54 C18 54 8 46 8 34Z" />
+                  </clipPath>
+                </defs>
+                <g clipPath={`url(#${uid}-polka-clip)`}>
+                  {/* Enhanced polka dots with better coverage and natural pattern */}
+                  {(() => {
+                    const colors = ["#DCF5DC", "#90CC90", "#306630", "#A8E6A8", "#4A7C59"]; // More color variety
+                    const dots = [];
+                    const rows = 5; // More rows for better coverage
+                    const cols = 6; // More columns for better coverage
+                    const spacingX = 7;
+                    const spacingY = 7;
+                    const startX = 14;
+                    const startY = 18; // Start higher
+                    
+                    for (let row = 0; row < rows; row++) {
+                      for (let col = 0; col < cols; col++) {
+                        // Offset every other row for natural polka dot pattern
+                        const rowOffset = (row % 2) * (spacingX / 2);
+                        const x = startX + col * spacingX + rowOffset;
+                        const y = startY + row * spacingY;
+                        
+                        // Randomize color selection for more visual interest
+                        const colorIndex = (row * 3 + col * 2 + (row + col) % 3) % colors.length;
+                        const color = colors[colorIndex];
+                        
+                        // Vary opacity slightly for depth
+                        const opacity = 0.75 + (row + col) % 3 * 0.1;
+                        
+                        dots.push(
+                          <circle
+                            key={`${row}-${col}`}
+                            cx={x}
+                            cy={y}
+                            r={1.6} // Slightly smaller for more refined look
+                            fill={color}
+                            opacity={opacity}
+                          />
+                        );
+                      }
+                    }
+                    return dots;
+                  })()}
+                </g>
+              </g>
+            )}
+            
+            {/* 2. Confetti polka dot pattern */}
+            {id === "confetti" && (
+              <g>
+                <defs>
+                  <clipPath id={`${uid}-confetti-clip`}>
+                    <path d="M8 34 C10 18 22 10 32 10 C42 10 54 18 56 34 C56 46 46 54 32 54 C18 54 8 46 8 34Z" />
+                  </clipPath>
+                </defs>
+                <g clipPath={`url(#${uid}-confetti-clip)`}>
+                  {/* Primary color polka dots for Confetti */}
+                  {(() => {
+                    const colors = ["#EF4444", "#3B82F6", "#10B981", "#F59E0B", "#8B5CF6"]; // Red, Blue, Green, Yellow, Purple
+                    const dots = [];
+                    const rows = 5;
+                    const cols = 6;
+                    const spacingX = 7;
+                    const spacingY = 7;
+                    const startX = 14;
+                    const startY = 18;
+                    
+                    for (let row = 0; row < rows; row++) {
+                      for (let col = 0; col < cols; col++) {
+                        // Offset every other row for natural polka dot pattern
+                        const rowOffset = (row % 2) * (spacingX / 2);
+                        const x = startX + col * spacingX + rowOffset;
+                        const y = startY + row * spacingY;
+                        
+                        // Cycle through primary colors
+                        const colorIndex = (row * 2 + col) % colors.length;
+                        const color = colors[colorIndex];
+                        
+                        // Vary opacity slightly for depth
+                        const opacity = 0.8 + (row + col) % 2 * 0.1;
+                        
+                        dots.push(
+                          <circle
+                            key={`${row}-${col}`}
+                            cx={x}
+                            cy={y}
+                            r={1.6}
+                            fill={color}
+                            opacity={opacity}
+                          />
+                        );
+                      }
+                    }
+                    return dots;
+                  })()}
+                </g>
+              </g>
+            )}
+            
+            {/* 3. Stroke outline (separate element) */}
+            <path
+              d="M8 34 C10 18 22 10 32 10 C42 10 54 18 56 34 C56 46 46 54 32 54 C18 54 8 46 8 34Z"
+              fill="none"
+          stroke="#1f2937"
+              strokeWidth="1.5"
+            />
+            
+            {/* 4. Eyes and mouth for Polka Mint and Confetti (on top of stroke) */}
+            {(id === "polka_mint" || id === "confetti") && (
+              <>
+                {/* Eyes */}
+                <circle cx={24} cy={30} r="3.2" fill={id === "confetti" ? "#000000" : "#1f2937"} />
+                <circle cx={40} cy={30} r="3.2" fill={id === "confetti" ? "#000000" : "#1f2937"} />
+                
+                {/* Mouth */}
+                <path 
+                  d={mouthPath} 
+                  stroke={id === "confetti" ? "#000000" : "#1f2937"}
+                  strokeWidth="2" 
+                  fill="none" 
+                  strokeLinecap="round" 
+                />
+              </>
+            )}
+          </>
+        ) : (
+          /* Standard rendering for all other slimes */
+          <motion.path
+            d="M8 34 C10 18 22 10 32 10 C42 10 54 18 56 34 C56 46 46 54 32 54 C18 54 8 46 8 34Z"
+            fill={fill}
+            stroke={(() => {
+              // Epic Inspiration Slimes Stroke Colors (from design specs)
+              const strokeColors: Record<string, string> = {
+                blaze_knight: "#3b0a02",
+                jungle_raider: "#0f3a2a", 
+                cave_explorer: "#273341",
+                sky_racer: "#1e3a8a",
+                desert_outrider: "#6b3f0c",
+                turbo_bot: "#1f2937",
+                neon_circuit: "#0b1026",
+                magnet_core: "#0b0f14",
+                plasma_pilot: "#0e3a40",
+                rex_roar: "#0b3a2a",
+                thunder_lizard: "#3e2a12",
+                slimezilla_jr: "#07323a",
+                goal_streak: "#0b3a2a",
+                home_run: "#5b3b0a",
+                drift_king: "#1f2937",
+                star_captain: "#0b1026",
+                coral_corsair: "#0f2a2f",
+                rune_sprinter: "#3a1f0a",
+                meteor_glide: "#273341",
+                storm_rider: "#08343a",
+                
+                // Pre-production common slimes with custom stroke colors (using former face colors)
+                bluebird: "#1e40af", // Dark blue stroke
+                fog: "#6B7280", // Medium gray stroke
+                apple_shine: "#dc2626", // Dark red stroke
+                honey: "#d97706", // Dark orange stroke
+                lilac: "#7c3aed", // Dark purple stroke
+                
+                // Shop common slimes with darker body color strokes
+                moss: "#2d5a3d", // Darker green stroke (darker than #5BA86D)
+                sky: "#1e40af", // Darker blue stroke (darker than #A9D8FF)
+                coral: "#cc5c4a", // Darker coral stroke (darker than #FF8B7A)
+                charcoal: "#4a5568", // Match face color stroke
+                acorn: "#92400e" // Dark brown stroke (darker than #a16207)
+              };
+              return strokeColors[id] || "#1f2937";
+            })()}
           strokeWidth="1.5"
           initial={{ filter: "brightness(1)" }}
           animate={{ filter: mood === "happy" ? "brightness(1.1)" : mood === "sad" ? "brightness(0.95)" : "brightness(1)" }}
         />
+        )}
         <path d="M22 18 C26 16 30 16 32 14" stroke="#ffffffaa" strokeWidth="3" strokeLinecap="round" />
         
         {/* Eyes with optional tracking */}
         {(() => {
           // Custom face colors for enhanced mythics
           const getFaceColor = () => {
+            if (id === "sprinkles") return "#000000"; // Black for contrast against colorful sprinkles
+            if (id === "sunrise") return "#000000"; // Black for contrast against sunrise gradient
+            if (id === "sunset") return "#000000"; // Black for contrast against sunset gradient
             if (id === "nebula") return "#9333ea"; // Deep purple to match nebula theme
             if (id === "galaxy_swirl") return "#0891b2"; // Teal/cyan from Crab Nebula
             if (id === "star_parade") return "#f1f5f9"; // Light stellar silver
@@ -316,7 +536,7 @@ export default function Slime({
             if (id === "moss") return "#09402A"; // Dark forest green for moss
             if (id === "sky") return "#16345A"; // Deep blue-navy for sky contrast
             if (id === "coral") return "#1F2A2E"; // Dark charcoal for coral contrast
-            if (id === "clover") return "#0C4B2B"; // Deep forest green for clover
+            if (id === "acorn") return "#000000"; // Black for acorn
             if (id === "charcoal") return "#4a5568"; // Dark grey for charcoal ash look
             
             // Enhanced uncommon slimes with specific face colors
@@ -339,7 +559,15 @@ export default function Slime({
             if (id === "autumn_fade") return "#0f172a"; // Deep charcoal for contrast across full spectrum
             if (id === "cotton_candy") return "#831843"; // Deep pink for vibrant contrast
             if (id === "rainbow") return "#0f172a"; // Deep charcoal for multi-color contrast
-            if (id === "sunset") return "#1e1b4b"; // Deep indigo for vibrant sunset contrast
+            if (id === "sunrise") return "#000000"; // Black for contrast against sunrise gradient
+            if (id === "sunset") return "#000000"; // Black for contrast against sunset gradient
+            
+            // Pre-production common slimes with black faces for contrast
+            if (id === "bluebird") return "#000000"; // Black for contrast
+            if (id === "fog") return "#000000"; // Black for contrast
+            if (id === "apple_shine") return "#000000"; // Black for contrast
+            if (id === "honey") return "#000000"; // Black for contrast
+            if (id === "lilac") return "#000000"; // Black for contrast
             
             return "#064e3b"; // Default emerald
           };
@@ -602,7 +830,9 @@ export default function Slime({
             );
           } else {
             // Default mouth for other enhanced mythics
-            const mouthColor = id === "galaxy_swirl" ? "#0891b2" : 
+            const mouthColor = id === "sprinkles" ? "#000000" : // Black for contrast against colorful sprinkles
+                             id === "acorn" ? "#000000" : // Black for acorn
+                             id === "galaxy_swirl" ? "#0891b2" : 
                              id === "star_parade" ? "#f1f5f9" : 
                              id === "ionosong" ? "#6366f1" :
                              id === "mirage_enhanced" ? "#d97706" :
@@ -616,7 +846,7 @@ export default function Slime({
                              id === "moss" ? "#09402A" :  // Dark forest green for moss
                              id === "sky" ? "#16345A" :  // Deep blue-navy for sky contrast
                              id === "coral" ? "#1F2A2E" :  // Dark charcoal for coral contrast
-                             id === "clover" ? "#0C4B2B" :  // Deep forest green for clover
+                             id === "acorn" ? "#000000" :  // Black for acorn
                              id === "charcoal" ? "#4a5568" :  // Dark grey for charcoal ash look
                              // Enhanced uncommon slimes
                              (id === "spring_fade" || id === "spring_fade_enhanced") ? "#0F5132" :
@@ -638,7 +868,14 @@ export default function Slime({
                              id === "autumn_fade" ? "#0f172a" :  // Deep charcoal for contrast across full spectrum
                              id === "cotton_candy" ? "#831843" :  // Deep pink for vibrant contrast
                              id === "rainbow" ? "#0f172a" :  // Deep charcoal for multi-color contrast
-                             id === "sunset" ? "#1e1b4b" :  // Deep indigo for vibrant sunset contrast
+                             id === "sunrise" ? "#000000" :  // Black for contrast against sunrise gradient
+                             id === "sunset" ? "#000000" :  // Black for contrast against sunset gradient
+                             // Pre-production common slimes with black mouths for contrast
+                             id === "bluebird" ? "#000000" :  // Black for contrast
+                             id === "fog" ? "#000000" :  // Black for contrast
+                             id === "apple_shine" ? "#000000" :  // Black for contrast
+                             id === "honey" ? "#000000" :  // Black for contrast
+                             id === "lilac" ? "#000000" :  // Black for contrast
                              "#064e3b";
             return (
               <path 
@@ -2113,7 +2350,7 @@ export default function Slime({
           </g>
         )}
         
-        {(id === "aurora_veil" || id === "aurora_veil_plus_enhanced") && (
+        {(id === "aurora_veil" || id === "aurora_veil_enhanced" || id === "aurora_veil_plus_enhanced") && (
           <g>
             <defs>
               <clipPath id="aurora-plus-enhanced-clip">

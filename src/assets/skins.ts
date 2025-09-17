@@ -21,10 +21,12 @@ export const SKINS: Record<string, Skin> = {
   blue_lagoon: { id: "blue_lagoon", name: "Blue Lagoon", tier: "uncommon", kind: "gradient", colors: ["#68E0FF", "#3D78C1"] },
   cotton_candy: { id: "cotton_candy", name: "Cotton Candy", tier: "uncommon", kind: "gradient", colors: ["#60a5fa", "#f472b6"] },
   rainbow: { id: "rainbow", name: "Rainbow", tier: "uncommon", kind: "gradient", colors: ["#ef4444", "#f97316", "#fbbf24", "#22c55e", "#3b82f6", "#6366f1", "#8b5cf6"] },
-  sunset: { id: "sunset", name: "Sunset", tier: "uncommon", kind: "gradient", colors: ["#8b5cf6", "#ec4899", "#f97316", "#fbbf24"] },
+  sunset: { id: "sunset", name: "Sunset", tier: "uncommon", kind: "gradient", colors: ["#8b5cf6", "#ec4899", "#f97316", "#fbbf24"], direction: "vertical" },
+  sunrise: { id: "sunrise", name: "Sunrise", tier: "uncommon", kind: "gradient", colors: ["#2196F3", "#64B5F6", "#FFEB3B", "#FF9800", "#F44336"], direction: "vertical" }, // Sunrise vertical gradient
 
   // V1 Launch Rares (patterns - simplified as gradient for now)
   polka_mint: { id: "polka_mint", name: "Polka Mint", tier: "rare", kind: "gradient", colors: ["#B6E3B6", "#FFFFFF"] },
+  confetti: { id: "confetti", name: "Confetti", tier: "rare", kind: "gradient", colors: ["#FEF3C7", "#FDE68A"], direction: "horizontal" }, // Light yellow horizontal gradient
   ripple: { id: "ripple", name: "Ripple", tier: "rare", kind: "gradient", colors: ["#7FECD8", "#134E4A"] },
 
   // V1 Launch Epics (animated) - Enhanced versions promoted to production
@@ -36,7 +38,7 @@ export const SKINS: Record<string, Skin> = {
   phoenix_heart: { id: "phoenix_heart", name: "Phoenix Heart", tier: "mythic", kind: "animated", colors: ["#ff7a3c", "#d12525", "#571616"] },
 
   // Biome Unlock Rewards
-  clover: { id: "clover", name: "Clover", tier: "common", kind: "solid", colors: ["#65a30d"] },
+  acorn: { id: "acorn", name: "Acorn", tier: "common", kind: "solid", colors: ["#a16207"] },
   sea_breeze: { id: "sea_breeze", name: "Sea Breeze", tier: "uncommon", kind: "gradient", colors: ["#67e8f9", "#0ea5e9"] },
   raindrop: { id: "raindrop", name: "Raindrop", tier: "uncommon", kind: "gradient", colors: ["#e0e7ff", "#6366f1"] },
   ocean_drift: { id: "ocean_drift", name: "Ocean Drift", tier: "rare", kind: "gradient", colors: ["#67e8f9", "#0ea5e9"] },
@@ -139,12 +141,12 @@ export const SKINS: Record<string, Skin> = {
     kind: "solid", 
     colors: ["#2B2F36"] 
   },
-  clover_enhanced: { 
-    id: "clover_enhanced", 
-    name: "Clover Enhanced", 
+  acorn_enhanced: { 
+    id: "acorn_enhanced", 
+    name: "Acorn Enhanced", 
     tier: "common", 
     kind: "solid", 
-    colors: ["#6FBF2E"] 
+    colors: ["#92400e"] 
   },
 
   // Enhanced Uncommon Slimes with Gradients
@@ -255,12 +257,12 @@ export const SKINS: Record<string, Skin> = {
   // synthwave_enhanced: MERGED INTO ORIGINAL
 
   // Pre-Production Commons (for comparison)
-  murk: { 
-    id: "murk", 
-    name: "Murk", 
+  fog: { 
+    id: "fog", 
+    name: "Fog", 
     tier: "common", 
     kind: "solid", 
-    colors: ["#3C4953"] 
+    colors: ["#9CA3AF"] 
   },
   bluebird: { 
     id: "bluebird", 
@@ -292,12 +294,12 @@ export const SKINS: Record<string, Skin> = {
   },
 
   // Pre-Production Enhanced Commons
-  murk_enhanced: { 
-    id: "murk_enhanced", 
-    name: "Murk Enhanced", 
+  fog_enhanced: { 
+    id: "fog_enhanced", 
+    name: "Fog Enhanced", 
     tier: "common", 
     kind: "solid", 
-    colors: ["#3C4953"] 
+    colors: ["#D1D5DB"] 
   },
   bluebird_enhanced: { 
     id: "bluebird_enhanced", 
@@ -883,7 +885,8 @@ export const SKINS: Record<string, Skin> = {
     id: "sprinkles", 
     name: "Sprinkles", 
     tier: "rare", 
-    kind: "gradient", 
+    kind: "pattern", 
+    pattern: { type: "confetti_dots", count: 18, colors: ["#FFB3BA", "#BAFFC9", "#BAE1FF", "#FFFFBA"], alpha: 0.50 },
     colors: ["#F7FBFF", "#93C5FD"] 
   },
   berry_fizz: { 

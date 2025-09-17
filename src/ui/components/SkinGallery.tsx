@@ -28,12 +28,16 @@ function GallerySlime({ skin, size = "normal", instanceId }: { skin: UnifiedSkin
       "rainbow": "rainbow",
       "sunset": "sunset",
       "polka_mint": "polka_mint",
+      "confetti": "confetti",
+      "sunrise": "sunrise",
+      "sprinkles": "sprinkles",
       "ripple": "ripple",
       "lava_flow": "lava_flow",
       "aurora_veil": "aurora_veil",
+      "nebula": "nebula",
       "phoenix_heart": "phoenix_heart",
       // Biome unlock slimes
-      "clover": "clover",
+      "acorn": "acorn",
       "sea_breeze": "sea_breeze",
       "raindrop": "raindrop",
       "ocean_drift": "ocean_drift",
@@ -89,7 +93,7 @@ function GallerySlime({ skin, size = "normal", instanceId }: { skin: UnifiedSkin
       "sky_enhanced": "sky_enhanced", 
       "coral_enhanced": "coral_enhanced",
       "charcoal_enhanced": "charcoal_enhanced",
-      "clover_enhanced": "clover_enhanced",
+      "acorn_enhanced": "acorn_enhanced",
       "spring_fade_enhanced": "spring_fade_enhanced",
       "blue_lagoon_enhanced": "blue_lagoon_enhanced",
       "sea_breeze_enhanced": "sea_breeze_enhanced",
@@ -107,13 +111,13 @@ function GallerySlime({ skin, size = "normal", instanceId }: { skin: UnifiedSkin
       "echo_rune_enhanced": "echo_rune_enhanced",
       // "synthwave_enhanced": merged into original
       // Pre-production commons
-      "murk": "murk",
+      "fog": "fog",
       "bluebird": "bluebird", 
       "apple_shine": "apple_shine",
       "honey": "honey",
       "lilac": "lilac",
       // Pre-production enhanced commons
-      "murk_enhanced": "murk_enhanced",
+      "fog_enhanced": "fog_enhanced",
       "bluebird_enhanced": "bluebird_enhanced",
       "apple_shine_enhanced": "apple_shine_enhanced", 
       "honey_enhanced": "honey_enhanced",
@@ -5654,7 +5658,7 @@ function EnhancedComparisonView({ rarityFilter }: { rarityFilter: string }) {
           { original: "sky", enhanced: "sky_enhanced", tier: "common" },
           { original: "coral", enhanced: "coral_enhanced", tier: "common" },
           { original: "charcoal", enhanced: "charcoal_enhanced", tier: "common" },
-          { original: "clover", enhanced: "clover_enhanced", tier: "common" },
+          { original: "acorn", enhanced: "acorn_enhanced", tier: "common" },
           { original: "green", enhanced: "green_enhanced", tier: "common" },
           { original: "mint", enhanced: "mint_enhanced", tier: "common" },
           { original: "blueberry", enhanced: "blueberry_enhanced", tier: "common" },
@@ -5684,7 +5688,7 @@ function EnhancedComparisonView({ rarityFilter }: { rarityFilter: string }) {
           // { original: "synthwave", enhanced: "synthwave_enhanced", tier: "mythic", isPreProd: true }, // Merged into original
           
           // Common Slimes (Pre-Production)
-          { original: "murk", enhanced: "murk_enhanced", tier: "common", isPreProd: true },
+          { original: "fog", enhanced: "fog_enhanced", tier: "common", isPreProd: true },
           { original: "bluebird", enhanced: "bluebird_enhanced", tier: "common", isPreProd: true },
           { original: "apple_shine", enhanced: "apple_shine_enhanced", tier: "common", isPreProd: true },
           { original: "honey", enhanced: "honey_enhanced", tier: "common", isPreProd: true },
