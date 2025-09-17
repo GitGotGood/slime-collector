@@ -257,31 +257,35 @@ export function getCurrentBiome(profile: any): BiomeId {
 
 // Helper function to get biome for a specific skill (for dynamic biome display)
 export function getBiomeForSkill(skillId: any): BiomeId {
-  // Import here to avoid circular dependencies
-  import("../core/progression").then(({ worldIdOf }) => {
-    const worldId = worldIdOf(skillId);
-    return worldId && BIOMES[worldId as BiomeId] ? (worldId as BiomeId) : "meadow";
-  });
-  
-  // Fallback mapping for immediate use
+  // Updated mapping based on current WORLDS definition
   const skillToBiome: Record<string, BiomeId> = {
     "add_1_10": "meadow",
     "add_1_20": "beach", 
     "sub_1_10": "forest",
     "sub_1_20": "desert",
-    "add_sub_20": "cove",
-    "missing_20": "tundra",
-    "ten_more_less": "canyon",
-    "place_value": "aurora",
-    "mult_facts": "savanna",
-    "div_facts": "glacier", 
-    "mult_1_dig": "volcano",
-    "mult_2_dig": "reef",
-    "frac_basics": "temple",
-    "frac_adv": "harbor",
-    "decimals": "observatory",
-    "order_ops": "foundry",
-    "powers10": "foundry"
+    "mixed_20": "cove",
+    "mul_0_5_10": "tundra",
+    "mul_0_10": "canyon",
+    "div_facts": "aurora",
+    "add_3digit": "savanna",
+    "sub_3digit": "savanna", // Alternative to add_3digit
+    "sub_3digit_triple": "savanna", // Also savanna
+    "sub_4digit_quad": "savanna", // Also savanna
+    "mul_1d_x_2_3d": "glacier",
+    "mul_2d_intro": "glacier", // Alternative to mul_1d_x_2_3d
+    "longdiv_1d": "volcano",
+    "frac_basic": "reef",
+    "frac_equiv": "reef", // Also reef
+    "frac_add_like": "temple",
+    "frac_sub_like": "temple", // Also temple
+    "frac_whole_mult": "temple", // Also temple
+    "dec_place": "harbor",
+    "dec_addsub": "harbor", // Also harbor
+    "order_ops": "observatory",
+    "powers10": "foundry",
+    "volume_rect": "foundry",
+    "coord_plane": "foundry", // Also foundry
+    "word_multi": "foundry" // Also foundry
   };
   
   return skillToBiome[skillId] || "meadow";

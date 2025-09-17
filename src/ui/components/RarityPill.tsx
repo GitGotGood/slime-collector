@@ -6,7 +6,7 @@ const RARITY_STYLES: Record<Rarity, string> = {
   uncommon: "bg-emerald-50 text-emerald-700 border-emerald-200",
   rare:     "bg-sky-50 text-sky-700 border-sky-200",
   epic:     "bg-purple-50 text-purple-700 border-purple-200",
-  mythic:   "bg-amber-50 text-amber-700 border-amber-200",
+  mythic:   "bg-purple-50 text-purple-700 border-purple-200",
 };
 
 export default function RarityPill({ tier, className = "" }: { tier: Rarity; className?: string }) {

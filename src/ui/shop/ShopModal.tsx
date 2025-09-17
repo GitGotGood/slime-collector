@@ -48,9 +48,11 @@ export default function ShopModal({
   }, [open]);
 
   // [Sep-11] Dan: Shop refresh bug - inventory not updating | Changed: added dailyRefresh to deps | Why: useMemo wasn't recalculating when seed changed
+  // [Sep-13] Dan: Evergreen logic - separate evergreen from daily picks | Changed: evergreen only depends on date and owned skins, daily depends on refresh
+  // [Sep-13] Dan: Fixed immediate swap bug | Changed: removed profile.unlocks?.skins from deps | Why: shop logic now handles persistence internally
   const { daily, evergreen, biasInfo } = useMemo(() => {
     return getShopPicks(profile, ALL_SHOP_ITEMS);
-  }, [profile.shopBiasUntil, profile.shopBiasBiome, profile.unlocks?.skins, profile.dailyRefresh]);
+  }, [profile.shopBiasUntil, profile.shopBiasBiome, profile.dailyRefresh]);
 
   const cost = nextRefreshCost(profile);
   const canRefresh = cost !== null && profile.goo >= (cost ?? 0);

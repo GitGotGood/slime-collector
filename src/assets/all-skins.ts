@@ -64,6 +64,22 @@ export const PRODUCTION_SKINS: UnifiedSkin[] = [
     origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
     base: { fill: "#2A2F35", stroke: "#0B0E12", shine: "#EAF0FF" } 
   },
+  { 
+    id: "acorn", 
+    name: "Acorn", 
+    tier: "common", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
+    base: { fill: "#a16207", stroke: "#92400e", shine: "#fef3c7" } 
+  },
+  { 
+    id: "fog", 
+    name: "Fog", 
+    tier: "common", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
+    base: { fill: "#9CA3AF", stroke: "#6B7280", shine: "#f9fafb" } 
+  },
 
   // Uncommons - Always unlocked on day 1
   { 
@@ -123,8 +139,20 @@ export const PRODUCTION_SKINS: UnifiedSkin[] = [
     origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
     kind: "gradient",
     colors: ["#8b5cf6", "#ec4899", "#f97316", "#fbbf24"],
+    gradient: "linear-gradient(180deg, #8b5cf6 0%, #ec4899 33%, #f97316 66%, #fbbf24 100%)",
     base: { fill: "#8b5cf6", stroke: "#7c2d12", shine: "#fef3c7" },
     bio: "Captures the breathtaking beauty of golden hour. This magical slime flows from deep purple through vibrant pink and orange to golden yellow, like watching the most spectacular sunset paint the sky."
+  },
+  { 
+    id: "sunrise", 
+    name: "Sunrise", 
+    tier: "uncommon", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
+    kind: "gradient",
+    colors: ["#2196F3", "#64B5F6", "#FFEB3B", "#FF9800", "#F44336"],
+    gradient: "linear-gradient(180deg, #2196F3 0%, #64B5F6 25%, #FFEB3B 50%, #FF9800 75%, #F44336 100%)",
+    bio: "Captures the breathtaking beauty of a dramatic sunrise with deep blues transitioning through brilliant yellows to fiery orange-reds, like watching the sun paint the sky with crepuscular rays."
   },
 
   // Rares - Always unlocked on day 1
@@ -136,6 +164,15 @@ export const PRODUCTION_SKINS: UnifiedSkin[] = [
     origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
     pattern: { type: "polka_dots", size: 3, spacing: 12, color: "#FFFFFF", alpha: 0.14 }, 
     base: { fill: "#B6E3B6", stroke: "#2E6A3A", shine: "#0E2A16" } 
+  },
+  { 
+    id: "confetti", 
+    name: "Confetti", 
+    tier: "rare", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
+    pattern: { type: "polka_dots", size: 3, spacing: 12, colors: ["#EF4444", "#3B82F6", "#10B981", "#F59E0B", "#8B5CF6"], alpha: 0.8 }, 
+    base: { fill: "#FEF3C7", stroke: "#D97706", shine: "#92400E" } 
   },
   { 
     id: "ripple", 
@@ -196,12 +233,12 @@ export const PRODUCTION_SKINS: UnifiedSkin[] = [
   
   // Meadow unlock rewards
   { 
-    id: "clover", 
-    name: "Clover", 
+    id: "acorn", 
+    name: "Acorn", 
     tier: "common", 
     source: "production", 
     origin: { type: 'biome', source: 'meadow', displayName: 'Unlocked in Meadow' },
-    base: { fill: "#65a30d", stroke: "#365314", shine: "#d9f99d" } 
+    base: { fill: "#a16207", stroke: "#92400e", shine: "#fef3c7" } 
   },
 
   // Shoreline unlock rewards  
@@ -691,14 +728,14 @@ export const PRODUCTION_SKINS: UnifiedSkin[] = [
     colors: ["#2B2F36"]
   },
   { 
-    id: "clover_enhanced", 
-    name: "Clover Enhanced", 
+    id: "acorn_enhanced", 
+    name: "Acorn Enhanced", 
     tier: "common", 
     source: "production", 
     origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' },
-    bio: "Lucky garden green with seed highlight and micro-identity.",
+    bio: "Warm brown with acorn highlights and micro-identity.",
     kind: "solid",
-    colors: ["#6FBF2E"]
+    colors: ["#92400e"]
   },
 
   // Enhanced Uncommon Slimes
@@ -852,14 +889,14 @@ export const PRODUCTION_SKINS: UnifiedSkin[] = [
 
   // Pre-Production Commons (originals for comparison)
   { 
-    id: "murk", 
-    name: "Murk", 
+    id: "fog", 
+    name: "Fog", 
     tier: "common", 
     source: "production", 
     origin: { type: 'shop', source: 'shop', displayName: 'Pre-Production' },
-    bio: "Swampy graphite-blue.",
+    bio: "Light ethereal gray.",
     kind: "solid",
-    colors: ["#3C4953"]
+    colors: ["#9CA3AF"]
   },
   { 
     id: "bluebird", 
@@ -936,14 +973,14 @@ export const PRODUCTION_SKINS: UnifiedSkin[] = [
 
   // Pre-Production Enhanced Commons
   { 
-    id: "murk_enhanced", 
-    name: "Murk Enhanced", 
+    id: "fog_enhanced", 
+    name: "Fog Enhanced", 
     tier: "common", 
     source: "production", 
     origin: { type: 'shop', source: 'shop', displayName: 'Pre-Production Enhanced' },
-    bio: "Swampy graphite-blue with micro-identity highlights.",
+    bio: "Light ethereal gray with mist highlights.",
     kind: "solid",
-    colors: ["#3C4953"]
+    colors: ["#D1D5DB"]
   },
   { 
     id: "bluebird_enhanced", 
@@ -1340,7 +1377,7 @@ export const NEW_COMMON: UnifiedSkin[] = [
   { id: "moss", name: "Moss", tier: "common", source: "inspiration", base: { fill: "#5BA86D", stroke: "#1F5132", shine: "#0B3A29" } },
   { id: "pistachio", name: "Pistachio", tier: "common", source: "inspiration", base: { fill: "#B6E3B6", stroke: "#2E6A3A", shine: "#0E2A16" } },
   { id: "lime_pop", name: "Lime Pop", tier: "common", source: "inspiration", base: { fill: "#A3F700", stroke: "#336B11", shine: "#10300B" } },
-  { id: "clover", name: "Clover", tier: "common", source: "inspiration", base: { fill: "#79D083", stroke: "#2B7A41", shine: "#0F2F1D" } },
+  { id: "acorn", name: "Acorn", tier: "common", source: "inspiration", base: { fill: "#a16207", stroke: "#92400e", shine: "#fef3c7" } },
   { id: "sky", name: "Sky", tier: "common", source: "inspiration", base: { fill: "#A9D8FF", stroke: "#1E3A8A", shine: "#0E2440" } },
   { id: "denim", name: "Denim", tier: "common", source: "inspiration", base: { fill: "#4F7FBF", stroke: "#1E3A8A", shine: "#0A1B35" } },
   { id: "rain", name: "Rain", tier: "common", source: "inspiration", base: { fill: "#7089A7", stroke: "#334155", shine: "#0C1726" } },
@@ -1549,8 +1586,8 @@ export const PRE_PRODUCTION_SKINS: UnifiedSkin[] = [
 
   // Swamp / Bog Biome
   { 
-    id: "murk", 
-    name: "Murk", 
+    id: "fog", 
+    name: "Fog", 
     tier: "common", 
     source: "pre-production",
     origin: { type: 'biome', source: 'swamp', displayName: 'Unlocked in Swamp' },
