@@ -103,6 +103,7 @@ function SlimeCollectorAppInner() {
   const [sessionAttempts, setSessionAttempts] = useState(0);
   const [sessionFastUnder1_5, setSessionFastUnder1_5] = useState(0);
   const [sessionFastUnder3, setSessionFastUnder3] = useState(0);
+  const [sessionNewBadges, setSessionNewBadges] = useState<{ id: string; tier?: string; rewardGoo: number }[]>([]);
 
   // modals
   const [openShop, setOpenShop] = useState(false);
@@ -488,6 +489,7 @@ function SlimeCollectorAppInner() {
     setRunXP(0); setRunGoo(0); setGooBase(0); setGooStreak(0); setGooSpeed(0);
     setLives(3); setStreak(0); setBestStreak(0);
     setSessionCorrect(0); setSessionAttempts(0); setSessionFastUnder1_5(0); setSessionFastUnder3(0);
+    setSessionNewBadges([]); // Reset session badges
     setLastAnswerTime(null); // Reset turbo detection for new session
     setProblem(makeProblemForSkill(skill));
     setDisabledSet(new Set()); setWrongPick(null);
@@ -535,6 +537,9 @@ function SlimeCollectorAppInner() {
           now: Date.now()
         });
         Object.assign(np, sessionBadgeResult.profile);
+        
+        // Store session badges for summary display
+        setSessionNewBadges(sessionBadgeResult.newlyUnlocked);
         
         // Show session badge toasts
         sessionBadgeResult.newlyUnlocked.forEach(badge => {
@@ -1595,6 +1600,7 @@ return (
           currentTotalXP={current.xp}
           sessionCorrect={sessionCorrect}
           sessionAttempts={sessionAttempts}
+          sessionNewBadges={sessionNewBadges}
           useAlternativeView={true} // Enable alternative view in production
         />
       )}
@@ -1619,7 +1625,7 @@ return (
               
               // Show streak modal when profile is selected (if streak data exists)
               const selectedProfile = profiles.find(p => p.id === profileId);
-              if (selectedProfile?.streakData) {
+              if (selectedProfile && (selectedProfile as any).streakData) {
                 setShowStreakModal(true);
               }
             }}

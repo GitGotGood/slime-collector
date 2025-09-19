@@ -367,28 +367,19 @@ export function retroScrubTurboAnswers(profile: Profile, skillId: SkillID, count
 // A strong answer is one that is correct AND fast enough to contribute to mastery
 export function getStrongAnswerCount(profile: Profile, skillId: SkillID): number {
   const stats = profile.skillStats?.[skillId];
-  if (!stats || !stats.responseTimes) return 0;
+  if (!stats?.rollingAccuracy) return 0;
   
   // Find the gate for this skill
   const world = WORLDS.find(w => w.primarySkill === skillId);
   const gate = world?.gate || GATES.EARLY;
   
-  // We need to track which answers were correct AND fast
-  // Since we don't have that data directly, we estimate based on the smart average
-  // If the smart average is under the gate limit, we assume most recent answers are strong
+  // Count strong answers from rolling accuracy buffer
+  // Strong = correct AND fast (under gate.maxAvgMs) AND counted
+  const strongAnswers = stats.rollingAccuracy.filter(answer => 
+    answer.counted && 
+    answer.correct && 
+    answer.t_ms <= gate.maxAvgMs
+  ).length;
   
-  // Use smart average if available, fallback to simple average
-  const avgMs = stats.avgMs ?? (stats.attempts ? stats.totalMs / stats.attempts : Infinity);
-  
-  if (avgMs <= gate.maxAvgMs) {
-    // If average is good, estimate strong answers based on recent performance
-    // This is a conservative estimate: assume recent answers are more representative
-    const recentCount = Math.min(stats.responseTimes.length, 20); // Last 20 answers
-    const recentFastCount = stats.responseTimes.slice(-recentCount).filter(time => time <= gate.maxAvgMs).length;
-    const estimatedStrongAnswers = Math.min(recentFastCount, stats.correct);
-    return Math.max(0, estimatedStrongAnswers);
-  } else {
-    // If average is too slow, no strong answers
-    return 0;
-  }
+  return strongAnswers;
 }
