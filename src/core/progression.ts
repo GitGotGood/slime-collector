@@ -1,5 +1,13 @@
 import type { Profile, SkillID, WorldDef, WorldID, MasteryGate } from './types';
 
+// Constants for new accuracy/speed system
+export const MISTAP_MS = 180;
+export const TURBO_MS = 800; // Based on play session data analysis
+export const TURBO_STREAK = 3;
+export const INTERCEPT_COOLDOWN_S = 75;
+export const SPEED_MIN_MS = 200; // exclude from speed calc
+export const SPEED_MAX_MS = 10000; // cap to 10s in speed calc
+
 // Three mastery difficulty levels
 export const GATES = {
   EARLY: { attempts: 20, minAcc: 0.90, maxAvgMs: 6000 },
@@ -76,14 +84,19 @@ export const FUTURE_EXPLORATION_SKILLS = {
   foundry_exploration: ['coord_plane', 'word_multi'], // Coordinate plane & word problems
 };
 
-// True if profile meets gate for skillId, using profile.skillStats[skillId]
+// True if profile meets gate for skillId, using rolling accuracy and speed
 export function meetsMastery(profile: any, skillId: SkillID, gate: MasteryGate): boolean {
   const st = profile?.skillStats?.[skillId];
   if (!st) return false;
-  const acc = st.attempts ? st.correct / st.attempts : 0;
-  // Use smart average if available, fallback to simple average
-  const avg = st.avgMs ?? (st.attempts ? st.totalMs / st.attempts : Infinity);
-  return st.attempts >= gate.attempts && acc >= gate.minAcc && avg <= gate.maxAvgMs;
+  
+  // Use rolling accuracy instead of lifetime accuracy
+  const rollingAcc = getRollingAccuracy(profile, skillId);
+  const rollingSpeed = getRollingSpeed(profile, skillId);
+  
+  // Check if we have enough counted answers and meet thresholds
+  return rollingAcc.n >= gate.attempts && 
+         rollingAcc.pct >= gate.minAcc && 
+         rollingSpeed.avgWeightedMs <= gate.maxAvgMs;
 }
 
 // Return the first world not yet mastered (V1 - Simple Linear Progression)
@@ -190,7 +203,7 @@ function calculateSmartAverage(responseTimes: number[], windowSize: number = 20)
   return weightedSum / totalWeight;
 }
 
-export function updateStatsAndCheckMastery(profile: Profile, skillId: SkillID, correct: boolean, ms: number) {
+export function updateStatsAndCheckMastery(profile: Profile, skillId: SkillID, correct: boolean, ms: number, counted: boolean = true, scrub: 'none' | 'mis_tap' | 'turbo' = 'none') {
   if (!profile.skillStats) profile.skillStats = {} as any;
   if (!profile.mastered) profile.mastered = {};
   const st = profile.skillStats[skillId] || { 
@@ -198,19 +211,23 @@ export function updateStatsAndCheckMastery(profile: Profile, skillId: SkillID, c
     correct: 0, 
     totalMs: 0, 
     avgMs: null as number | null,
-    responseTimes: []
+    responseTimes: [],
+    rollingAccuracy: []
   };
   
-  // Update basic stats
+  // Update basic stats (for backward compatibility)
   st.attempts += 1;
   if (correct) st.correct += 1;
   st.totalMs += ms;
   
-  // Track individual response times for smart averaging
+  // Track individual response times for smart averaging (legacy)
   if (!st.responseTimes) st.responseTimes = [];
   st.responseTimes.push(ms);
   
-  // Calculate smart average using rolling window + outlier removal
+  // Add to rolling accuracy buffer
+  addToRollingBuffer(st, skillId, correct, ms, counted, scrub);
+  
+  // Calculate smart average using rolling window + outlier removal (legacy)
   st.avgMs = calculateSmartAverage(st.responseTimes);
   
   profile.skillStats[skillId] = st;
@@ -219,17 +236,21 @@ export function updateStatsAndCheckMastery(profile: Profile, skillId: SkillID, c
   const world = WORLDS.find(w => w.primarySkill === skillId);
   const gate = world?.gate || GATES.EARLY; // fallback to EARLY if no world found
   
-  const accuracy = st.correct / st.attempts;
-  const avgMs = st.avgMs ?? 999999;
+  // Use rolling accuracy and speed for mastery check
+  const rollingAcc = getRollingAccuracy(profile, skillId);
+  const rollingSpeed = getRollingSpeed(profile, skillId);
   
-  const isMastered = st.attempts >= gate.attempts && accuracy >= gate.minAcc && avgMs <= gate.maxAvgMs;
+  const isMastered = rollingAcc.n >= gate.attempts && 
+                    rollingAcc.pct >= gate.minAcc && 
+                    rollingSpeed.avgWeightedMs <= gate.maxAvgMs;
 
   // Debug logging
   console.log(`🎯 MASTERY CHECK: ${skillId}`, {
     attempts: `${st.attempts}/${gate.attempts}`,
-    accuracy: `${(accuracy * 100).toFixed(1)}%/${(gate.minAcc * 100).toFixed(1)}%`,
-    avgTime: `${(avgMs/1000).toFixed(1)}s/${gate.maxAvgMs/1000}s`,
-    smartAvg: `${(st.avgMs/1000).toFixed(1)}s (from ${st.responseTimes?.slice(-15).length || 0} recent)`,
+    rollingAccuracy: `${(rollingAcc.pct * 100).toFixed(1)}% (${rollingAcc.n}/${rollingAcc.N})/${(gate.minAcc * 100).toFixed(1)}%`,
+    rollingSpeed: `${(rollingSpeed.avgWeightedMs/1000).toFixed(1)}s/${gate.maxAvgMs/1000}s`,
+    counted: counted,
+    scrub: scrub,
     isMastered,
     wasAlreadyMastered: profile.mastered[skillId]
   });
@@ -245,6 +266,101 @@ export function updateStatsAndCheckMastery(profile: Profile, skillId: SkillID, c
 export function getMasteryBonus(profile: Profile): number {
   const masteredCount = Object.values(profile.mastered ?? {}).filter(Boolean).length;
   return Math.max(1, Math.min(1.25, 1 + masteredCount * 0.05));
+}
+
+// Helper function to get rolling accuracy for a skill
+export function getRollingAccuracy(profile: Profile, skillId: SkillID): { n: number; N: number; pct: number } {
+  const stats = profile.skillStats?.[skillId];
+  if (!stats?.rollingAccuracy) return { n: 0, N: 0, pct: 0 };
+  
+  // Find the gate for this skill to determine buffer size
+  const world = WORLDS.find(w => w.primarySkill === skillId);
+  const gate = world?.gate || GATES.EARLY;
+  const N = gate.attempts; // 20/25/30 based on tier
+  
+  // Get only counted answers (exclude mis-taps and scrubbed)
+  const countedAnswers = stats.rollingAccuracy.filter(answer => answer.counted);
+  const correctCount = countedAnswers.filter(answer => answer.correct).length;
+  const n = countedAnswers.length;
+  
+  return {
+    n: Math.min(n, N), // Don't exceed buffer size
+    N,
+    pct: n > 0 ? correctCount / n : 0
+  };
+}
+
+// Helper function to get rolling speed for a skill
+export function getRollingSpeed(profile: Profile, skillId: SkillID): { avgWeightedMs: number; n: number } {
+  const stats = profile.skillStats?.[skillId];
+  if (!stats?.rollingAccuracy) return { avgWeightedMs: 999999, n: 0 };
+  
+  // Get only counted answers (exclude mis-taps and scrubbed)
+  const countedAnswers = stats.rollingAccuracy.filter(answer => answer.counted);
+  const n = countedAnswers.length;
+  
+  if (n === 0) return { avgWeightedMs: 999999, n: 0 };
+  
+  // Extract response times and apply speed caps
+  const responseTimes = countedAnswers
+    .map(answer => answer.t_ms)
+    .filter(time => time >= SPEED_MIN_MS) // Exclude too-fast answers
+    .map(time => Math.min(time, SPEED_MAX_MS)); // Cap at 10 seconds
+  
+  if (responseTimes.length === 0) return { avgWeightedMs: 999999, n: 0 };
+  
+  // Use existing smart averaging logic
+  const avgWeightedMs = calculateSmartAverage(responseTimes, 20);
+  
+  return { avgWeightedMs, n: responseTimes.length };
+}
+
+// Helper function to get buffer size for a skill tier
+export function getBufferSizeForSkill(skillId: SkillID): number {
+  const world = WORLDS.find(w => w.primarySkill === skillId);
+  const gate = world?.gate || GATES.EARLY;
+  return gate.attempts; // 20/25/30 based on tier
+}
+
+// Helper function to add answer to rolling buffer
+function addToRollingBuffer(stats: any, skillId: SkillID, correct: boolean, t_ms: number, counted: boolean, scrub: 'none' | 'mis_tap' | 'turbo' = 'none') {
+  if (!stats.rollingAccuracy) stats.rollingAccuracy = [];
+  
+  const bufferSize = getBufferSizeForSkill(skillId);
+  const newAnswer = {
+    correct,
+    t_ms,
+    counted,
+    scrub,
+    ts: Date.now()
+  };
+  
+  // Add to buffer
+  stats.rollingAccuracy.push(newAnswer);
+  
+  // Trim to buffer size (ring buffer behavior)
+  if (stats.rollingAccuracy.length > bufferSize) {
+    stats.rollingAccuracy = stats.rollingAccuracy.slice(-bufferSize);
+  }
+}
+
+// Helper function to retro-scrub the last N turbo answers
+export function retroScrubTurboAnswers(profile: Profile, skillId: SkillID, count: number = 3) {
+  const stats = profile.skillStats?.[skillId];
+  if (!stats?.rollingAccuracy) return;
+  
+  // Find the last N turbo answers and mark them as scrubbed
+  let scrubbedCount = 0;
+  for (let i = stats.rollingAccuracy.length - 1; i >= 0 && scrubbedCount < count; i--) {
+    const answer = stats.rollingAccuracy[i];
+    if (answer.t_ms < TURBO_MS && answer.scrub === 'none') {
+      answer.scrub = 'turbo';
+      answer.counted = false;
+      scrubbedCount++;
+    }
+  }
+  
+  console.log(`🧹 Retro-scrubbed ${scrubbedCount} turbo answers for ${skillId}`);
 }
 
 // Helper function to calculate strong answers for a skill

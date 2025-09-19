@@ -376,6 +376,48 @@ export const BADGES: BadgeDef[] = [
     when: ({profile}) => (profile.worldStreaks?.forest || 0) >= 3,
     rewardGoo:150,
   },
+
+  // Daily login streak badges
+  { 
+    id:'streak_7', 
+    name:'Week Warrior', 
+    category:'streak', 
+    tier:'bronze', 
+    icon:'🔥', 
+    description:'Maintain a 7-day login streak.',
+    when: ({profile}) => (profile.streakData?.currentStreak || 0) >= 7,
+    rewardGoo:100,
+  },
+  { 
+    id:'streak_14', 
+    name:'Two Week Champion', 
+    category:'streak', 
+    tier:'silver', 
+    icon:'🔥', 
+    description:'Maintain a 14-day login streak.',
+    when: ({profile}) => (profile.streakData?.currentStreak || 0) >= 14,
+    rewardGoo:200,
+  },
+  { 
+    id:'streak_30', 
+    name:'Month Master', 
+    category:'streak', 
+    tier:'gold', 
+    icon:'🔥', 
+    description:'Maintain a 30-day login streak.',
+    when: ({profile}) => (profile.streakData?.currentStreak || 0) >= 30,
+    rewardGoo:500,
+  },
+  { 
+    id:'streak_100', 
+    name:'Century Streak', 
+    category:'streak', 
+    tier:'diamond', 
+    icon:'🔥', 
+    description:'Maintain a 100-day login streak.',
+    when: ({profile}) => (profile.streakData?.currentStreak || 0) >= 100,
+    rewardGoo:1000,
+  },
 ];
 
 // ---- Badge Evaluation Engine ----

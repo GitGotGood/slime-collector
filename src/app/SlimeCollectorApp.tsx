@@ -5,16 +5,19 @@ import { BiomeLayer, getBiomeForSkill } from "../assets/biomes";
 import Slime from "../ui/components/Slime";
 import QuestionCard from "../ui/gameplay/QuestionCard";
 import SessionSummary from "../ui/gameplay/SessionSummary";
+import InterceptModal from "../ui/gameplay/InterceptModal";
 import ShopModal from "../ui/shop/ShopModal";
 import ProgressModal from "../ui/progress/ProgressModal";
 import ProfilePicker from "../ui/progress/ProfilePicker";
+import StreakModal from "../ui/components/StreakModal";
 
 import { useSounds } from "../assets/sounds";
 
 import { loadState, saveState, mkProfile } from "../core/storage";
 import { SKILL_ORDER, SKILLS, makeProblemForSkill, difficultyMultiplier } from "../core/skills";
 import type { SkillID, ShopItem } from "../core/types";
-import { getMasteryBonus, levelFromTotalXP, applyXP, updateStatsAndCheckMastery, worldIdOf, onWorldMastered, WORLDS, nextWorld, getStrongAnswerCount, meetsMastery } from "../core/progression";
+import { updateStreakData } from "../core/streak";
+import { getMasteryBonus, levelFromTotalXP, applyXP, updateStatsAndCheckMastery, worldIdOf, onWorldMastered, WORLDS, nextWorld, getStrongAnswerCount, meetsMastery, MISTAP_MS, TURBO_MS, TURBO_STREAK, INTERCEPT_COOLDOWN_S, retroScrubTurboAnswers, getRollingAccuracy, getRollingSpeed } from "../core/progression";
 import { priceOf } from "../core/economy";
 import { evaluateBadges, getBadgeName } from "../core/badges";
 import { useBadgeToasts } from "../ui/components/Toaster";
@@ -26,7 +29,7 @@ import EdgeBlendingExperiments from "../dev/EdgeBlendingExperiments";
 import WorldMap from "../dev/WorldMap";
 import ProgressDashboard from "../dev/ProgressDashboard";
 import Starburst, { EmojiBurst } from "../ui/components/Starburst";
-import { Volume2, VolumeX, ShoppingBag, UserCircle2, Power, Users } from "lucide-react";
+import { Volume2, VolumeX, ShoppingBag, UserCircle2, Power, Users, Coffee } from "lucide-react";
 import { motion } from "framer-motion";
 
 import { AuthProvider, useAuth } from "../ui/auth/AuthProvider";
@@ -149,6 +152,36 @@ function SlimeCollectorAppInner() {
   // Track processed attempts to avoid double counting in Strict Mode
   const processedAttemptsRef = useRef<Set<string>>(new Set());
   
+  // Turbo detection state
+  const [turboStreak, setTurboStreak] = useState(0);
+  const [lastInterceptTime, setLastInterceptTime] = useState(0);
+  const [showInterceptModal, setShowInterceptModal] = useState(false);
+  const [lastAnswerTime, setLastAnswerTime] = useState<number | null>(null);
+  const [showStreakModal, setShowStreakModal] = useState(false);
+  const [streakIncreased, setStreakIncreased] = useState(false);
+  
+  // Intercept modal handlers
+  const handleTakeBreak = () => {
+    // Retro-scrub the last 3 turbo answers
+    if (current) {
+      retroScrubTurboAnswers(current, skill, 3);
+    }
+    setShowInterceptModal(false);
+    setTurboStreak(0);
+    endSession(); // End the current run and go to session summary
+  };
+  
+  const handleKeepPlaying = () => {
+    // Retro-scrub the last 3 turbo answers
+    if (current) {
+      retroScrubTurboAnswers(current, skill, 3);
+    }
+    setShowInterceptModal(false);
+    setTurboStreak(0);
+    // Show 1-second calming overlay (countdown)
+    // For now, just continue - we'll add the countdown later
+  };
+  
   // Helper function to get world name for a skill
   const getWorldNameForSkill = (skillId: SkillID): string => {
     const worldId = worldIdOf(skillId);
@@ -269,10 +302,20 @@ function SlimeCollectorAppInner() {
     }
   }, [activeProfile, current, isOfflineMode, effectivelyOffline]);
 
+  // Track which profile we've already loaded to prevent duplicate loads
+  const loadedProfileRef = useRef<string | null>(null);
+
   // Load from cloud when active profile changes (only in online mode)
   useEffect(() => {
     if (activeProfile && !isOfflineMode) {
+      // Prevent duplicate loads of the same profile
+      if (loadedProfileRef.current === activeProfile.id) {
+        console.log('⏭️ Skipping duplicate load for profile:', activeProfile.name, activeProfile.id);
+        return;
+      }
+      
       console.log('🔄 Loading data for profile:', activeProfile.name, activeProfile.id);
+      loadedProfileRef.current = activeProfile.id;
       loadSave().then(async (cloudProfile) => {
         if (cloudProfile) {
           console.log('☁️ Loaded cloud profile:', cloudProfile.name, 'Goo:', cloudProfile.goo, 'XP:', cloudProfile.xp, 'OwnedSkins:', cloudProfile.unlocks?.skins?.length || 0);
@@ -319,6 +362,8 @@ function SlimeCollectorAppInner() {
         console.error('Failed to load from cloud:', error);
       });
     } else if (activeProfile && isOfflineMode) {
+      // Reset ref for offline mode
+      loadedProfileRef.current = activeProfile.id;
       console.log('📱 Offline mode: Using local profile data for:', activeProfile.name);
       // In offline mode, sync the activeProfile (which contains full profile data) to store
       setStore((prev: any) => {
@@ -344,6 +389,13 @@ function SlimeCollectorAppInner() {
       });
     }
   }, [activeProfile, isOfflineMode]);
+
+  // Reset loaded profile ref when activeProfile changes to a different profile
+  useEffect(() => {
+    if (activeProfile && loadedProfileRef.current !== activeProfile.id) {
+      loadedProfileRef.current = null;
+    }
+  }, [activeProfile?.id]);
 
   // Only enable old ProfilePicker when cloud auth is completely unavailable
   useEffect(() => {
@@ -378,7 +430,15 @@ function SlimeCollectorAppInner() {
   useEffect(() => {
     resetSlime();
     setQuestionStartTime(Date.now());
+    setLastAnswerTime(null); // Reset turbo detection when skill changes
   }, [skill]);
+
+  // Set question start time when a new problem is displayed
+  useEffect(() => {
+    if (gameState === "playing" && problem) {
+      setQuestionStartTime(Date.now());
+    }
+  }, [problem, gameState]);
 
   // unlocked skills list in order, gated by mastery
   const unlockedSkills = useMemo(() => {
@@ -428,8 +488,8 @@ function SlimeCollectorAppInner() {
     setRunXP(0); setRunGoo(0); setGooBase(0); setGooStreak(0); setGooSpeed(0);
     setLives(3); setStreak(0); setBestStreak(0);
     setSessionCorrect(0); setSessionAttempts(0); setSessionFastUnder1_5(0); setSessionFastUnder3(0);
+    setLastAnswerTime(null); // Reset turbo detection for new session
     setProblem(makeProblemForSkill(skill));
-    setQuestionStartTime(Date.now());
     setDisabledSet(new Set()); setWrongPick(null);
     resetSlime();
     resetCelebrations();
@@ -448,6 +508,16 @@ function SlimeCollectorAppInner() {
       profiles: S.profiles.map((p: any) => {
         if (p.id !== current.id) return p;
         const np = { ...p, best: { score: Math.max(p.best.score, Math.round(runXP)), streak: Math.max(p.best.streak, bestStreak) } };
+        
+        // Update streak data (only if session had at least one question)
+        if (sessionAttempts > 0) {
+          const streakResult = updateStreakData(np);
+          if (streakResult.streakIncreased) {
+            console.log(`🔥 Streak increased to ${streakResult.newStreak} days!`);
+            setStreakIncreased(true);
+            // TODO: Show streak increase notification
+          }
+        }
         
         // Evaluate badges on session end
         const sessionBadgeResult = evaluateBadges(np, {
@@ -493,12 +563,73 @@ function SlimeCollectorAppInner() {
     const answerTime = Date.now() - questionStartTime;
     const attemptId = `${skill}-${Date.now()}-${Math.random()}`; // Unique ID for this attempt
     
-    // Update session counters for badges
-    setSessionAttempts(prev => prev + 1);
-    if (isCorrect) {
-      setSessionCorrect(prev => prev + 1);
-      if (answerTime < 1500) setSessionFastUnder1_5(prev => prev + 1);
-      if (answerTime < 3000) setSessionFastUnder3(prev => prev + 1);
+    // Debug: Always log answer time and timing details
+    console.log(`⏱️ Answer time: ${answerTime}ms (correct: ${isCorrect})`);
+    console.log(`🔍 Timing debug: now=${Date.now()}, questionStartTime=${questionStartTime}, diff=${Date.now() - questionStartTime}ms`);
+    
+    // Turbo detection logic
+    let counted = true;
+    let scrub: 'none' | 'mis_tap' | 'turbo' = 'none';
+    
+    // Check for mis-tap (too fast to be intentional)
+    if (answerTime < MISTAP_MS) {
+      counted = false;
+      scrub = 'mis_tap';
+      console.log(`🚫 Mis-tap detected: ${answerTime}ms < ${MISTAP_MS}ms`);
+      return; // Don't record anything for mis-taps
+    }
+    
+    // Check for turbo streak based on time between consecutive clicks
+    const now = Date.now();
+    let timeBetweenClicks = 0;
+    
+    if (lastAnswerTime !== null) {
+      timeBetweenClicks = now - lastAnswerTime;
+      console.log(`⏱️ Time between clicks: ${timeBetweenClicks}ms`);
+    }
+    
+    // Update last answer time for next comparison
+    setLastAnswerTime(now);
+    
+    // Check for turbo streak (time between consecutive clicks)
+    if (lastAnswerTime !== null && timeBetweenClicks < TURBO_MS) {
+      const newTurboStreak = turboStreak + 1;
+      setTurboStreak(newTurboStreak);
+      
+      // Check if we should trigger intercept
+      const timeSinceLastIntercept = (now - lastInterceptTime) / 1000; // Convert to seconds
+      
+      console.log(`🚀 Turbo click: ${timeBetweenClicks}ms between clicks (streak: ${newTurboStreak}/${TURBO_STREAK}, cooldown: ${timeSinceLastIntercept.toFixed(1)}s/${INTERCEPT_COOLDOWN_S}s)`);
+      
+      if (newTurboStreak >= TURBO_STREAK) {
+        // Check cooldown only if we've had a previous intercept
+        if (lastInterceptTime === 0 || timeSinceLastIntercept >= INTERCEPT_COOLDOWN_S) {
+          console.log(`🚨 Turbo intercept triggered: ${newTurboStreak} consecutive turbo clicks`);
+          setShowInterceptModal(true);
+          setLastInterceptTime(now);
+          // Mark this and previous 2 answers as turbo (will be scrubbed)
+          scrub = 'turbo';
+          counted = false;
+        } else {
+          console.log(`⏳ Turbo intercept blocked by cooldown: ${timeSinceLastIntercept.toFixed(1)}s < ${INTERCEPT_COOLDOWN_S}s`);
+        }
+      }
+    } else {
+      // Reset turbo streak if time between clicks is not turbo
+      if (turboStreak > 0) {
+        console.log(`🔄 Turbo streak reset: ${timeBetweenClicks}ms > ${TURBO_MS}ms`);
+        setTurboStreak(0);
+      }
+    }
+    
+    // Update session counters for badges (only for counted answers)
+    if (counted) {
+      setSessionAttempts(prev => prev + 1);
+      if (isCorrect) {
+        setSessionCorrect(prev => prev + 1);
+        if (answerTime < 1500) setSessionFastUnder1_5(prev => prev + 1);
+        if (answerTime < 3000) setSessionFastUnder3(prev => prev + 1);
+      }
     }
     
     // Track skill progression and check for world mastery
@@ -524,7 +655,7 @@ function SlimeCollectorAppInner() {
         }
         
         // Update skill stats
-        updateStatsAndCheckMastery(np, skill, isCorrect, answerTime);
+        updateStatsAndCheckMastery(np, skill, isCorrect, answerTime, counted, scrub);
         
         // Evaluate badges on answer event
         const badgeResult = evaluateBadges(np, {
@@ -682,7 +813,6 @@ function SlimeCollectorAppInner() {
       // Delay to show celebration before advancing question
       setTimeout(() => {
       setProblem(makeProblemForSkill(skill));
-        setQuestionStartTime(Date.now());
       setDisabledSet(new Set());
       setWrongPick(null);
         setSlimeMood('idle');
@@ -863,7 +993,12 @@ return (
         
         {/* Game Title */}
         <div className="text-center pt-6 pb-3">
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-emerald-700">Slime Collector</h1>
+          <h1 className="text-3xl sm:text-4xl font-extrabold bg-gradient-to-r from-emerald-600 via-green-500 to-lime-500 bg-clip-text text-transparent drop-shadow-lg">
+            Slime Collector
+          </h1>
+          <div className="text-xs text-emerald-600/60 mt-1 font-medium tracking-wider">
+            MATH • COLLECTION • ADVENTURE
+          </div>
         </div>
 
         {/* Stats Bar */}
@@ -883,7 +1018,7 @@ return (
                 </div>
               )}
 
-              <div className="flex items-center gap-6">
+              <div className="flex items-center justify-center gap-6">
                 {/* Hearts */}
                 <div className="flex items-center gap-1" title="Lives">
                   {Array.from({ length: 3 }).map((_, i) => (
@@ -919,6 +1054,31 @@ return (
                     Lv {level} → {level + 1} • {Math.max(0, xpNeed - xpInto)} XP to next level
                   </div>
                 </div>
+
+                {/* Mini Performance Pills */}
+                {current && gameState === "playing" && (() => {
+                  const rollingAcc = getRollingAccuracy(current, skill);
+                  const rollingSpd = getRollingSpeed(current, skill);
+                  
+                  const accColor = rollingAcc.pct >= 0.9 ? 'bg-green-100 text-green-700' : 
+                                  rollingAcc.pct >= 0.8 ? 'bg-yellow-100 text-yellow-700' : 
+                                  'bg-red-100 text-red-700';
+                  
+                  const spdColor = rollingSpd.avgWeightedMs <= 2000 ? 'bg-green-100 text-green-700' : 
+                                  rollingSpd.avgWeightedMs <= 3000 ? 'bg-yellow-100 text-yellow-700' : 
+                                  'bg-red-100 text-red-700';
+                  
+                  return (
+                    <div className="flex items-center gap-2">
+                      <div className={`px-2 py-1 rounded-full text-xs font-medium ${accColor}`}>
+                        🎯 {Math.round(rollingAcc.pct * 100)}%
+                      </div>
+                      <div className={`px-2 py-1 rounded-full text-xs font-medium ${spdColor}`}>
+                        ⚡ {Math.round(rollingSpd.avgWeightedMs / 1000 * 10) / 10}s
+                      </div>
+                    </div>
+                  );
+                })()}
 
                 {/* Logout Button moved to top right corner */}
 
@@ -1002,10 +1162,159 @@ return (
                 <BiomeLayer biome={currentBiome} />
             </div>
 
-              <div className="flex items-center justify-between px-4 pt-4">
-              <div className="text-emerald-700 font-semibold">Streak: {streak}</div>
-              <div className="text-emerald-700/80 text-sm">Best: {bestStreak}</div>
+            {/* Top bar with streak counters (left) and Take A Break button (right) */}
+            <div className="flex items-center justify-between px-4 pt-4">
+              {/* Streak counters - moved to top left */}
+              <div className="flex items-center gap-4">
+                <div className="text-emerald-700 font-semibold">Streak: {streak}</div>
+                <div className="text-emerald-700/80 text-sm">Best: {bestStreak}</div>
+              </div>
+              
+              {/* Take A Break button - top right */}
+              {gameState === "playing" && (
+                <button
+                  onClick={endSession}
+                  className="inline-flex items-center gap-2 rounded-lg px-3 py-1.5 bg-orange-50 hover:bg-orange-100 text-orange-700 text-sm border border-orange-200"
+                  title="Take a break"
+                >
+                  <Coffee className="w-4 h-4" />
+                  <span className="hidden sm:inline">Take a Break</span>
+                </button>
+              )}
             </div>
+
+              {/* DEBUG ELEMENTS - COMMENTED OUT FOR PRODUCTION */}
+              {/* Uncomment these for development/debugging */}
+              {false && import.meta.env.DEV && current && (
+                <div className="px-4 pb-2 space-y-1">
+                  {(() => {
+                    const rollingAcc = getRollingAccuracy(current, skill);
+                    const rollingSpd = getRollingSpeed(current, skill);
+                    return (
+                      <div className="flex gap-2 text-xs">
+                        <div className="bg-blue-100 text-blue-700 px-2 py-1 rounded flex-1 text-center">
+                          🎯 Acc: {rollingAcc.n}/{rollingAcc.N} ({Math.round(rollingAcc.pct * 100)}%)
+                        </div>
+                        <div className="bg-green-100 text-green-700 px-2 py-1 rounded flex-1 text-center">
+                          ⚡ Speed: {Math.round(rollingSpd.avgWeightedMs / 1000 * 10) / 10}s
+                        </div>
+                      </div>
+                    );
+                  })()}
+                  
+                  {/* Debug info */}
+                  <div className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs text-center">
+                    Cooldown: {Math.max(0, INTERCEPT_COOLDOWN_S - (Date.now() - lastInterceptTime) / 1000).toFixed(1)}s
+                  </div>
+                  
+                  {/* Test buttons */}
+                  <div className="flex gap-1">
+                    <button
+                      onClick={() => setShowInterceptModal(true)}
+                      className="flex-1 bg-red-100 text-red-700 px-2 py-1 rounded text-xs text-center hover:bg-red-200"
+                    >
+                      🧪 Test Modal
+                    </button>
+                    <button
+                      onClick={() => {
+                        setLastInterceptTime(0);
+                        setTurboStreak(0);
+                        console.log('🔄 Reset turbo detection state');
+                      }}
+                      className="flex-1 bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs text-center hover:bg-blue-200"
+                    >
+                      🔄 Reset
+                    </button>
+                  </div>
+                  
+                  {/* Simulate turbo answer */}
+                  <button
+                    onClick={() => {
+                      const newTurboStreak = turboStreak + 1;
+                      setTurboStreak(newTurboStreak);
+                      console.log(`🧪 Simulated turbo answer: streak ${newTurboStreak}/3`);
+                      
+                      if (newTurboStreak >= TURBO_STREAK) {
+                        const now = Date.now();
+                        const timeSinceLastIntercept = (now - lastInterceptTime) / 1000;
+                        if (timeSinceLastIntercept >= INTERCEPT_COOLDOWN_S) {
+                          console.log('🚨 Simulated intercept trigger!');
+                          setShowInterceptModal(true);
+                          setLastInterceptTime(now);
+                        } else {
+                          console.log(`⏰ Cooldown active: ${timeSinceLastIntercept.toFixed(1)}s/${INTERCEPT_COOLDOWN_S}s`);
+                        }
+                      }
+                    }}
+                    className="w-full bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs text-center hover:bg-yellow-200"
+                  >
+                    🧪 Simulate Turbo Answer
+                  </button>
+                  
+                  {/* Streak Testing Buttons - REMOVE BEFORE PUSH */}
+                  <div className="border-t border-gray-300 pt-2 mt-2">
+                    <div className="text-xs text-gray-600 mb-1 text-center">🔥 Streak Testing</div>
+                    <div className="flex gap-1">
+                      <button
+                        onClick={() => {
+                          if (current) {
+                            const streakResult = updateStreakData(current);
+                            console.log(`🔥 Streak test: ${streakResult.streakIncreased ? 'INCREASED' : 'NO CHANGE'} to ${streakResult.newStreak} days`);
+                            if (streakResult.streakIncreased) {
+                              setStreakIncreased(true);
+                            }
+                            // Force save to see changes
+                            markDirty();
+                          }
+                        }}
+                        className="flex-1 bg-orange-100 text-orange-700 px-2 py-1 rounded text-xs text-center hover:bg-orange-200"
+                      >
+                        🔥 Test Streak
+                      </button>
+                      <button
+                        onClick={() => {
+                          if (current) {
+                            // Manually set streak to 7 for badge testing
+                            current.streakData = {
+                              currentStreak: 7,
+                              longestStreak: 7,
+                              lastLoginDate: new Date().toISOString().slice(0, 10),
+                              totalLogins: 7,
+                              streakHistory: ['2024-01-15', '2024-01-16', '2024-01-17', '2024-01-18', '2024-01-19', '2024-01-20', '2024-01-21']
+                            };
+                            console.log('🔥 Set streak to 7 days for badge testing');
+                            markDirty();
+                          }
+                        }}
+                        className="flex-1 bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs text-center hover:bg-purple-200"
+                      >
+                        🏆 Set 7 Days
+                      </button>
+                    </div>
+                    <button
+                      onClick={() => {
+                        if (current) {
+                          console.log('🔥 Current streak data:', current.streakData);
+                        }
+                      }}
+                      className="w-full bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs text-center hover:bg-blue-200 mt-1"
+                    >
+                      📊 Log Streak Data
+                    </button>
+                    <button
+                      onClick={() => {
+                        if (current) {
+                          // Show streak modal for testing
+                          setShowStreakModal(true);
+                        }
+                      }}
+                      className="w-full bg-green-100 text-green-700 px-2 py-1 rounded text-xs text-center hover:bg-green-200 mt-1"
+                    >
+                      🎯 Test Streak Modal
+                    </button>
+                  </div>
+                </div>
+              )}
 
               {/* Current Skill/World Indicator */}
               <div className="px-4 pb-2">
@@ -1226,17 +1535,6 @@ return (
               <span className="hidden sm:inline">Progress</span>
             </button>
 
-            {/* End Session - Only during play */}
-            {gameState === "playing" && (
-              <button
-                onClick={endSession}
-                className="inline-flex items-center gap-2 rounded-xl px-4 py-2 bg-red-50 hover:bg-red-100 text-red-700 text-sm border border-red-200"
-                title="End Session"
-              >
-                <Power className="w-4 h-4" />
-                <span className="hidden sm:inline">End</span>
-              </button>
-            )}
           </div>
         </div>
       </div>
@@ -1280,6 +1578,10 @@ return (
             setOpenSummary(false);
             setGameState("ready");
           }}
+          onPlayAgain={() => {
+            setOpenSummary(false);
+            startGame();
+          }}
           levelBefore={runStartLevel}
           levelAfter={level}
           xpInto={xpInto}
@@ -1290,6 +1592,10 @@ return (
           gooStreak={gooStreak}
           gooSpeed={gooSpeed}
           bestStreak={bestStreak}
+          currentTotalXP={current.xp}
+          sessionCorrect={sessionCorrect}
+          sessionAttempts={sessionAttempts}
+          useAlternativeView={import.meta.env.DEV} // Enable alternative view in dev mode
         />
       )}
 
@@ -1384,6 +1690,32 @@ return (
         )}
       </>
     )}
+
+      {/* Intercept Modal */}
+      <InterceptModal
+        open={showInterceptModal}
+        onTakeBreak={handleTakeBreak}
+        onKeepPlaying={handleKeepPlaying}
+      />
+
+      {/* Streak Modal */}
+      {current && (
+        <StreakModal
+          open={showStreakModal}
+          onClose={() => {
+            setShowStreakModal(false);
+            setStreakIncreased(false); // Reset after modal closes
+          }}
+          currentStreak={current.streakData?.currentStreak || 0}
+          longestStreak={current.streakData?.longestStreak || 0}
+          totalLogins={current.streakData?.totalLogins || 0}
+          weekData={current.streakData?.streakHistory?.map((date: string, index: number) => ({
+            date: new Date(Date.now() - (6 - index) * 24 * 60 * 60 * 1000).toISOString().slice(0, 10),
+            completed: !!date
+          })) || []}
+          streakIncreased={streakIncreased}
+        />
+      )}
   </div>
 );
 }

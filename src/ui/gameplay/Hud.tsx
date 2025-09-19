@@ -1,5 +1,5 @@
 import React from "react";
-import { Volume2, VolumeX, ShoppingBag, UserCircle2, Power } from "lucide-react";
+import { Volume2, VolumeX, ShoppingBag, UserCircle2, Power, Coffee } from "lucide-react";
 
 type Props = {
   lives: number;
@@ -12,10 +12,15 @@ type Props = {
   onOpenShop: () => void;
   onOpenProgress: () => void;
   onEndSession: () => void;
+  onTakeBreak: () => void;
   skill: string;
   onChangeSkill: (id: string) => void;
   unlockedSkills: string[];
   skillLabel: (id: string) => string;
+  // Debug info for new system
+  turboStreak?: number;
+  rollingAccuracy?: { n: number; N: number; pct: number };
+  rollingSpeed?: { avgWeightedMs: number; n: number };
 };
 
 const HeartIcon = ({ className = "" }) => (
@@ -39,10 +44,14 @@ export default function Hud({
   onOpenShop,
   onOpenProgress,
   onEndSession,
+  onTakeBreak,
   skill,
   onChangeSkill,
   unlockedSkills,
   skillLabel,
+  turboStreak = 0,
+  rollingAccuracy,
+  rollingSpeed,
 }: Props) {
   const pct = Math.max(0, Math.min(100, (xpInto / Math.max(1, xpNeed)) * 100));
   const xpLeft = Math.max(0, xpNeed - xpInto);
@@ -87,6 +96,27 @@ export default function Hud({
         <div className="mt-1 text-xs text-emerald-700/80 text-center sm:hidden">
           Lv {level}
         </div>
+        
+        {/* Debug info for new system */}
+        {import.meta.env.DEV && (
+          <div className="mt-2 text-[10px] text-gray-600 text-center space-y-1">
+            {turboStreak > 0 && (
+              <div className="bg-orange-100 text-orange-700 px-2 py-1 rounded">
+                🚀 Turbo: {turboStreak}/3
+              </div>
+            )}
+            {rollingAccuracy && (
+              <div className="bg-blue-100 text-blue-700 px-2 py-1 rounded">
+                🎯 Acc: {rollingAccuracy.n}/{rollingAccuracy.N} ({Math.round(rollingAccuracy.pct * 100)}%)
+              </div>
+            )}
+            {rollingSpeed && (
+              <div className="bg-green-100 text-green-700 px-2 py-1 rounded">
+                ⚡ Speed: {Math.round(rollingSpeed.avgWeightedMs / 1000 * 10) / 10}s
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Right: controls */}
@@ -129,6 +159,15 @@ export default function Hud({
         >
           <UserCircle2 className="w-5 h-5" />
           <span className="hidden sm:inline">Progress</span>
+        </button>
+
+        <button
+          onClick={onTakeBreak}
+          className="h-9 inline-flex items-center gap-2 rounded-lg px-3 bg-orange-50 hover:bg-orange-100 text-orange-700 border border-orange-200"
+          title="Take a break"
+        >
+          <Coffee className="w-5 h-5" />
+          <span className="hidden sm:inline">Break</span>
         </button>
 
         <button
