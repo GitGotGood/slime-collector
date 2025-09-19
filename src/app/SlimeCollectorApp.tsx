@@ -1166,10 +1166,10 @@ return (
             <div className="flex items-center justify-between px-4 pt-4">
               {/* Streak counters - moved to top left */}
               <div className="flex items-center gap-4">
-                <div className="text-emerald-700 font-semibold">Streak: {streak}</div>
-                <div className="text-emerald-700/80 text-sm">Best: {bestStreak}</div>
-              </div>
-              
+              <div className="text-emerald-700 font-semibold">Streak: {streak}</div>
+              <div className="text-emerald-700/80 text-sm">Best: {bestStreak}</div>
+            </div>
+
               {/* Take A Break button - top right */}
               {gameState === "playing" && (
                 <button
@@ -1595,7 +1595,7 @@ return (
           currentTotalXP={current.xp}
           sessionCorrect={sessionCorrect}
           sessionAttempts={sessionAttempts}
-          useAlternativeView={import.meta.env.DEV} // Enable alternative view in dev mode
+          useAlternativeView={true} // Enable alternative view in production
         />
       )}
 
@@ -1616,6 +1616,12 @@ return (
             onSelectProfile={async (profileId) => {
               await selectProfile(profileId);
               setShowProfileSwitcher(false);
+              
+              // Show streak modal when profile is selected (if streak data exists)
+              const selectedProfile = profiles.find(p => p.id === profileId);
+              if (selectedProfile?.streakData) {
+                setShowStreakModal(true);
+              }
             }}
             onCreateProfile={() => {
               setShowCreateProfile(true);
@@ -1637,7 +1643,7 @@ return (
           setShowCreateProfile(false);
         }}
       />
-    </div>
+  </div>
 
     {import.meta.env.DEV && (
               <DevPanel 
