@@ -61,6 +61,15 @@ export interface SkillStat {
   totalMs: number;
   avgMs: number | null;
   responseTimes?: number[]; // Track individual response times for rolling window
+  
+  // Rolling accuracy buffers (ring buffers by tier)
+  rollingAccuracy?: {
+    correct: boolean;
+    t_ms: number;
+    counted: boolean; // false for mis-taps and scrubbed answers
+    scrub?: 'none' | 'mis_tap' | 'turbo';
+    ts: number;
+  }[];
 }
 
 export interface ShopItem {
@@ -151,7 +160,7 @@ export interface Profile {
   badges?: BadgeProgress;
   
   // Additional counters for badge system
-  streakDays?: number;       // consecutive days played
+  streakDays?: number;       // consecutive days played (legacy)
   sessionDamageTaken?: number; // lives lost this session
   dayCounters?: {
     solved: number;          // problems solved today
@@ -159,6 +168,15 @@ export interface Profile {
     date: string;            // YYYY-MM-DD for tracking
   };
   worldStreaks?: Partial<Record<WorldID, number>>; // 20-streaks per world
+  
+  // Daily login streak system
+  streakData?: {
+    currentStreak: number;     // current consecutive days
+    longestStreak: number;     // best streak ever achieved
+    lastLoginDate: string;     // YYYY-MM-DD of last login
+    totalLogins: number;       // total days logged in
+    streakHistory: string[];   // last 7 days for calendar display
+  };
 }
 
 export interface RootState {
