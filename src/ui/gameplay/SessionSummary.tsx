@@ -3,6 +3,7 @@ import Dialog from "../components/Dialog";
 import GooPill from "../components/GooPill";
 import ProgressBar from "../components/ProgressBar";
 import { levelFromTotalXP } from "../../core/progression";
+import { getBadgeName } from "../../core/badges";
 
 export default function SessionSummary({
   open,
@@ -21,6 +22,7 @@ export default function SessionSummary({
   currentTotalXP,
   sessionCorrect,
   sessionAttempts,
+  sessionNewBadges = [],
   useAlternativeView = false,
 }: {
   open: boolean;
@@ -39,6 +41,7 @@ export default function SessionSummary({
   currentTotalXP: number;
   sessionCorrect: number;
   sessionAttempts: number;
+  sessionNewBadges?: { id: string; tier?: string; rewardGoo: number }[];
   useAlternativeView?: boolean;
 }) {
   // Animation state
@@ -265,6 +268,33 @@ export default function SessionSummary({
               }
             `
           }} />
+
+          {/* New Badges Section */}
+          {sessionNewBadges.length > 0 && (
+            <div className="space-y-3">
+              <div className="text-emerald-800 font-semibold">New Badges Earned!</div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {sessionNewBadges.map((badge, index) => (
+                  <div key={badge.id} className="rounded-xl border border-purple-200 bg-purple-50 p-4 text-center">
+                    <div className="text-2xl mb-2">🏆</div>
+                    <div className="font-semibold text-purple-800 text-sm">
+                      {getBadgeName(badge.id)}
+                    </div>
+                    {badge.tier && (
+                      <div className="text-xs text-purple-600/80 mt-1 capitalize">
+                        {badge.tier} Badge
+                      </div>
+                    )}
+                    {badge.rewardGoo > 0 && (
+                      <div className="text-xs text-amber-600 mt-1">
+                        +{badge.rewardGoo} Goo Reward
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Highlights Section */}
           <div className="text-emerald-800 font-semibold">Highlights</div>
