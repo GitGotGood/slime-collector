@@ -29,6 +29,7 @@ interface ProfileStats {
   badgesEarned: number;
   slimesCollected: number;
   currentSkill: string;
+  currentStreak: number;
 }
 
 function ProfileCard({ profile, isActive, onSelect, onDelete, isOfflineMode = false }: { 
@@ -40,7 +41,8 @@ function ProfileCard({ profile, isActive, onSelect, onDelete, isOfflineMode = fa
 }) {
   const [stats, setStats] = React.useState<ProfileStats | null>(null);
   const [loading, setLoading] = React.useState(true);
-  // Delete functionality state variables commented out
+  const loadingRef = React.useRef(false);
+  // Delete functionality state variables - Disabled for production
   // const [pressTimer, setPressTimer] = React.useState<NodeJS.Timeout | null>(null);
   // const [showDeleteConfirm, setShowDeleteConfirm] = React.useState(false);
   // const [pressProgress, setPressProgress] = React.useState(0);
@@ -49,6 +51,13 @@ function ProfileCard({ profile, isActive, onSelect, onDelete, isOfflineMode = fa
 
   React.useEffect(() => {
     const loadStats = async () => {
+      // Prevent duplicate loading if already loading or loaded
+      if (loadingRef.current || (stats && !loading)) {
+        return;
+      }
+      
+      loadingRef.current = true;
+      
       try {
         let saveData;
         
@@ -75,7 +84,8 @@ function ProfileCard({ profile, isActive, onSelect, onDelete, isOfflineMode = fa
             biomesUnlocked,
             badgesEarned,
             slimesCollected,
-            currentSkill
+            currentSkill,
+            currentStreak: saveData.streakData?.currentStreak || 0
           });
         } else {
           // New profile with no save data
@@ -87,7 +97,8 @@ function ProfileCard({ profile, isActive, onSelect, onDelete, isOfflineMode = fa
             biomesUnlocked: 1,
             badgesEarned: 0,
             slimesCollected: 1,
-            currentSkill: 'add_1_10'
+            currentSkill: 'add_1_10',
+            currentStreak: 0
           });
         }
       } catch (error) {
@@ -100,17 +111,19 @@ function ProfileCard({ profile, isActive, onSelect, onDelete, isOfflineMode = fa
           biomesUnlocked: 1,
           badgesEarned: 0,
           slimesCollected: 1,
-          currentSkill: 'add_1_10'
+          currentSkill: 'add_1_10',
+          currentStreak: 0
         });
       } finally {
         setLoading(false);
+        loadingRef.current = false;
       }
     };
 
     loadStats();
   }, [profile.id, isOfflineMode]);
 
-  // TEMPORARILY COMMENTED OUT - DELETE FUNCTIONALITY DISABLED AFTER PROFILE CLEANUP
+  // DELETE FUNCTIONALITY - Disabled for production
   // const handlePressStart = () => {
   //   if (!onDelete) return;
   //   
@@ -152,7 +165,7 @@ function ProfileCard({ profile, isActive, onSelect, onDelete, isOfflineMode = fa
   //   setShowDeleteConfirm(false);
   // };
 
-  // Show delete confirmation modal
+  // Show delete confirmation modal - Disabled for production
   // if (showDeleteConfirm) {
   //   return (
   //     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -193,7 +206,7 @@ function ProfileCard({ profile, isActive, onSelect, onDelete, isOfflineMode = fa
   return (
     <motion.button
       onClick={onSelect}
-      // DELETE HANDLERS COMMENTED OUT
+      // DELETE HANDLERS - Disabled for production
       // onMouseDown={handlePressStart}
       // onMouseUp={handlePressEnd}
       // onMouseLeave={handlePressEnd}
@@ -221,6 +234,21 @@ function ProfileCard({ profile, isActive, onSelect, onDelete, isOfflineMode = fa
           </div>
         </div>
       )} */}
+      {/* Streak Counter - Upper Right Corner */}
+      <div className="absolute top-2 right-2">
+        {loading ? (
+          <div className="w-8 h-6 rounded-full bg-gray-100 animate-pulse" />
+        ) : (
+          <div className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold ${
+            (stats?.currentStreak || 0) > 0 
+              ? 'bg-orange-100 text-orange-700' 
+              : 'bg-gray-100 text-gray-500'
+          }`}>
+            🔥 {stats?.currentStreak || 0} day streak
+          </div>
+        )}
+      </div>
+
       <div className="flex items-center gap-4">
         {/* Slime Avatar */}
         <div className="w-16 h-16 flex items-center justify-center">
@@ -280,6 +308,7 @@ export function ProfileSelector({
   parentEmail,
   isOfflineMode = false
 }: ProfileSelectorProps) {
+  
   return (
     <div className="bg-white rounded-2xl shadow-2xl p-6 max-w-lg w-full border border-emerald-100 max-h-[80vh] flex flex-col">
       {/* Header */}

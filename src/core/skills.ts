@@ -1,3 +1,30 @@
+/**
+ * MICRO-MEMORY: Math Skills System - Problem Generation, Difficulty Scaling, and Curriculum Progression
+ * 
+ * CORE CONCEPTS:
+ * - Problem Generators: 25 skill-specific functions that create age-appropriate math problems
+ * - Multiple Choice Logic: Smart distractor generation with safety checks for correct answer inclusion
+ * - Difficulty Scaling: Linear progression from K-5 with appropriate number ranges and operations
+ * - Skill Registry: Centralized skill definitions with labels, difficulty multipliers, and problem types
+ * - Curriculum Order: Sequential skill unlocking with proper mathematical progression
+ * 
+ * CRITICAL DEPENDENCIES:
+ * - types.ts: SkillDef, SkillID, and Problem interfaces
+ * - progression.ts: Skill mastery tracking and world unlocking
+ * - SlimeCollectorApp.tsx: Problem display and answer processing
+ * 
+ * INLINE DOCUMENTATION STANDARDS:
+ * - Problem generators: Explain the number ranges, operation logic, and age appropriateness
+ * - Multiple choice: Document the distractor generation and safety mechanisms
+ * - Difficulty scaling: Explain how multipliers affect rewards and progression
+ * - Skill definitions: Document the progression order and mathematical relationships
+ * - Edge cases: Explain handling of negative numbers, division by zero, etc.
+ * 
+ * RECENT CHANGES: Added triple and quadruple digit subtraction skills
+ * 
+ * TODO: Add inline documentation for complex problem generation algorithms and multiple choice safety logic
+ */
+
 // V1 Core Curriculum: K→5 Linear Path (25 Skills)
 import type { SkillDef, SkillID, Problem } from './types';
 

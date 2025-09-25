@@ -1,3 +1,31 @@
+/**
+ * MICRO-MEMORY: Shop System - Biome Bias, Daily Rotation, and Item Selection Logic
+ * 
+ * CORE CONCEPTS:
+ * - Biome Bias System: 3x weighting for recently unlocked biome items with 7-day time windows
+ * - Daily Rotation: Seeded random selection with consistent daily picks and refresh costs
+ * - Evergreen Items: Persistent shop items that show owned status but remain available
+ * - Tier Diversity: Ensures balanced representation across common/rare/epic/mythic tiers
+ * - Refresh Economics: Escalating costs for manual shop refreshes with daily reset
+ * 
+ * CRITICAL DEPENDENCIES:
+ * - storage.ts: Seeded random number generation and daily key system
+ * - economy.ts: Refresh cost calculations and pricing tiers
+ * - types.ts: ShopItem, Profile, and biome definitions
+ * - SlimeCollectorApp.tsx: Shop modal integration and bias triggering
+ * 
+ * INLINE DOCUMENTATION STANDARDS:
+ * - Bias algorithms: Explain the 3x weighting logic and time window calculations
+ * - Selection logic: Document how items are filtered, weighted, and distributed
+ * - Refresh mechanics: Explain the cost escalation and daily reset behavior
+ * - Data structures: Document the ShopItem format and biome mapping
+ * - Debug logging: Explain the shop debug output and bias tracking
+ * 
+ * RECENT CHANGES: Enhanced biome bias debugging and shop refresh logic
+ * 
+ * TODO: Add inline documentation for complex selection algorithms and bias calculation formulas
+ */
+
 import { seededRng, TODAY_KEY } from './storage';
 import type { ShopItem, Profile, WorldID } from './types';
 import { REFRESH_COSTS } from './economy';
@@ -12,6 +40,11 @@ export const ALL_SHOP_ITEMS: ShopItem[] = [
   { id: 'skin_charcoal', type: 'skin', skin: 'charcoal', tier: 'common', biome: 'shop' },
   { id: 'skin_acorn', type: 'skin', skin: 'acorn', tier: 'common', biome: 'shop' },
   { id: 'skin_fog', type: 'skin', skin: 'fog', tier: 'common', biome: 'shop' },
+  { id: 'skin_bluebird', type: 'skin', skin: 'bluebird', tier: 'common', biome: 'shop' },
+  { id: 'skin_apple_shine', type: 'skin', skin: 'apple_shine', tier: 'common', biome: 'shop' },
+  { id: 'skin_honey', type: 'skin', skin: 'honey', tier: 'common', biome: 'shop' },
+  { id: 'skin_lilac', type: 'skin', skin: 'lilac', tier: 'common', biome: 'shop' },
+  { id: 'skin_berry_jam', type: 'skin', skin: 'berry_jam', tier: 'common', biome: 'shop' },
   
   // Launch Uncommons - Always unlocked
   { id: 'skin_spring_fade', type: 'skin', skin: 'spring_fade', tier: 'uncommon', biome: 'shop' },
@@ -21,6 +54,8 @@ export const ALL_SHOP_ITEMS: ShopItem[] = [
   { id: 'skin_rainbow', type: 'skin', skin: 'rainbow', tier: 'uncommon', biome: 'shop' },
   { id: 'skin_sunset', type: 'skin', skin: 'sunset', tier: 'uncommon', biome: 'shop' },
   { id: 'skin_sunrise', type: 'skin', skin: 'sunrise', tier: 'uncommon', biome: 'shop' },
+  { id: 'skin_watermelon', type: 'skin', skin: 'watermelon', tier: 'uncommon', biome: 'shop' },
+  { id: 'skin_copper', type: 'skin', skin: 'copper', tier: 'uncommon', biome: 'shop' },
   
   // Launch Rares - Always unlocked
   { id: 'skin_polka_mint', type: 'skin', skin: 'polka_mint', tier: 'rare', biome: 'shop' },
@@ -31,10 +66,18 @@ export const ALL_SHOP_ITEMS: ShopItem[] = [
   // Launch Epics - Daily rotation
   { id: 'skin_lava_flow', type: 'skin', skin: 'lava_flow', tier: 'epic', biome: 'shop' },
   { id: 'skin_aurora_veil', type: 'skin', skin: 'aurora_veil', tier: 'epic', biome: 'shop' },
+  { id: 'skin_the_fizz', type: 'skin', skin: 'the_fizz', tier: 'epic', biome: 'shop' },
+  { id: 'skin_biolume_veil_enhanced', type: 'skin', skin: 'biolume_veil_enhanced', tier: 'epic', biome: 'shop' },
+  { id: 'skin_void_walker', type: 'skin', skin: 'void_walker', tier: 'epic', biome: 'shop' },
   
   // Launch Mythics - Daily rotation marquee
   { id: 'skin_phoenix_heart', type: 'skin', skin: 'phoenix_heart', tier: 'mythic', biome: 'shop' },
   { id: 'skin_nebula', type: 'skin', skin: 'nebula', tier: 'mythic', biome: 'shop' },
+  { id: 'skin_cosmic', type: 'skin', skin: 'cosmic', tier: 'mythic', biome: 'shop' },
+  { id: 'skin_portal', type: 'skin', skin: 'portal', tier: 'mythic', biome: 'shop' },
+  { id: 'skin_vertigo', type: 'skin', skin: 'vertigo', tier: 'mythic', biome: 'shop' },
+  { id: 'skin_solar_flare', type: 'skin', skin: 'solar_flare', tier: 'mythic', biome: 'shop' },
+  { id: 'skin_infinite_money_glitch', type: 'skin', skin: 'infinite_money_glitch', tier: 'mythic', biome: 'shop' },
 ];
 
 // Select 4 "Evergreen" (commons/uncommons) - persistent slots, only refresh at midnight

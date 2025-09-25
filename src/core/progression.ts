@@ -1,3 +1,30 @@
+/**
+ * MICRO-MEMORY: Core Progression System - Mastery Gates, Rolling Accuracy, and Turbo Detection
+ * 
+ * CORE CONCEPTS:
+ * - Rolling Accuracy Windows: Per-skill ring buffers (20/25/30 answers) for forgiveness-based progression
+ * - Smart Speed Averaging: Outlier removal, exponential weighting, and speed caps for fair assessment
+ * - Turbo Detection: Identifies rapid-fire answers and triggers intercept modals with cooldown
+ * - Mastery Gates: Three-tier system (EARLY/MID/LATE) with attempts, accuracy, and speed requirements
+ * - World Progression: Linear skill unlocking with biome rewards and celebration triggers
+ * 
+ * CRITICAL DEPENDENCIES:
+ * - types.ts: Profile, SkillStat, and progression interfaces
+ * - skills.ts: Skill definitions and problem generation
+ * - SlimeCollectorApp.tsx: Main orchestrator that calls these functions
+ * 
+ * INLINE DOCUMENTATION STANDARDS:
+ * - Rolling buffer algorithms: Explain the ring buffer mechanics and forgiveness logic
+ * - Speed calculations: Document outlier removal thresholds and weighting formulas
+ * - Turbo detection: Explain the streak counting and cooldown timing
+ * - Mastery checks: Document the three-gate system and progression requirements
+ * - Data structures: Explain the rollingAccuracy buffer format and usage
+ * 
+ * RECENT CHANGES: Updated TURBO_MS threshold based on play session data analysis
+ * 
+ * TODO: Add inline documentation for rolling accuracy buffer management and smart averaging algorithms
+ */
+
 import type { Profile, SkillID, WorldDef, WorldID, MasteryGate } from './types';
 
 // Constants for new accuracy/speed system
@@ -87,23 +114,56 @@ export const FUTURE_EXPLORATION_SKILLS = {
 // True if profile meets gate for skillId, using rolling accuracy and speed
 export function meetsMastery(profile: any, skillId: SkillID, gate: MasteryGate): boolean {
   const st = profile?.skillStats?.[skillId];
-  if (!st) return false;
+  if (!st) {
+    console.log(`🎯 MEETS MASTERY DEBUG: No stats for ${skillId}`);
+    return false;
+  }
   
   // Use rolling accuracy instead of lifetime accuracy
   const rollingAcc = getRollingAccuracy(profile, skillId);
   const rollingSpeed = getRollingSpeed(profile, skillId);
   
   // Check if we have enough counted answers and meet thresholds
-  return rollingAcc.n >= gate.attempts && 
+  const result = rollingAcc.n >= gate.attempts && 
          rollingAcc.pct >= gate.minAcc && 
          rollingSpeed.avgWeightedMs <= gate.maxAvgMs;
+  
+  console.log(`🎯 MEETS MASTERY DEBUG for ${skillId}:`, {
+    attempts: `${rollingAcc.n}/${gate.attempts}`,
+    accuracy: `${rollingAcc.pct.toFixed(1)}%/${gate.minAcc}%`,
+    speed: `${rollingSpeed.avgWeightedMs.toFixed(0)}ms/${gate.maxAvgMs}ms`,
+    result
+  });
+  
+  return result;
 }
 
 // Return the first world not yet mastered (V1 - Simple Linear Progression)
 export function nextWorld(profile: any): WorldDef | null {
+  console.log('🌍 NEXT WORLD FUNCTION DEBUG:', {
+    profileId: profile?.id,
+    profileName: profile?.name,
+    mastered: profile?.mastered,
+    skillStats: profile?.skillStats,
+    unlockedBiomes: profile?.unlocks?.biomes
+  });
+  
   for (const w of WORLDS) {
-    if (!meetsMastery(profile, w.primarySkill, w.gate)) return w;
+    const isMastered = meetsMastery(profile, w.primarySkill, w.gate);
+    console.log(`🌍 Checking world ${w.id} (${w.title}):`, {
+      primarySkill: w.primarySkill,
+      gate: w.gate,
+      isMastered,
+      skillStats: profile?.skillStats?.[w.primarySkill]
+    });
+    
+    if (!isMastered) {
+      console.log(`🌍 Returning next world: ${w.id} (${w.title})`);
+      return w;
+    }
   }
+  
+  console.log('🌍 All worlds mastered, returning null');
   return null; // all mastered
 }
 
@@ -127,17 +187,71 @@ export function nextWorld(profile: any): WorldDef | null {
 
 // On mastery of a world's primary skill: unlock biome & set shop bias
 export function onWorldMastered(profile: any, worldId: WorldID): any {
+  console.log('🌍 ON WORLD MASTERED CALLED:', {
+    worldId,
+    profileId: profile?.id,
+    profileName: profile?.name,
+    currentBiomes: profile?.unlocks?.biomes || [],
+    mastered: profile?.mastered || {}
+  });
+
   const w = WORLDS.find(x => x.id === worldId);
-  if (!w) return profile;
+  if (!w) {
+    console.log('🌍 ERROR: World not found:', worldId);
+    return profile;
+  }
+
+  console.log('🌍 WORLD FOUND:', {
+    worldId: w.id,
+    worldTitle: w.title,
+    primarySkill: w.primarySkill,
+    rewardBiome: w.rewards.biomeId,
+    gate: w.gate
+  });
 
   const out = { ...profile };
   // ensure arrays
   out.unlocks = out.unlocks || { skins: ['green'], biomes: ['meadow'] };
   out.unlocks.biomes = Array.isArray(out.unlocks.biomes) ? out.unlocks.biomes : ['meadow'];
 
-  if (!out.unlocks.biomes.includes(w.rewards.biomeId)) {
-    out.unlocks.biomes.push(w.rewards.biomeId);
+  console.log('🌍 BEFORE UNLOCKING - Current biomes:', out.unlocks.biomes);
+
+  // Unlock all biomes up to and including the reward biome
+  // This ensures that mastering a later world unlocks all prerequisite biomes
+  const rewardBiomeId = w.rewards.biomeId;
+  const worldIndex = WORLDS.findIndex(world => world.id === worldId);
+  const rewardWorldIndex = WORLDS.findIndex(world => world.id === rewardBiomeId);
+  
+  console.log('🌍 UNLOCKING LOGIC:', {
+    worldIndex,
+    rewardWorldIndex,
+    rewardBiomeId,
+    totalWorlds: WORLDS.length
+  });
+  
+  // If the reward biome is a valid world, unlock all biomes from meadow to that biome
+  if (rewardWorldIndex >= 0) {
+    console.log('🌍 UNLOCKING BIOMES FROM MEADOW TO:', rewardBiomeId);
+    for (let i = 0; i <= rewardWorldIndex; i++) {
+      const biomeToUnlock = WORLDS[i].id;
+      const alreadyUnlocked = out.unlocks.biomes.includes(biomeToUnlock);
+      console.log(`🌍 BIOME ${i}: ${biomeToUnlock} - ${alreadyUnlocked ? 'ALREADY UNLOCKED' : 'UNLOCKING'}`);
+      
+      if (!alreadyUnlocked) {
+        out.unlocks.biomes.push(biomeToUnlock);
+        console.log(`🌍 ✅ UNLOCKED BIOME: ${biomeToUnlock} (from mastering ${worldId})`);
+      }
+    }
+  } else {
+    console.log('🌍 FALLBACK: Reward biome not found in WORLDS, unlocking directly:', rewardBiomeId);
+    // Fallback: just unlock the reward biome (for non-world biomes)
+    if (!out.unlocks.biomes.includes(rewardBiomeId)) {
+      out.unlocks.biomes.push(rewardBiomeId);
+      console.log(`🌍 ✅ UNLOCKED REWARD BIOME: ${rewardBiomeId}`);
+    }
   }
+
+  console.log('🌍 AFTER UNLOCKING - New biomes:', out.unlocks.biomes);
   // shop bias window
   const until = Date.now() + w.rewards.shopBiasDays * 86400000;
   out.shopBiasUntil = Math.max(out.shopBiasUntil || 0, until);
