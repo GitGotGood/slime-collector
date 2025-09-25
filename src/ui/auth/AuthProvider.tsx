@@ -402,19 +402,57 @@ export function AuthProvider({ children }: AuthProviderProps) {
   };
   
   const mergeProfileProgress = async (localProfile: any, cloudProfile: any) => {
-    // Timestamp-based conflict resolution with fallbacks
-    const localTimestamp = new Date(localProfile.updated_at || '2025-01-01'); // Assume recent if no timestamp
-    const cloudTimestamp = new Date(cloudProfile.updated_at || '1970-01-01'); // Assume old if no timestamp
-    
-    console.log('📊 Timestamp comparison:', {
-      local: localProfile.updated_at,
-      cloud: cloudProfile.updated_at,
-      localIsNewer: localTimestamp > cloudTimestamp
-    });
+    // Timestamp-based conflict resolution with better fallbacks
+    const localHasTimestamp = localProfile.updated_at && localProfile.updated_at !== 'undefined';
+    const cloudHasTimestamp = cloudProfile.updated_at && cloudProfile.updated_at !== 'undefined';
     
     let finalData;
     
-    if (localTimestamp > cloudTimestamp) {
+    if (!localHasTimestamp && !cloudHasTimestamp) {
+      // Both missing timestamps - use data comparison to decide
+      console.log('📊 Both timestamps missing, using data comparison');
+      const localHasMoreData = (localProfile.goo || 0) > (cloudProfile.goo || 0) || 
+                              (localProfile.xp || 0) > (cloudProfile.xp || 0);
+      
+      if (localHasMoreData) {
+        console.log('🔄 Local data has more progress, using local data');
+        finalData = {
+          ...cloudProfile,
+          ...localProfile,
+          // Conservative merge: take the max of numeric values
+          goo: Math.max(localProfile.goo || 0, cloudProfile.goo || 0),
+          xp: Math.max(localProfile.xp || 0, cloudProfile.xp || 0),
+        };
+      } else {
+        console.log('🔄 Cloud data has more progress, using cloud data');
+        finalData = cloudProfile;
+      }
+    } else if (!localHasTimestamp) {
+      // Only local timestamp missing - trust cloud data
+      console.log('🔄 Local timestamp missing, using cloud data');
+      finalData = cloudProfile;
+    } else if (!cloudHasTimestamp) {
+      // Only cloud timestamp missing - trust local data
+      console.log('🔄 Cloud timestamp missing, using local data');
+      finalData = {
+        ...cloudProfile,
+        ...localProfile,
+        // Conservative merge: take the max of numeric values
+        goo: Math.max(localProfile.goo || 0, cloudProfile.goo || 0),
+        xp: Math.max(localProfile.xp || 0, cloudProfile.xp || 0),
+      };
+    } else {
+      // Both timestamps present - use timestamp comparison
+      const localTimestamp = new Date(localProfile.updated_at);
+      const cloudTimestamp = new Date(cloudProfile.updated_at);
+      
+      console.log('📊 Timestamp comparison:', {
+        local: localProfile.updated_at,
+        cloud: cloudProfile.updated_at,
+        localIsNewer: localTimestamp > cloudTimestamp
+      });
+      
+      if (localTimestamp > cloudTimestamp) {
       // Local is newer - use local data but merge conservatively
       console.log('🔄 Local data is newer, merging with cloud data');
       finalData = {
@@ -434,7 +472,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         },
         updated_at: new Date().toISOString()
       };
-    } else {
+      } else {
       // Cloud is newer or equal - minimal merge (just add any new progress)
       console.log('☁️ Cloud data is newer, adding any new local progress');
       finalData = {
@@ -453,6 +491,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         },
         updated_at: cloudProfile.updated_at // Keep cloud timestamp
       };
+      }
     }
     
     // Save merged data to cloud

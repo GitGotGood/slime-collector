@@ -7,9 +7,9 @@ import type { UnifiedSkin } from "../../assets/all-skins";
 import Slime from "./Slime";
 
 // Enhanced Slime component for rendering all skin types
-function GallerySlime({ skin, size = "normal", instanceId }: { skin: UnifiedSkin; size?: "small" | "normal" | "large"; instanceId?: string }) {
-  // Create unique key prefix for this slime instance
-  const keyPrefix = instanceId ? `${skin.id}-${instanceId}` : skin.id;
+function GallerySlime({ skin, size = "normal" }: { skin: UnifiedSkin; size?: "small" | "normal" | "large" }) {
+  // Create unique key prefix for this slime instance (for future use)
+  // const keyPrefix = instanceId ? `${skin.id}-${instanceId}` : skin.id;
   const sizeClass = size === "small" ? "w-20" : size === "large" ? "w-60" : "w-32";
   
   // For production skins, use the existing Slime component
@@ -36,6 +36,29 @@ function GallerySlime({ skin, size = "normal", instanceId }: { skin: UnifiedSkin
       "aurora_veil": "aurora_veil",
       "nebula": "nebula",
       "phoenix_heart": "phoenix_heart",
+      "cosmic": "cosmic",
+      "black_hole": "black_hole",
+      "black_hole_2": "black_hole_2",
+    "black_hole_3": "black_hole_3",
+    "black_hole_4": "black_hole_4",
+    "black_hole_5": "black_hole_5",
+    "black_hole_6": "black_hole_6",
+    "black_hole_7": "black_hole_7",
+    "candy_corn": "candy_corn",
+    "watermelon": "watermelon",
+    "bluebird": "bluebird",
+    "apple_shine": "apple_shine",
+    "honey": "honey",
+    "lilac": "lilac",
+    "berry_jam": "berry_jam",
+    "copper": "copper",
+    "the_fizz": "the_fizz",
+    "biolume_veil_enhanced": "biolume_veil_enhanced",
+    "void_walker": "void_walker",
+    "portal": "portal",
+    "vertigo": "vertigo",
+    "solar_flare": "solar_flare",
+    "infinite_money_glitch": "infinite_money_glitch",
       // Biome unlock slimes
       "acorn": "acorn",
       "sea_breeze": "sea_breeze",
@@ -107,15 +130,10 @@ function GallerySlime({ skin, size = "normal", instanceId }: { skin: UnifiedSkin
       // Enhanced mythics merged into originals - removed
       "mirage_enhanced": "mirage_enhanced",
       "frog_chorus_enhanced": "frog_chorus_enhanced",
-      "biolume_veil_enhanced": "biolume_veil_enhanced",
       "echo_rune_enhanced": "echo_rune_enhanced",
       // "synthwave_enhanced": merged into original
       // Pre-production commons
       "fog": "fog",
-      "bluebird": "bluebird", 
-      "apple_shine": "apple_shine",
-      "honey": "honey",
-      "lilac": "lilac",
       // Pre-production enhanced commons
       "fog_enhanced": "fog_enhanced",
       "bluebird_enhanced": "bluebird_enhanced",
@@ -473,7 +491,7 @@ function GallerySlime({ skin, size = "normal", instanceId }: { skin: UnifiedSkin
                 </g>
               )}
               
-              {skin.pattern?.type === "confetti_dots" && (
+              {(skin.pattern as any)?.type === "confetti_dots" && (
                 <g opacity={0.5}>
                   {Array.from({ length: 25 }).map((_, i) => (
                     <rect 
@@ -5779,7 +5797,7 @@ function EnhancedComparisonView({ rarityFilter }: { rarityFilter: string }) {
                   <div className="text-center">
                     <div className="text-sm font-medium text-gray-600 mb-2">Current Production</div>
                     <div className="h-24 flex items-center justify-center mb-2">
-                      <GallerySlime skin={originalSkin} size="small" instanceId={`orig-${pair.original}`} />
+                      <GallerySlime skin={originalSkin} size="small" />
                     </div>
                     <div className="text-sm font-semibold text-green-800">{originalSkin.name}</div>
                     <div className="text-xs text-green-600 mt-1">{originalSkin.bio || "Original version"}</div>
@@ -5800,7 +5818,7 @@ function EnhancedComparisonView({ rarityFilter }: { rarityFilter: string }) {
                   <div className="text-center">
                     <div className="text-sm font-medium text-purple-600 mb-2">✨ Enhanced</div>
                     <div className="h-24 flex items-center justify-center mb-2">
-                      <GallerySlime skin={enhancedSkin} size="small" instanceId={`enh-${pair.enhanced}`} />
+                      <GallerySlime skin={enhancedSkin} size="small" />
                     </div>
                     <div className="text-sm font-semibold text-green-800">{enhancedSkin.name}</div>
                     <div className="text-xs text-green-600 mt-1">{enhancedSkin.bio || "Enhanced with micro-identity"}</div>
@@ -5831,7 +5849,7 @@ function EnhancedComparisonView({ rarityFilter }: { rarityFilter: string }) {
                   <div className="text-center">
                     <div className="text-sm font-medium text-gray-600 mb-2">Current Production</div>
                     <div className="h-24 flex items-center justify-center mb-2">
-                      <GallerySlime skin={originalSkin} size="small" instanceId={`orig-${pair.original}`} />
+                      <GallerySlime skin={originalSkin} size="small" />
                     </div>
                     <div className="text-sm font-semibold text-blue-800">{originalSkin.name}</div>
                     <div className="text-xs text-blue-600 mt-1">{originalSkin.bio || "Original version"}</div>
@@ -5852,7 +5870,7 @@ function EnhancedComparisonView({ rarityFilter }: { rarityFilter: string }) {
                   <div className="text-center">
                     <div className="text-sm font-medium text-purple-600 mb-2">✨ Enhanced</div>
                     <div className="h-24 flex items-center justify-center mb-2">
-                      <GallerySlime skin={enhancedSkin} size="small" instanceId={`enh-${pair.enhanced}`} />
+                      <GallerySlime skin={enhancedSkin} size="small" />
                     </div>
                     <div className="text-sm font-semibold text-blue-800">{enhancedSkin.name}</div>
                     <div className="text-xs text-blue-600 mt-1">{enhancedSkin.bio || "Enhanced with gradients & effects"}</div>
@@ -5883,7 +5901,7 @@ function EnhancedComparisonView({ rarityFilter }: { rarityFilter: string }) {
                   <div className="text-center">
                     <div className="text-sm font-medium text-gray-600 mb-2">Current Production</div>
                     <div className="h-24 flex items-center justify-center mb-2">
-                      <GallerySlime skin={originalSkin} size="small" instanceId={`orig-${pair.original}`} />
+                      <GallerySlime skin={originalSkin} size="small" />
                     </div>
                     <div className="text-sm font-semibold text-purple-800">{originalSkin.name}</div>
                     <div className="text-xs text-purple-600 mt-1">{originalSkin.bio || "Original version"}</div>
@@ -5904,7 +5922,7 @@ function EnhancedComparisonView({ rarityFilter }: { rarityFilter: string }) {
                   <div className="text-center">
                     <div className="text-sm font-medium text-purple-600 mb-2">✨ Enhanced</div>
                     <div className="h-24 flex items-center justify-center mb-2">
-                      <GallerySlime skin={enhancedSkin} size="small" instanceId={`enh-${pair.enhanced}`} />
+                      <GallerySlime skin={enhancedSkin} size="small" />
                     </div>
                     <div className="text-sm font-semibold text-purple-800">{enhancedSkin.name}</div>
                     <div className="text-xs text-purple-600 mt-1">{enhancedSkin.bio || "Enhanced with patterns & highlights"}</div>
@@ -5935,7 +5953,7 @@ function EnhancedComparisonView({ rarityFilter }: { rarityFilter: string }) {
                   <div className="text-center">
                     <div className="text-sm font-medium text-gray-600 mb-2">Current Production</div>
                     <div className="h-24 flex items-center justify-center mb-2">
-                      <GallerySlime skin={originalSkin} size="small" instanceId={`orig-${pair.original}`} />
+                      <GallerySlime skin={originalSkin} size="small" />
                     </div>
                     <div className="text-sm font-semibold text-orange-800">{originalSkin.name}</div>
                     <div className="text-xs text-orange-600 mt-1">{originalSkin.bio || "Original version"}</div>
@@ -5956,7 +5974,7 @@ function EnhancedComparisonView({ rarityFilter }: { rarityFilter: string }) {
                   <div className="text-center">
                     <div className="text-sm font-medium text-purple-600 mb-2">✨ Enhanced</div>
                     <div className="h-24 flex items-center justify-center mb-2">
-                      <GallerySlime skin={enhancedSkin} size="small" instanceId={`enh-${pair.enhanced}`} />
+                      <GallerySlime skin={enhancedSkin} size="small" />
                     </div>
                     <div className="text-sm font-semibold text-orange-800">{enhancedSkin.name}</div>
                     <div className="text-xs text-orange-600 mt-1">{enhancedSkin.bio || "Enhanced with micro-identity"}</div>
@@ -5987,7 +6005,7 @@ function EnhancedComparisonView({ rarityFilter }: { rarityFilter: string }) {
                   <div className="text-center">
                     <div className="text-sm font-medium text-gray-600 mb-2">Current Pre-Production</div>
                     <div className="h-24 flex items-center justify-center mb-2">
-                      <GallerySlime skin={originalSkin} size="small" instanceId={`orig-${pair.original}`} />
+                      <GallerySlime skin={originalSkin} size="small" />
                     </div>
                     <div className="text-sm font-semibold text-orange-800">{originalSkin.name}</div>
                     <div className="text-xs text-orange-600 mt-1">{originalSkin.bio || "Original version"}</div>
@@ -6008,7 +6026,7 @@ function EnhancedComparisonView({ rarityFilter }: { rarityFilter: string }) {
                   <div className="text-center">
                     <div className="text-sm font-medium text-purple-600 mb-2">✨ Enhanced</div>
                     <div className="h-24 flex items-center justify-center mb-2">
-                      <GallerySlime skin={enhancedSkin} size="small" instanceId={`enh-${pair.enhanced}`} />
+                      <GallerySlime skin={enhancedSkin} size="small" />
                     </div>
                     <div className="text-sm font-semibold text-orange-800">{enhancedSkin.name}</div>
                     <div className="text-xs text-orange-600 mt-1">{enhancedSkin.bio || "Enhanced with micro-identity"}</div>
@@ -6039,7 +6057,7 @@ function EnhancedComparisonView({ rarityFilter }: { rarityFilter: string }) {
                   <div className="text-center">
                     <div className="text-sm font-medium text-gray-600 mb-2">Current Production</div>
                     <div className="h-32 flex items-center justify-center mb-3">
-                      <GallerySlime skin={originalSkin} size="normal" instanceId={`orig-${pair.original}`} />
+                      <GallerySlime skin={originalSkin} size="normal" />
                     </div>
                     <div className="text-sm font-semibold text-emerald-800">{originalSkin.name}</div>
                     <div className="text-xs text-emerald-600 mt-1">{originalSkin.bio || "Original version"}</div>
@@ -6060,7 +6078,7 @@ function EnhancedComparisonView({ rarityFilter }: { rarityFilter: string }) {
                   <div className="text-center">
                     <div className="text-sm font-medium text-purple-600 mb-2">✨ Enhanced Version</div>
                     <div className="h-32 flex items-center justify-center mb-3">
-                      <GallerySlime skin={enhancedSkin} size="normal" instanceId={`enh-${pair.enhanced}`} />
+                      <GallerySlime skin={enhancedSkin} size="normal" />
                     </div>
                     <div className="text-sm font-semibold text-emerald-800">{enhancedSkin.name}</div>
                     <div className="text-xs text-emerald-600 mt-1">{enhancedSkin.bio || "Enhanced with advanced effects"}</div>
@@ -6110,7 +6128,7 @@ function EnhancedComparisonView({ rarityFilter }: { rarityFilter: string }) {
                   <div className="text-center">
                     <div className="text-sm font-medium text-purple-600 mb-2">✨ Enhanced Concept</div>
                     <div className="h-32 flex items-center justify-center mb-3">
-                      <GallerySlime skin={enhancedSkin} size="normal" instanceId={`concept-${pair.enhanced}`} />
+                      <GallerySlime skin={enhancedSkin} size="normal" />
                     </div>
                     <div className="text-sm font-semibold text-purple-800">{enhancedSkin.name}</div>
                     <div className="text-xs text-purple-600 mt-1">{enhancedSkin.bio || "Concept with advanced effects"}</div>
@@ -6141,7 +6159,7 @@ function EnhancedComparisonView({ rarityFilter }: { rarityFilter: string }) {
                   <div className="text-center">
                     <div className="text-sm font-medium text-gray-600 mb-2">Current Pre-Production</div>
                     <div className="h-24 flex items-center justify-center mb-2">
-                      <GallerySlime skin={originalSkin} size="small" instanceId={`orig-${pair.original}`} />
+                      <GallerySlime skin={originalSkin} size="small" />
                     </div>
                     <div className="text-sm font-semibold text-green-800">{originalSkin.name}</div>
                     <div className="text-xs text-green-600 mt-1">{originalSkin.bio || "Original version"}</div>
@@ -6162,7 +6180,7 @@ function EnhancedComparisonView({ rarityFilter }: { rarityFilter: string }) {
                   <div className="text-center">
                     <div className="text-sm font-medium text-purple-600 mb-2">✨ Enhanced</div>
                     <div className="h-24 flex items-center justify-center mb-2">
-                      <GallerySlime skin={enhancedSkin} size="small" instanceId={`enh-${pair.enhanced}`} />
+                      <GallerySlime skin={enhancedSkin} size="small" />
                     </div>
                     <div className="text-sm font-semibold text-green-800">{enhancedSkin.name}</div>
                     <div className="text-xs text-green-600 mt-1">{enhancedSkin.bio || "Enhanced with micro-identity"}</div>
@@ -6361,7 +6379,7 @@ export default function SkinGallery({ open, onClose }: { open: boolean; onClose:
                     className="bg-white border border-emerald-100 rounded-xl p-3 hover:shadow-lg transition-shadow"
                   >
                     <div className="h-32 flex items-center justify-center mb-3">
-                      <GallerySlime skin={skin} size="normal" instanceId={`gallery-${index}`} />
+                      <GallerySlime skin={skin} size="normal" />
                     </div>
                     <div className="text-center">
                       <div className="text-sm font-semibold text-emerald-800 mb-1">{skin.name}</div>

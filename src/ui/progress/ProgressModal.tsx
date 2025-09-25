@@ -2,14 +2,12 @@ import { useState } from "react";
 import Dialog from "../components/Dialog";
 import Slime from "../components/Slime";
 import { SKINS } from "../../assets/skins";
-import { PRODUCTION_SKINS, RARITY_COLORS } from "../../assets/all-skins";
 import RarityPill from "../components/RarityPill";
 import type { Profile } from "../../core/types";
 import { BADGES } from "../../core/badges";
 import { WORLDS, meetsMastery, nextWorld } from "../../core/progression";
 import { SKILLS } from "../../core/skills";
 import { BIOMES } from "../../assets/biomes";
-import { MapPin } from "lucide-react";
 import BadgesGrid from "./BadgesGrid";
 
 export default function ProgressModal({
@@ -19,6 +17,7 @@ export default function ProgressModal({
   onRename,
   onEquipSkin,
   onUpdateSettings,
+  onUnlockAllShopSlimes,
 }: {
   open: boolean;
   profile: Profile;
@@ -26,8 +25,9 @@ export default function ProgressModal({
   onRename: (name: string) => void;
   onEquipSkin: (skinId: string) => void;
   onUpdateSettings: (settings: Partial<Profile['settings']>) => void;
+  onUnlockAllShopSlimes?: () => void;
 }) {
-  const [tab, setTab] = useState<"collection" | "badges" | "biomes" | "options">("collection");
+  const [tab, setTab] = useState<"collection" | "badges" | "biomes" | "stats" | "options">("collection");
   const [name, setName] = useState(profile.name);
 
   return (
@@ -82,6 +82,14 @@ export default function ProgressModal({
           Biomes
         </button>
         <button
+          onClick={() => setTab("stats")}
+          className={`inline-flex items-center gap-2 px-3 py-2 rounded-xl border ${
+            tab === "stats" ? "bg-emerald-600 text-white border-emerald-600" : "bg-emerald-50 text-emerald-700 border-emerald-200"
+          }`}
+        >
+          Stats
+        </button>
+        <button
           onClick={() => setTab("options")}
           className={`inline-flex items-center gap-2 px-3 py-2 rounded-xl border ${
             tab === "options" ? "bg-emerald-600 text-white border-emerald-600" : "bg-emerald-50 text-emerald-700 border-emerald-200"
@@ -94,7 +102,8 @@ export default function ProgressModal({
       {tab === "collection" && (
         <CollectionTab 
           profile={profile} 
-          onEquipSkin={onEquipSkin} 
+          onEquipSkin={onEquipSkin}
+          onUnlockAllShopSlimes={onUnlockAllShopSlimes}
         />
       )}
 
@@ -114,6 +123,19 @@ export default function ProgressModal({
             <div className="text-sm text-emerald-700/80 mb-2">Master skills to unlock new worlds and their unique biomes!</div>
             {(() => {
               const next = nextWorld(profile);
+              
+            // Debug logging
+            console.log('🎯 PROGRESS MODAL DEBUG:', {
+              nextWorld: next?.id,
+              nextWorldTitle: next?.title,
+              nextWorldSkill: next?.primarySkill,
+              profileMastered: profile.mastered,
+              skillStats: profile.skillStats,
+              currentSkill: (profile.settings as any)?.currentSkill,
+              unlockedBiomes: profile.unlocks?.biomes || [],
+              allWorlds: WORLDS.map(w => ({ id: w.id, title: w.title, primarySkill: w.primarySkill }))
+            });
+              
               if (next) {
                 const progress = profile.skillStats[next.primarySkill];
                 const attempts = progress?.attempts || 0;
@@ -156,6 +178,18 @@ export default function ProgressModal({
               const mastered = meetsMastery(profile, world.primarySkill, world.gate);
               const progress = profile.skillStats[world.primarySkill];
               const attempts = progress?.attempts || 0;
+              
+              // Debug logging for biome status
+              console.log('🌍 BIOME STATUS:', {
+                worldId: world.id,
+                worldTitle: world.title,
+                primarySkill: world.primarySkill,
+                unlocked,
+                mastered,
+                attempts,
+                rewardBiome: world.rewards?.biomeId,
+                allUnlockedBiomes: profile.unlocks?.biomes || []
+              });
               
               const biomeStyle = BIOMES[world.id];
               const isLocked = !unlocked;
@@ -247,6 +281,103 @@ export default function ProgressModal({
         </div>
       )}
 
+      {tab === "stats" && (
+        <div className="h-[400px] overflow-y-auto">
+          <div className="mb-4 text-sm text-emerald-700/80">Track your progress and achievements.</div>
+          
+          {/* Daily Streak Status */}
+          <div className="bg-white rounded-xl border border-orange-200 p-4 mb-4">
+            <div className="flex items-center justify-between mb-3">
+              <div>
+                <div className="font-semibold text-orange-800">🔥 Daily Login Streak</div>
+                <div className="text-sm text-orange-700/80 mt-1">
+                  Keep practicing daily to build your streak!
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="text-2xl font-bold text-orange-600">
+                  {profile.streakData?.currentStreak || 0}
+                </div>
+                <div className="text-xs text-orange-600/80">days</div>
+              </div>
+            </div>
+            
+            {/* Streak Stats */}
+            <div className="grid grid-cols-2 gap-3 text-xs">
+              <div className="text-center">
+                <div className="font-semibold text-orange-700">
+                  {profile.streakData?.longestStreak || 0}
+                </div>
+                <div className="text-orange-600/80">Best Streak</div>
+              </div>
+              <div className="text-center">
+                <div className="font-semibold text-orange-700">
+                  {profile.streakData?.totalLogins || 0}
+                </div>
+                <div className="text-orange-600/80">Total Logins</div>
+              </div>
+            </div>
+            
+            {/* Weekly Calendar */}
+            {profile.streakData?.streakHistory && (
+              <div className="mt-3 pt-3 border-t border-orange-100">
+                <div className="text-xs text-orange-700/80 mb-2">This Week:</div>
+                <div className="flex gap-1 justify-center">
+                  {profile.streakData.streakHistory.map((date, index) => {
+                    const isCompleted = !!date;
+                    const isToday = date === new Date().toISOString().split('T')[0];
+                    return (
+                      <div
+                        key={index}
+                        className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${
+                          isCompleted 
+                            ? 'bg-orange-500 text-white' 
+                            : 'bg-orange-100 text-orange-400'
+                        } ${isToday ? 'ring-2 ring-orange-300' : ''}`}
+                        title={isCompleted ? `Completed on ${date}` : 'Not completed'}
+                      >
+                        {isCompleted ? '✓' : '○'}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+          
+          {/* Additional Stats Section */}
+          <div className="bg-white rounded-xl border border-emerald-200 p-4">
+            <div className="font-semibold text-emerald-800 mb-3">📊 Game Statistics</div>
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <div className="text-center">
+                <div className="font-semibold text-emerald-700">
+                  {profile.level || 1}
+                </div>
+                <div className="text-emerald-600/80">Current Level</div>
+              </div>
+              <div className="text-center">
+                <div className="font-semibold text-emerald-700">
+                  {profile.goo || 0}
+                </div>
+                <div className="text-emerald-600/80">Total Goo</div>
+              </div>
+              <div className="text-center">
+                <div className="font-semibold text-emerald-700">
+                  {profile.unlocks?.skins?.length || 0}
+                </div>
+                <div className="text-emerald-600/80">Slimes Collected</div>
+              </div>
+              <div className="text-center">
+                <div className="font-semibold text-emerald-700">
+                  {profile.unlocks?.biomes?.length || 0}
+                </div>
+                <div className="text-emerald-600/80">Biomes Unlocked</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {tab === "options" && (
         <div className="h-[400px] overflow-y-auto">
           <div className="mb-4 text-sm text-emerald-700/80">Customize your game experience.</div>
@@ -298,26 +429,69 @@ export default function ProgressModal({
 }
 
 // Collection Tab Component with filters and rarity pills
-function CollectionTab({ profile, onEquipSkin }: { 
+function CollectionTab({ profile, onEquipSkin, onUnlockAllShopSlimes }: { 
   profile: Profile; 
-  onEquipSkin: (skinId: string) => void; 
+  onEquipSkin: (skinId: string) => void;
+  onUnlockAllShopSlimes?: () => void;
 }) {
   const [rarityFilter, setRarityFilter] = useState<string>('all');
   
+  // Helper function to get rarity button styles
+  const getRarityButtonStyle = (tier: string) => {
+    const styles = {
+      common: 'bg-slate-100 text-slate-700 border-slate-200',
+      uncommon: 'bg-emerald-100 text-emerald-700 border-emerald-200',
+      rare: 'bg-sky-100 text-sky-700 border-sky-200',
+      epic: 'bg-purple-100 text-purple-700 border-purple-200',
+      mythic: 'bg-amber-100 text-amber-700 border-amber-200',
+      secret: 'bg-pink-100 text-pink-700 border-pink-200'
+    };
+    return styles[tier as keyof typeof styles] || 'bg-gray-100 text-gray-700 border-gray-200';
+  };
+  
   // Get owned slimes and their tiers
-  const ownedSlimes = Object.keys(SKINS).filter((id) => profile.unlocks.skins.includes(id));
-  const ownedTiers = [...new Set(ownedSlimes.map((id) => (SKINS as any)[id].tier))].sort();
+  const ownedSlimes = Object.values(SKINS).filter((skin) => profile.unlocks.skins.includes(skin.id));
+  
+  // Define the desired tier order: All, Common, Uncommon, Rare, Epic, Mythic
+  const tierOrder = ['common', 'uncommon', 'rare', 'epic', 'mythic'];
+  const ownedTiers = [...new Set(ownedSlimes.map((skin) => skin.tier))]
+    .sort((a, b) => tierOrder.indexOf(a) - tierOrder.indexOf(b));
   
   // Filter slimes by rarity
-  const filteredSlimes = ownedSlimes.filter((id) => {
+  const filteredSlimes = ownedSlimes.filter((skin) => {
     if (rarityFilter === 'all') return true;
-    return (SKINS as any)[id].tier === rarityFilter;
+    return skin.tier === rarityFilter;
   });
+  
+  // Debug logging
+  if (import.meta.env.DEV) {
+    console.log('🔍 Collection Filter Debug:', {
+      rarityFilter,
+      ownedSlimesCount: ownedSlimes.length,
+      filteredSlimesCount: filteredSlimes.length,
+      ownedTiers,
+      sampleSlimes: ownedSlimes.slice(0, 3).map(s => ({ id: s.id, name: s.name, tier: s.tier })),
+      epicSlimes: ownedSlimes.filter(s => s.tier === 'epic').map(s => ({ id: s.id, name: s.name, tier: s.tier })),
+      filteredEpicSlimes: filteredSlimes.filter(s => s.tier === 'epic').map(s => ({ id: s.id, name: s.name, tier: s.tier }))
+    });
+  }
   
   return (
     <div className="h-[400px] overflow-y-auto">
       <div className="mb-3">
         <div className="mb-2 text-sm text-emerald-700/80">Tap a slime to equip it as your active skin.</div>
+        
+        {/* Dev Cheat Button */}
+        {import.meta.env.DEV && onUnlockAllShopSlimes && (
+          <div className="mb-3">
+            <button
+              onClick={onUnlockAllShopSlimes}
+              className="px-3 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-700 border border-orange-200 hover:bg-orange-200 transition-colors"
+            >
+              🎮 Unlock All Shop Slimes (Dev)
+            </button>
+          </div>
+        )}
         
         {/* Rarity Filters */}
         <div className="flex flex-wrap gap-2 mb-3">
@@ -332,7 +506,7 @@ function CollectionTab({ profile, onEquipSkin }: {
             All ({ownedSlimes.length})
           </button>
           {ownedTiers.map((tier) => {
-            const count = ownedSlimes.filter((id) => (SKINS as any)[id].tier === tier).length;
+            const count = ownedSlimes.filter((skin) => skin.tier === tier).length;
             return (
               <button
                 key={tier}
@@ -340,7 +514,7 @@ function CollectionTab({ profile, onEquipSkin }: {
                 className={`px-3 py-1 rounded-full text-xs font-medium transition-colors capitalize ${
                   rarityFilter === tier 
                     ? 'bg-emerald-500 text-white' 
-                    : `${RARITY_COLORS[tier as keyof typeof RARITY_COLORS]} hover:opacity-80`
+                    : getRarityButtonStyle(tier)
                 }`}
               >
                 {tier} ({count})
@@ -351,38 +525,27 @@ function CollectionTab({ profile, onEquipSkin }: {
       </div>
       
       <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-4">
-        {filteredSlimes.map((id) => {
-          const isActive = profile.settings.activeSkin === id;
-          const pal = (SKINS as any)[id];
-          
-          // Find origin information from production skins
-          const unifiedSkin = PRODUCTION_SKINS.find(skin => skin.id === id);
-          const origin = unifiedSkin?.origin;
+        {filteredSlimes.map((skin) => {
+          const isActive = profile.settings.activeSkin === skin.id;
           
           return (
             <button
-              key={id}
-              onClick={() => onEquipSkin(id)}
+              key={skin.id}
+              onClick={() => onEquipSkin(skin.id)}
               className="rounded-xl border p-3 text-center bg-white border-emerald-200 hover:bg-emerald-50 transition-colors relative"
             >
               {/* Rarity pill in top-right corner of the card */}
               <div className="absolute top-2 right-2">
-                <RarityPill tier={pal.tier} className="text-[10px] px-1.5 py-0.5" />
+                <RarityPill tier={skin.tier} className="text-[10px] px-1.5 py-0.5" />
               </div>
               
               <div className="aspect-square grid place-items-center">
-                <Slime paletteId={id as any} className="w-20" eyeTracking={profile.settings.eyeTracking} />
+                <Slime paletteId={skin.id as any} className="w-20" eyeTracking={profile.settings.eyeTracking} />
               </div>
               
-              <div className="mt-2 text-sm font-semibold text-emerald-800">{pal.name ?? id}</div>
+              <div className="mt-2 text-sm font-semibold text-emerald-800">{skin.name}</div>
               
-              {/* Origin info */}
-              {origin && (
-                <div className="mt-1 text-xs text-emerald-600/80 flex items-center justify-center gap-1">
-                  <MapPin className="w-3 h-3" />
-                  <span>{origin.displayName}</span>
-                </div>
-              )}
+              {/* Origin info - not available in old SKINS system */}
               
               {isActive && <div className="mt-1 text-xs text-emerald-700 font-semibold">Equipped</div>}
             </button>

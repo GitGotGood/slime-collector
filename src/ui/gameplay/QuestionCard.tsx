@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 
 export interface Problem {
   a?: number;
@@ -21,6 +22,15 @@ export default function QuestionCard({
   wrongPick: number | null;
   onChoose: (value: number) => void;
 }) {
+  
+  // Track which specific answer was clicked to prevent spam on same answer
+  const [clickedAnswer, setClickedAnswer] = useState<number | null>(null);
+  
+  // Reset clickedAnswer when problem changes
+  useEffect(() => {
+    setClickedAnswer(null);
+  }, [problem]);
+  
   return (
     <div className="relative rounded-2xl p-6 sm:p-8 pb-8">
       <div className="text-center">
@@ -48,9 +58,12 @@ export default function QuestionCard({
                 whileTap={{ scale: disabled ? 1 : 0.95 }}
                 animate={isWrong ? { x: [0, -6, 6, -4, 4, 0] } : { x: 0 }}
                 transition={{ duration: 0.3 }}
-                onClick={() => {
-                  if (!disabled) onChoose(opt);
-                }}
+            onClick={() => {
+              if (!disabled && clickedAnswer !== opt) {
+                setClickedAnswer(opt);
+                onChoose(opt);
+              }
+            }}
                 className={`rounded-2xl border px-4 py-5 sm:py-6 text-3xl font-extrabold shadow transition select-none ${
                   disabled
                     ? "bg-slate-100 border-slate-200 text-slate-400 cursor-not-allowed"

@@ -63,6 +63,14 @@ export function migrateProfile(p: Partial<Profile>): Profile {
       date: new Date().toISOString().split('T')[0]
     },
     worldStreaks: p.worldStreaks || {},
+    // Daily login streak system
+    streakData: p.streakData || {
+      currentStreak: 1,
+      longestStreak: 1,
+      lastLoginDate: new Date().toISOString().split('T')[0], // YYYY-MM-DD
+      totalLogins: 1,
+      streakHistory: [new Date().toISOString().split('T')[0]]
+    },
   };
   
   // Migrate skillStats to include responseTimes for smart averaging

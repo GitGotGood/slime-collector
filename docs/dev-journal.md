@@ -6,13 +6,47 @@
 ---
 
 ## 🧠 **Recent Context (Last 5 Changes)**
-*Updated: September 11, 2025 - For session continuity and micro memory*
+*Updated: September 19, 2025 - For session continuity and micro memory*
 
-1. **[Sep-11] OAuth Redirect Fix**: Changed hardcoded Supabase URL to env var due to typo causing 404s during iPad login
-2. **[Sep-11] Environment Variable Debugging**: Added comprehensive debug logging to diagnose Netlify deployment white screen  
-3. **[Sep-11] Enhanced Mythic Deployment**: Merged enhanced visual properties into original mythic IDs for V1.1 production
-4. **[Sep-11] iPad Debug Tool**: Created `/debug.html` page for checking localStorage on mobile devices
+1. **[Sep-19] Meta Documentation System**: Implemented comprehensive micro-memory system with journal organization and git timestamp tracking
+2. **[Sep-18] Rolling Accuracy & Daily Streaks**: Implemented rolling accuracy windows, turbo detection, and daily login streak system
+3. **[Sep-18] Session Summary Enhancement**: Added animated XP/goo count-ups, motivational messages, and badge display
+4. **[Sep-16] Shop Inventory Expansion**: Added Acorn, Fog, Sprinkles, and Nebula to production shop inventory
 5. **[Sep-11] Context Comment System**: Implemented SHORT/LONG comment templates for future session memory
+
+---
+
+## 📅 **Session History**
+
+### **September 19, 2025 - Meta Documentation System Implementation**
+
+**Major Infrastructure Overhaul:**
+- ✅ **Journal Organization**: Moved `SLIME_COLLECTOR_DEV_LOG.md` → `docs/dev-journal.md` and `AI_JOURNAL.md` → `docs/ai-journal.md`
+- ✅ **Micro-Memory Headers**: Added comprehensive documentation headers to 5 critical files (`SlimeCollectorApp.tsx`, `progression.ts`, `shop-logic.ts`, `skills.ts`, `Slime.tsx`)
+- ✅ **Git Timestamp System**: Created `gitlog.md` for accurate commit history tracking with manual refresh workflow
+- ✅ **Documentation Standards**: Established inline documentation guidelines and "RECENT CHANGES" format (avoiding incorrect timestamps)
+
+**Critical Discovery - Timestamp Accuracy:**
+- **Problem Identified**: AI assistant was incorrectly inferring dates from conversation context
+- **Solution Implemented**: Replaced "LAST UPDATED" with "RECENT CHANGES" to avoid false temporal precision
+- **Git Integration**: Created local git log file for accurate timestamp reference when needed
+
+**Micro-Memory System Architecture:**
+- **Core Concepts**: Key responsibilities and business logic for each file
+- **Critical Dependencies**: Important file relationships and integration points
+- **Inline Documentation Standards**: Guidelines for future code documentation
+- **TODO Tracking**: Specific areas needing inline documentation
+
+**Files Enhanced with Micro-Memory:**
+1. `src/app/SlimeCollectorApp.tsx` - Main orchestrator with game state and UI coordination
+2. `src/core/progression.ts` - Rolling accuracy windows and turbo detection
+3. `src/core/shop-logic.ts` - Biome bias system and daily rotation
+4. `src/core/skills.ts` - Problem generation and curriculum progression
+5. `src/ui/components/Slime.tsx` - Visual effects and pattern handling
+
+**Meta Insight**: This system addresses the fundamental challenge of maintaining development context across sessions, particularly important for complex systems like rolling accuracy buffers and profile synchronization logic.
+
+---
 
 ## 📝 **Context Comment Templates**
 *For maintaining micro memory across sessions*

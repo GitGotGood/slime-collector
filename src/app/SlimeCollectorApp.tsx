@@ -1,3 +1,31 @@
+/**
+ * MICRO-MEMORY: Main Application Orchestrator - Game State, UI Coordination, and User Flow
+ * 
+ * CORE CONCEPTS:
+ * - Game State Management: Centralized state for gameplay, modals, and user progress
+ * - Profile System: Handles both local and cloud profile synchronization with conflict resolution
+ * - Turbo Detection: Implements rolling accuracy windows and intercept modals for rapid-fire answers
+ * - Session Management: Tracks streaks, badges, XP/goo rewards, and session summaries
+ * - UI Orchestration: Coordinates between gameplay, shop, progress, and authentication modals
+ * 
+ * CRITICAL DEPENDENCIES:
+ * - progression.ts: Mastery system, rolling accuracy buffers, turbo detection logic
+ * - AuthProvider.tsx: Cloud profile sync and authentication state
+ * - storage.ts: Local profile persistence and migration
+ * - streak.ts: Daily login streak tracking and calendar display
+ * 
+ * INLINE DOCUMENTATION STANDARDS:
+ * - Complex state updates: Explain the user experience impact and data flow
+ * - Modal coordination: Document why certain modals appear when they do
+ * - Profile sync logic: Explain conflict resolution and data merging decisions
+ * - Turbo detection: Document the rolling window algorithm and intercept timing
+ * - Session flow: Explain the progression from gameplay → summary → rewards
+ * 
+ * RECENT CHANGES: Added daily streak modal integration and session badge tracking
+ * 
+ * TODO: Add inline documentation for complex state management patterns and modal coordination logic
+ */
+
 // src/app/SlimeCollectorApp.tsx
 import { useEffect, useMemo, useState, useRef } from "react";
 import { BiomeLayer, getBiomeForSkill } from "../assets/biomes";
@@ -12,6 +40,8 @@ import ProfilePicker from "../ui/progress/ProfilePicker";
 import StreakModal from "../ui/components/StreakModal";
 
 import { useSounds } from "../assets/sounds";
+import { ALL_SHOP_ITEMS } from "../core/shop-logic";
+import { SKINS } from "../assets/skins";
 
 import { loadState, saveState, mkProfile } from "../core/storage";
 import { SKILL_ORDER, SKILLS, makeProblemForSkill, difficultyMultiplier } from "../core/skills";
@@ -35,7 +65,6 @@ import { motion } from "framer-motion";
 import { AuthProvider, useAuth } from "../ui/auth/AuthProvider";
 import { ProfileSelector, CreateProfileModal } from "../ui/auth/ProfileSelector";
 import { loadSave, saveGame, debugSaveStatus } from "../lib/saves";
-import { saveLogger, gameLogger, authLogger } from "../lib/debug";
 import { initAutosave } from "../core/autosave";
 
 
@@ -44,6 +73,7 @@ import { initAutosave } from "../core/autosave";
 // ------------------------------------------------------------
 function SlimeCollectorAppInner() {
   const { user, activeProfile, profiles, selectProfile, signOut, isOfflineMode, exitOfflineMode, createProfile, refreshOfflineProfiles } = useAuth();
+  
 
   // persistent store (profiles etc.) - now hybrid localStorage + cloud
   const [store, setStore] = useState<any>(() => loadState());
@@ -72,6 +102,14 @@ function SlimeCollectorAppInner() {
   
   // Function to update skill in profile data
   const updateCurrentSkill = (newSkill: SkillID) => {
+    console.log('🎯 UPDATE CURRENT SKILL CALLED:', {
+      newSkill,
+      currentId: current?.id,
+      currentSkill: current?.settings?.currentSkill,
+      worldId: worldIdOf(newSkill),
+      worldName: getWorldNameForSkill(newSkill)
+    });
+    
     if (!current) return;
     setStore((S: any) => ({
       ...S,
@@ -191,6 +229,37 @@ function SlimeCollectorAppInner() {
     return world ? world.title : "";
   };
 
+  // Debug logging for skill changes (after function definitions)
+  console.log('🎯 SKILL STATE DEBUG:', {
+    skill,
+    currentSkill: current?.settings?.currentSkill,
+    currentId: current?.id,
+    storeCurrentId: store.currentId,
+    worldId: worldIdOf(skill),
+    worldName: getWorldNameForSkill(skill),
+    skillLabel: SKILLS[skill]?.label
+  });
+
+  // Additional debugging for world progression (moved to useEffect to avoid issues)
+  useEffect(() => {
+    if (current && current.skillStats) {
+      const nextWorldToUnlock = nextWorld(current); // Use current profile instead of store
+      const masteredSkills = Object.keys(current?.mastered || {}).filter(skill => current?.mastered?.[skill]);
+      
+      console.log('🌍 WORLD PROGRESSION DEBUG:', {
+        currentSkill: skill,
+        currentWorld: worldIdOf(skill),
+        currentWorldName: getWorldNameForSkill(skill),
+        nextWorld: nextWorldToUnlock?.id,
+        nextWorldTitle: nextWorldToUnlock?.title,
+        nextWorldSkill: nextWorldToUnlock?.primarySkill,
+        masteredSkills: masteredSkills.length,
+        allMastered: masteredSkills,
+        profileUnlocks: current?.unlocks?.biomes || []
+      });
+    }
+  }, [current, skill]);
+
   // sounds
   const [soundOn, setSoundOn] = useState(true);
   const { success, fail, pop, speed1, speed2, streakChime, levelUp, ensureCtx } = useSounds(soundOn);
@@ -259,7 +328,7 @@ function SlimeCollectorAppInner() {
           const timer = setTimeout(() => setSaveStatus('idle'), 2000);
           setSaveTimer(timer);
         },
-        onSaveError: (error) => {
+        onSaveError: () => {
           setSaveStatus('error');
           // Clear error status after 3 seconds
           if (saveTimer) clearTimeout(saveTimer);
@@ -491,7 +560,15 @@ function SlimeCollectorAppInner() {
     setSessionCorrect(0); setSessionAttempts(0); setSessionFastUnder1_5(0); setSessionFastUnder3(0);
     setSessionNewBadges([]); // Reset session badges
     setLastAnswerTime(null); // Reset turbo detection for new session
-    setProblem(makeProblemForSkill(skill));
+    const newProblem = makeProblemForSkill(skill);
+    console.log('🎯 NEW PROBLEM GENERATED (startGame):', {
+      skill,
+      problem: newProblem,
+      questionText: `${newProblem.a} + ${newProblem.b} = ?`,
+      allOptions: newProblem.options,
+      correctAnswer: newProblem.answer
+    });
+    setProblem(newProblem);
     setDisabledSet(new Set()); setWrongPick(null);
     resetSlime();
     resetCelebrations();
@@ -691,8 +768,17 @@ function SlimeCollectorAppInner() {
             if (world) {
               // Check if this world wasn't already unlocked
               const biomeAlreadyUnlocked = np.unlocks?.biomes?.includes(world.rewards.biomeId);
+              console.log('🌍 WORLD MASTERY CHECK:', {
+                worldId: world.id,
+                worldTitle: world.title,
+                rewardBiome: world.rewards.biomeId,
+                biomeAlreadyUnlocked,
+                currentBiomes: np.unlocks?.biomes || []
+              });
+              
               if (!biomeAlreadyUnlocked) {
                 // World mastered! Unlock biome and set shop bias
+                console.log('🌍 UNLOCKING BIOME:', world.rewards.biomeId);
                 const updatedProfile = onWorldMastered(np, world.id);
                 Object.assign(np, updatedProfile);
               
@@ -817,7 +903,15 @@ function SlimeCollectorAppInner() {
 
       // Delay to show celebration before advancing question
       setTimeout(() => {
-      setProblem(makeProblemForSkill(skill));
+      const newProblem = makeProblemForSkill(skill);
+      console.log('🎯 NEW PROBLEM GENERATED (after answer):', {
+        skill,
+        problem: newProblem,
+        questionText: `${newProblem.a} + ${newProblem.b} = ?`,
+        allOptions: newProblem.options,
+        correctAnswer: newProblem.answer
+      });
+      setProblem(newProblem);
       setDisabledSet(new Set());
       setWrongPick(null);
         setSlimeMood('idle');
@@ -1329,6 +1423,18 @@ return (
                     const worldName = getWorldNameForSkill(skill);
                     const mastered = current?.mastered?.[skill] || false;
                     
+                    // Debug logging
+                    console.log('🎯 HUD SKILL DISPLAY DEBUG:', {
+                      skill,
+                      skillLabel,
+                      worldName,
+                      mastered,
+                      currentSkill: current?.settings?.currentSkill,
+                      worldId: worldIdOf(skill),
+                      nextWorld: current ? nextWorld(current)?.id : 'no-profile',
+                      nextWorldTitle: current ? nextWorld(current)?.title : 'no-profile'
+                    });
+                    
                     return worldName 
                       ? `${skillLabel} • ${worldName}${mastered ? ' ✓' : ''}`
                       : skillLabel;
@@ -1572,6 +1678,28 @@ return (
               ),
             }));
           }}
+          onUnlockAllShopSlimes={import.meta.env.DEV ? () => {
+            // Get all shop skin IDs that exist in the old SKINS system
+            const shopSkinIds = ALL_SHOP_ITEMS
+              .filter(item => item.type === 'skin' && SKINS[item.skin])
+              .map(item => item.skin);
+            
+            // Add all shop skins to current profile
+            setStore((S: any) => ({
+              ...S,
+              profiles: S.profiles.map((p: any) =>
+                p.id === current.id 
+                  ? { 
+                      ...p, 
+                      unlocks: { 
+                        ...p.unlocks, 
+                        skins: [...new Set([...p.unlocks.skins, ...shopSkinIds])]
+                      } 
+                    } 
+                  : p
+              ),
+            }));
+          } : undefined}
         />
       )}
 
@@ -1624,10 +1752,14 @@ return (
               setShowProfileSwitcher(false);
               
               // Show streak modal when profile is selected (if streak data exists)
-              const selectedProfile = profiles.find(p => p.id === profileId);
-              if (selectedProfile && (selectedProfile as any).streakData) {
-                setShowStreakModal(true);
-              }
+              // Use a small delay to ensure the profile data is loaded and 'current' is updated
+              setTimeout(() => {
+                // Check both current profile and the updated store state
+                const updatedCurrent = store.profiles.find((p: any) => p.id === profileId);
+                if (updatedCurrent && updatedCurrent.streakData) {
+                  setShowStreakModal(true);
+                }
+              }, 100); // Small delay to ensure profile data is loaded
             }}
             onCreateProfile={() => {
               setShowCreateProfile(true);
@@ -1727,6 +1859,84 @@ return (
           })) || []}
           streakIncreased={streakIncreased}
         />
+      )}
+
+      {/* DEV CHEAT BUTTONS - For biome debugging */}
+      {import.meta.env.DEV && (
+        <div className="fixed bottom-4 right-4 space-y-2 z-50">
+          <button
+            onClick={() => {
+              console.log('🎮 CHEAT: Triggering next biome progression...');
+              const nextWorldToUnlock = nextWorld(current);
+              if (nextWorldToUnlock) {
+                console.log('🎮 CHEAT: Next world to unlock:', nextWorldToUnlock.id);
+                
+                // First, master the skill for this world
+                const skillToMaster = nextWorldToUnlock.primarySkill;
+                console.log('🎮 CHEAT: Mastering skill:', skillToMaster);
+                
+                // Create fake skill stats to meet mastery requirements
+                const gate = nextWorldToUnlock.gate;
+                const fakeStats = {
+                  attempts: gate.attempts,
+                  correct: Math.floor(gate.attempts * gate.minAcc),
+                  responseTimes: Array(gate.attempts).fill(gate.maxAvgMs - 1000), // Just under the speed limit
+                  rollingAccuracy: Array(gate.attempts).fill(null).map((_, i) => ({
+                    correct: i < Math.floor(gate.attempts * gate.minAcc),
+                    t_ms: gate.maxAvgMs - 1000,
+                    counted: true,
+                    scrub: 'none',
+                    ts: Date.now() - (gate.attempts - i) * 1000
+                  }))
+                };
+                
+                // Update profile with mastered skill
+                let updatedProfile = { ...current };
+                updatedProfile.mastered = { ...updatedProfile.mastered, [skillToMaster]: true };
+                updatedProfile.skillStats = { ...updatedProfile.skillStats, [skillToMaster]: fakeStats };
+                
+                console.log('🎮 CHEAT: Skill mastered, now unlocking biome...');
+                
+                // Now unlock the biome
+                updatedProfile = onWorldMastered(updatedProfile, nextWorldToUnlock.id);
+                
+                setStore((S: any) => ({
+                  ...S,
+                  profiles: S.profiles.map((p: any) => p.id === current.id ? updatedProfile : p)
+                }));
+                markDirty();
+                console.log('🎮 CHEAT: Biome progression triggered!');
+              } else {
+                console.log('🎮 CHEAT: All worlds already mastered!');
+              }
+            }}
+            className="px-3 py-2 bg-purple-600 text-white text-sm rounded-lg shadow-lg hover:bg-purple-700 transition-colors"
+          >
+            🎮 Cheat: Next Biome
+          </button>
+          <button
+            onClick={() => {
+              console.log('🎮 CHEAT: Logging current biome state...');
+              console.log('🎮 Current Profile:', {
+                id: current.id,
+                name: current.name,
+                unlockedBiomes: current.unlocks?.biomes || [],
+                mastered: current.mastered || {},
+                skillStats: current.skillStats || {}
+              });
+              console.log('🎮 Next World:', nextWorld(current));
+              console.log('🎮 All Worlds:', WORLDS.map(w => ({
+                id: w.id,
+                title: w.title,
+                primarySkill: w.primarySkill,
+                rewardBiome: w.rewards.biomeId
+              })));
+            }}
+            className="px-3 py-2 bg-blue-600 text-white text-sm rounded-lg shadow-lg hover:bg-blue-700 transition-colors"
+          >
+            🎮 Cheat: Log State
+          </button>
+        </div>
       )}
   </div>
 );

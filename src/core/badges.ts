@@ -523,5 +523,16 @@ export function migrateBadgeProfile(profile: any): any {
   if (!profile.worldStreaks) {
     profile.worldStreaks = {};
   }
+  // Initialize streakData for existing profiles
+  if (!profile.streakData) {
+    const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+    profile.streakData = {
+      currentStreak: 1,
+      longestStreak: 1,
+      lastLoginDate: today,
+      totalLogins: 1,
+      streakHistory: [today]
+    };
+  }
   return profile;
 }
