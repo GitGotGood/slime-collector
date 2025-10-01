@@ -1,0 +1,311 @@
+{
+  "timestamp": "2025-09-27T22:35:47.616Z",
+  "totalDuplicates": 63,
+  "choices": {
+    "aurora_veil_plus": {
+      "skinId": "aurora_veil_plus",
+      "choice": "old",
+      "notes": "Remove Aurora Veil+"
+    },
+    "acorn_enhanced": {
+      "skinId": "acorn_enhanced",
+      "choice": "old",
+      "notes": "Remove"
+    },
+    "spring_fade_enhanced": {
+      "skinId": "spring_fade_enhanced",
+      "choice": "old",
+      "notes": "remove"
+    },
+    "blue_lagoon_enhanced": {
+      "skinId": "blue_lagoon_enhanced",
+      "choice": "old",
+      "notes": "remove"
+    },
+    "sea_breeze_enhanced": {
+      "skinId": "sea_breeze_enhanced",
+      "choice": "old",
+      "notes": "remove"
+    },
+    "raindrop_enhanced": {
+      "skinId": "raindrop_enhanced",
+      "choice": "old",
+      "notes": "remove"
+    },
+    "acorn_buddy_enhanced": {
+      "skinId": "acorn_buddy_enhanced",
+      "choice": "old",
+      "notes": "remove"
+    },
+    "polka_mint_enhanced": {
+      "skinId": "polka_mint_enhanced",
+      "choice": "old",
+      "notes": "remove"
+    },
+    "ripple_enhanced": {
+      "skinId": "ripple_enhanced",
+      "choice": "old",
+      "notes": "remove"
+    },
+    "ocean_drift_enhanced": {
+      "skinId": "ocean_drift_enhanced",
+      "choice": "old",
+      "notes": "remove"
+    },
+    "moonlit_pool_enhanced": {
+      "skinId": "moonlit_pool_enhanced",
+      "choice": "old",
+      "notes": "remove"
+    },
+    "moss_quilt_enhanced": {
+      "skinId": "moss_quilt_enhanced",
+      "choice": "old",
+      "notes": "remove"
+    },
+    "mirage_enhanced": {
+      "skinId": "mirage_enhanced",
+      "choice": "variant-1",
+      "notes": "Update with animation code"
+    },
+    "frog_chorus_enhanced": {
+      "skinId": "frog_chorus_enhanced",
+      "choice": "variant-1",
+      "notes": "Update with animation code"
+    },
+    "biolume_veil_enhanced": {
+      "skinId": "biolume_veil_enhanced",
+      "choice": "variant-1",
+      "notes": "update with animation code"
+    },
+    "echo_rune_enhanced": {
+      "skinId": "echo_rune_enhanced",
+      "choice": "variant-1",
+      "notes": "update with animation code"
+    },
+    "fog": {
+      "skinId": "fog",
+      "choice": "variant-1"
+    },
+    "bluebird": {
+      "skinId": "bluebird",
+      "choice": "variant-2"
+    },
+    "apple_shine": {
+      "skinId": "apple_shine",
+      "choice": "variant-2"
+    },
+    "honey": {
+      "skinId": "honey",
+      "choice": "variant-3"
+    },
+    "lilac": {
+      "skinId": "lilac",
+      "choice": "variant-2"
+    },
+    "fog_enhanced": {
+      "skinId": "fog_enhanced",
+      "choice": "old",
+      "notes": "remove"
+    },
+    "bluebird_enhanced": {
+      "skinId": "bluebird_enhanced",
+      "choice": "old",
+      "notes": "remove"
+    },
+    "apple_shine_enhanced": {
+      "skinId": "apple_shine_enhanced",
+      "choice": "old",
+      "notes": "remove"
+    },
+    "honey_enhanced": {
+      "skinId": "honey_enhanced",
+      "choice": "old",
+      "notes": "remove"
+    },
+    "lilac_enhanced": {
+      "skinId": "lilac_enhanced",
+      "choice": "old",
+      "notes": "remove"
+    },
+    "green_enhanced": {
+      "skinId": "green_enhanced",
+      "choice": "old",
+      "notes": "remove"
+    },
+    "mint_enhanced": {
+      "skinId": "mint_enhanced",
+      "choice": "old",
+      "notes": "remove"
+    },
+    "blueberry_enhanced": {
+      "skinId": "blueberry_enhanced",
+      "choice": "old",
+      "notes": "remove"
+    },
+    "deep_dark_cave": {
+      "skinId": "deep_dark_cave",
+      "choice": "variant-1"
+    },
+    "never_ending_cave": {
+      "skinId": "never_ending_cave",
+      "choice": "variant-1"
+    },
+    "spooky_cave": {
+      "skinId": "spooky_cave",
+      "choice": "variant-1"
+    },
+    "fault_glow": {
+      "skinId": "fault_glow",
+      "choice": "variant-1",
+      "notes": ""
+    },
+    "aftershock": {
+      "skinId": "aftershock",
+      "choice": "variant-1"
+    },
+    "ember_rim": {
+      "skinId": "ember_rim",
+      "choice": "variant-1"
+    },
+    "ashfall": {
+      "skinId": "ashfall",
+      "choice": "variant-1"
+    },
+    "volcanic_glass": {
+      "skinId": "volcanic_glass",
+      "choice": "variant-1"
+    },
+    "sandstorm_wall": {
+      "skinId": "sandstorm_wall",
+      "choice": "variant-1"
+    },
+    "dune_surge": {
+      "skinId": "dune_surge",
+      "choice": "variant-1"
+    },
+    "lava_flow_enhanced": {
+      "skinId": "lava_flow_enhanced",
+      "choice": "variant-1",
+      "notes": "Update with animation code"
+    },
+    "aurora_veil_enhanced": {
+      "skinId": "aurora_veil_enhanced",
+      "choice": "variant-1",
+      "notes": "update with animation code"
+    },
+    "glacier_enhanced": {
+      "skinId": "glacier_enhanced",
+      "choice": "variant-1",
+      "notes": "update with animation code"
+    },
+    "aurora_veil_plus_enhanced": {
+      "skinId": "aurora_veil_plus_enhanced",
+      "choice": "variant-1",
+      "notes": "update with animation code"
+    },
+    "dune_drift_enhanced": {
+      "skinId": "dune_drift_enhanced",
+      "choice": "old",
+      "notes": "remove"
+    },
+    "bog_bubble_enhanced": {
+      "skinId": "bog_bubble_enhanced",
+      "choice": "old",
+      "notes": "remove"
+    },
+    "willow_glow_enhanced": {
+      "skinId": "willow_glow_enhanced",
+      "choice": "old",
+      "notes": "remove"
+    },
+    "geode_core_enhanced": {
+      "skinId": "geode_core_enhanced",
+      "choice": "old",
+      "notes": "remove"
+    },
+    "stalactite_drip_enhanced": {
+      "skinId": "stalactite_drip_enhanced",
+      "choice": "old",
+      "notes": "remove"
+    },
+    "sunshower_enhanced": {
+      "skinId": "sunshower_enhanced",
+      "choice": "old",
+      "notes": "remove"
+    },
+    "rainbow_arc_enhanced": {
+      "skinId": "rainbow_arc_enhanced",
+      "choice": "old",
+      "notes": "remove"
+    },
+    "subway_spark_enhanced": {
+      "skinId": "subway_spark_enhanced",
+      "choice": "old",
+      "notes": "remove"
+    },
+    "billboard_blink_enhanced": {
+      "skinId": "billboard_blink_enhanced",
+      "choice": "old",
+      "notes": "remove"
+    },
+    "haystack_enhanced": {
+      "skinId": "haystack_enhanced",
+      "choice": "old",
+      "notes": "remove"
+    },
+    "orchard_breeze_enhanced": {
+      "skinId": "orchard_breeze_enhanced",
+      "choice": "old",
+      "notes": "remove"
+    },
+    "harbor_wake_enhanced": {
+      "skinId": "harbor_wake_enhanced",
+      "choice": "old",
+      "notes": "remove"
+    },
+    "temple_incense_enhanced": {
+      "skinId": "temple_incense_enhanced",
+      "choice": "old",
+      "notes": "remove"
+    },
+    "canyon_shade_enhanced": {
+      "skinId": "canyon_shade_enhanced",
+      "choice": "old",
+      "notes": "remove"
+    },
+    "reef_bloom_enhanced": {
+      "skinId": "reef_bloom_enhanced",
+      "choice": "old",
+      "notes": "remove"
+    },
+    "savanna_mirage_enhanced": {
+      "skinId": "savanna_mirage_enhanced",
+      "choice": "old",
+      "notes": "remove"
+    },
+    "foundry_heatwave_enhanced": {
+      "skinId": "foundry_heatwave_enhanced",
+      "choice": "old",
+      "notes": "remove"
+    },
+    "tundra_halo_enhanced": {
+      "skinId": "tundra_halo_enhanced",
+      "choice": "old",
+      "notes": "remove"
+    },
+    "observatory_drift_enhanced": {
+      "skinId": "observatory_drift_enhanced",
+      "choice": "old",
+      "notes": "remove"
+    },
+    "sprinkles": {
+      "skinId": "sprinkles",
+      "choice": "variant-1"
+    }
+  },
+  "summary": {
+    "old": 39,
+    "new": 0,
+    "merge": 0
+  }
+}

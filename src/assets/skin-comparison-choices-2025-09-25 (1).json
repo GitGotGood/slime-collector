@@ -1,0 +1,93 @@
+{
+  "timestamp": "2025-09-25T19:15:23.699Z",
+  "totalDuplicates": 157,
+  "choices": {
+    "spring_fade": {
+      "skinId": "spring_fade",
+      "choice": "variant-1"
+    },
+    "autumn_fade": {
+      "skinId": "autumn_fade",
+      "choice": "variant-1",
+      "notes": "The gradient used to be at an angle. No changes needed right now. Just wanted to note this down."
+    },
+    "blue_lagoon": {
+      "skinId": "blue_lagoon",
+      "choice": "variant-1"
+    },
+    "cotton_candy": {
+      "skinId": "cotton_candy",
+      "choice": "variant-1"
+    },
+    "rainbow": {
+      "skinId": "rainbow",
+      "choice": "merge:base=new+readability=old"
+    },
+    "sunset": {
+      "skinId": "sunset",
+      "choice": "variant-1"
+    },
+    "sunrise": {
+      "skinId": "sunrise",
+      "choice": "variant-1",
+      "notes": "Need to change the gradient to vertical and update the body stroke to...maybe a dark blue (?) so that it better matches with Sunset slime."
+    },
+    "polka_mint": {
+      "skinId": "polka_mint",
+      "choice": "variant-1",
+      "notes": "Keeping variant 2, however this does not have polka dots or the gradient from variant 1"
+    },
+    "confetti": {
+      "skinId": "confetti",
+      "choice": "variant-2",
+      "notes": "Keeping variant 3, but we should not include animations for rare tier slimes, so we'll want to make this static. It is a cool effect though..."
+    },
+    "ripple": {
+      "skinId": "ripple",
+      "choice": "variant-1",
+      "notes": "Rare slimes should not have animation. We should keep the data from Variant 2 but use the gradient from variant 1.. and maybe the gradient is dark center radiation outward so that it vibes better with the concentric rings."
+    },
+    "lava_flow": {
+      "skinId": "lava_flow",
+      "choice": "old",
+      "notes": "Ok I think we want to merge the visuals of Variant 1 with the data from Variant 2. We'll need to mark this for a bit of future tweaking to help it differentiate from Phoenix Heart. They are very similar right now."
+    },
+    "aurora_veil": {
+      "skinId": "aurora_veil",
+      "choice": "old",
+      "notes": "Keep the visuals of Variant 1 but use the base date from Variant 2. Variant 3 should become a new slime called \"Dark Aurora\""
+    },
+    "nebula": {
+      "skinId": "nebula",
+      "choice": "variant-1",
+      "notes": "Keep Variant 2 has Nebula. Spin out a Variant 1 as a new slime called Plum (will need adjustments before it goes live in the store)."
+    },
+    "phoenix_heart": {
+      "skinId": "phoenix_heart",
+      "choice": "variant-1"
+    },
+    "acorn": {
+      "skinId": "acorn",
+      "choice": "variant-1"
+    },
+    "sea_breeze": {
+      "skinId": "sea_breeze",
+      "choice": "variant-1"
+    },
+    "raindrop": {
+      "skinId": "raindrop",
+      "choice": "variant-1",
+      "notes": "Needs some tweaks so that it actually looks like a raindrop."
+    },
+    "ocean_drift": {
+      "skinId": "ocean_drift",
+      "choice": "old",
+      "notes": "Merge the visual of Variant 1 with the data of Variant 2"
+    }
+  },
+  "summary": {
+    "old": 3,
+    "new": 0,
+    "merge": 1
+  }
+}

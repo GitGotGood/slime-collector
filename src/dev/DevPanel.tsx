@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Palette, Eye, Layout, Blend, Map, BarChart3 } from "lucide-react";
+import { Palette, Eye, Layout, Blend, Map, BarChart3, GitCompare } from "lucide-react";
 
-export default function DevPanel({ onOpenSkinGallery, onOpenExperiments, onOpenLayoutPreview, onOpenEdgeBlending, onOpenWorldMap, onOpenProgressDashboard }: { onOpenSkinGallery?: () => void; onOpenExperiments?: () => void; onOpenLayoutPreview?: () => void; onOpenEdgeBlending?: () => void; onOpenWorldMap?: () => void; onOpenProgressDashboard?: () => void }) {
+export default function DevPanel({ onOpenSkinGallery, onOpenExperiments, onOpenLayoutPreview, onOpenEdgeBlending, onOpenWorldMap, onOpenProgressDashboard, onOpenSkinComparison }: { onOpenSkinGallery?: () => void; onOpenExperiments?: () => void; onOpenLayoutPreview?: () => void; onOpenEdgeBlending?: () => void; onOpenWorldMap?: () => void; onOpenProgressDashboard?: () => void; onOpenSkinComparison?: () => void }) {
   const [open, setOpen] = useState(false);
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -102,6 +102,15 @@ export default function DevPanel({ onOpenSkinGallery, onOpenExperiments, onOpenL
           >
             <BarChart3 className="w-3 h-3" />
             Progress Dashboard
+          </button>
+        )}
+        {onOpenSkinComparison && (
+          <button
+            className="inline-flex items-center gap-1 rounded-lg border border-emerald-200 px-2 py-1 hover:bg-emerald-50"
+            onClick={onOpenSkinComparison}
+          >
+            <GitCompare className="w-3 h-3" />
+            Skin Compare
           </button>
         )}
       </div>

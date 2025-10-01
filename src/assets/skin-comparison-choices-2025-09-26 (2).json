@@ -1,0 +1,470 @@
+{
+  "timestamp": "2025-09-26T20:52:08.459Z",
+  "totalDuplicates": 102,
+  "choices": {
+    "magma_vein": {
+      "skinId": "magma_vein",
+      "choice": "old",
+      "notes": "Let's merge variation 3 (including animation code) with Variant 2 data."
+    },
+    "ember_bed": {
+      "skinId": "ember_bed",
+      "choice": "old",
+      "notes": "None of these are GREAT. The inspiration version is missing the animation code which was nice. Variant 1 is close to the color scheme I think we want. And Variant 2 has the data. We'll need to workshop this one before release. Since this is an Epic. Let's choose Variant 3 but include the animation code and merge with the data from Variant 2."
+    },
+    "glacier": {
+      "skinId": "glacier",
+      "choice": "variant-1",
+      "notes": "None of these are great and the animation is missing. Let's pick variant 2 with the understanding that we need to work on the design. And we'll probably want to merge with Glacier Enhanced."
+    },
+    "frost_breath": {
+      "skinId": "frost_breath",
+      "choice": "variant-1",
+      "notes": "Let's go with Variant 2, but we'll need to work on the design. It's missing a gradient, etc."
+    },
+    "moonlit_pool": {
+      "skinId": "moonlit_pool",
+      "choice": "variant-2",
+      "notes": "Variant 3 needs animation code. Then merge variant 3 with the data from Variant 2"
+    },
+    "star_parade": {
+      "skinId": "star_parade",
+      "choice": "variant-1",
+      "notes": "Variant 2 need the animation code. And we should consider reducing to an Epic tier slime. Maybe"
+    },
+    "galaxy_swirl": {
+      "skinId": "galaxy_swirl",
+      "choice": "variant-1",
+      "notes": "Variant 2 is missing the animation code."
+    },
+    "canopy_lantern": {
+      "skinId": "canopy_lantern",
+      "choice": "variant-1"
+    },
+    "moss_quilt": {
+      "skinId": "moss_quilt",
+      "choice": "variant-1"
+    },
+    "acorn_buddy": {
+      "skinId": "acorn_buddy",
+      "choice": "variant-1"
+    },
+    "pearl_whisper": {
+      "skinId": "pearl_whisper",
+      "choice": "variant-1"
+    },
+    "kelp_curl": {
+      "skinId": "kelp_curl",
+      "choice": "variant-1"
+    },
+    "tide_glass": {
+      "skinId": "tide_glass",
+      "choice": "variant-1"
+    },
+    "snow_lantern": {
+      "skinId": "snow_lantern",
+      "choice": "variant-1"
+    },
+    "frost_fern": {
+      "skinId": "frost_fern",
+      "choice": "variant-1"
+    },
+    "drift_puff": {
+      "skinId": "drift_puff",
+      "choice": "variant-1"
+    },
+    "redwall_glow": {
+      "skinId": "redwall_glow",
+      "choice": "variant-1"
+    },
+    "desert_varnish": {
+      "skinId": "desert_varnish",
+      "choice": "variant-1"
+    },
+    "swallow_sweep": {
+      "skinId": "swallow_sweep",
+      "choice": "variant-1"
+    },
+    "aurora_veil_plus": {
+      "skinId": "aurora_veil_plus",
+      "choice": "old",
+      "notes": "Can completely remove Aurora Veil+"
+    },
+    "polar_crown": {
+      "skinId": "polar_crown",
+      "choice": "variant-1"
+    },
+    "ionosong": {
+      "skinId": "ionosong",
+      "choice": "variant-1",
+      "notes": "The all-skins variant is missing the skin gradient from the skin.ts version. That gradient should also be animated to kind of ebb and flow. I THINK some of the code is just missing from the all-skins.ts version"
+    },
+    "synthwave": {
+      "skinId": "synthwave",
+      "choice": "variant-1",
+      "notes": "Use all-skins.ts as the primary, but update it with the body gradient from skins.ts."
+    },
+    "acacia_shade": {
+      "skinId": "acacia_shade",
+      "choice": "variant-1"
+    },
+    "grass_run": {
+      "skinId": "grass_run",
+      "choice": "variant-1"
+    },
+    "sun_drum": {
+      "skinId": "sun_drum",
+      "choice": "variant-1"
+    },
+    "coral_chorus": {
+      "skinId": "coral_chorus",
+      "choice": "variant-1",
+      "notes": "The gradient should be animated."
+    },
+    "anemone_wiggle": {
+      "skinId": "anemone_wiggle",
+      "choice": "variant-1"
+    },
+    "shell_gleam": {
+      "skinId": "shell_gleam",
+      "choice": "variant-1"
+    },
+    "glyph_bloom": {
+      "skinId": "glyph_bloom",
+      "choice": "variant-1"
+    },
+    "vine_inlay": {
+      "skinId": "vine_inlay",
+      "choice": "variant-1"
+    },
+    "incense_drift": {
+      "skinId": "incense_drift",
+      "choice": "variant-1"
+    },
+    "lighthouse_wink": {
+      "skinId": "lighthouse_wink",
+      "choice": "variant-1"
+    },
+    "rope_coil": {
+      "skinId": "rope_coil",
+      "choice": "variant-1"
+    },
+    "foam_crest": {
+      "skinId": "foam_crest",
+      "choice": "variant-1"
+    },
+    "anvil_ember": {
+      "skinId": "anvil_ember",
+      "choice": "variant-1",
+      "notes": "All-skins.ts version looks like it's missing full code."
+    },
+    "forge_rune": {
+      "skinId": "forge_rune",
+      "choice": "variant-1"
+    },
+    "quench_mist": {
+      "skinId": "quench_mist",
+      "choice": "variant-1"
+    },
+    "acorn_enhanced": {
+      "skinId": "acorn_enhanced",
+      "choice": "old",
+      "notes": "Acorn Enhanced can be removed entirely"
+    },
+    "whirlwind_edge": {
+      "skinId": "whirlwind_edge",
+      "choice": "variant-1"
+    },
+    "riptide_bowl": {
+      "skinId": "riptide_bowl",
+      "choice": "variant-1"
+    },
+    "whirlpool_eye": {
+      "skinId": "whirlpool_eye",
+      "choice": "variant-1"
+    },
+    "monsoon_sheet": {
+      "skinId": "monsoon_sheet",
+      "choice": "variant-1"
+    },
+    "crevasse_light": {
+      "skinId": "crevasse_light",
+      "choice": "variant-1"
+    },
+    "black_ice": {
+      "skinId": "black_ice",
+      "choice": "variant-1"
+    },
+    "aurora_curtain": {
+      "skinId": "aurora_curtain",
+      "choice": "variant-1"
+    },
+    "thunder_shelf": {
+      "skinId": "thunder_shelf",
+      "choice": "variant-1"
+    },
+    "static_sheet": {
+      "skinId": "static_sheet",
+      "choice": "variant-1"
+    },
+    "solar_haze": {
+      "skinId": "solar_haze",
+      "choice": "variant-1"
+    },
+    "gravity_well": {
+      "skinId": "gravity_well",
+      "choice": "variant-1"
+    },
+    "prism_mist": {
+      "skinId": "prism_mist",
+      "choice": "variant-1"
+    },
+    "forge_heat": {
+      "skinId": "forge_heat",
+      "choice": "variant-1"
+    },
+    "quench_mist_inspiration": {
+      "skinId": "quench_mist_inspiration",
+      "choice": "variant-1"
+    },
+    "lava_flow_enhanced": {
+      "skinId": "lava_flow_enhanced",
+      "choice": "variant-1",
+      "notes": "Looks like it's missing animation code. We will likely remove this slime in the future because we already have Lava Flow. But we can port it over for now."
+    },
+    "aurora_veil_enhanced": {
+      "skinId": "aurora_veil_enhanced",
+      "choice": "variant-1",
+      "notes": "Also missing animation code. We will also probably remove this slime in the future but we can port it over for now."
+    },
+    "glacier_enhanced": {
+      "skinId": "glacier_enhanced",
+      "choice": "variant-1",
+      "notes": "Missing animation code."
+    },
+    "aurora_veil_plus_enhanced": {
+      "skinId": "aurora_veil_plus_enhanced",
+      "choice": "variant-1",
+      "notes": "Missing animation code"
+    },
+    "dune_drift": {
+      "skinId": "dune_drift",
+      "choice": "variant-2"
+    },
+    "bog_bubble": {
+      "skinId": "bog_bubble",
+      "choice": "variant-2",
+      "notes": "Missing gradient"
+    },
+    "willow_glow": {
+      "skinId": "willow_glow",
+      "choice": "variant-2"
+    },
+    "geode_core": {
+      "skinId": "geode_core",
+      "choice": "variant-2",
+      "notes": "Variant 3 is missing gradient info"
+    },
+    "stalactite_drip": {
+      "skinId": "stalactite_drip",
+      "choice": "variant-2"
+    },
+    "sunshower": {
+      "skinId": "sunshower",
+      "choice": "variant-3",
+      "notes": "Missing gradient code for Variant 4. Note to self: should look like a raindrop with sunshine inside"
+    },
+    "rainbow_arc": {
+      "skinId": "rainbow_arc",
+      "choice": "variant-2",
+      "notes": "V3 has correct data but the visual is lame. Might get rid of this one."
+    },
+    "subway_spark": {
+      "skinId": "subway_spark",
+      "choice": "variant-2"
+    },
+    "billboard_blink": {
+      "skinId": "billboard_blink",
+      "choice": "variant-2"
+    },
+    "haystack": {
+      "skinId": "haystack",
+      "choice": "variant-2",
+      "notes": "Needs to get lightened up to look like haystack (monet inspiration?)"
+    },
+    "orchard_breeze": {
+      "skinId": "orchard_breeze",
+      "choice": "variant-2"
+    },
+    "dune_drift_enhanced": {
+      "skinId": "dune_drift_enhanced",
+      "choice": "old",
+      "notes": "Remove this slime"
+    },
+    "bog_bubble_enhanced": {
+      "skinId": "bog_bubble_enhanced",
+      "choice": "old",
+      "notes": "remove this slime"
+    },
+    "willow_glow_enhanced": {
+      "skinId": "willow_glow_enhanced",
+      "choice": "old",
+      "notes": "remove this slime"
+    },
+    "geode_core_enhanced": {
+      "skinId": "geode_core_enhanced",
+      "choice": "old",
+      "notes": "remove this slime"
+    },
+    "stalactite_drip_enhanced": {
+      "skinId": "stalactite_drip_enhanced",
+      "choice": "old",
+      "notes": "remove this slime"
+    },
+    "sunshower_enhanced": {
+      "skinId": "sunshower_enhanced",
+      "choice": "old",
+      "notes": "remove this slime"
+    },
+    "rainbow_arc_enhanced": {
+      "skinId": "rainbow_arc_enhanced",
+      "choice": "old",
+      "notes": "remove this slime"
+    },
+    "subway_spark_enhanced": {
+      "skinId": "subway_spark_enhanced",
+      "choice": "old",
+      "notes": "remove this slime"
+    },
+    "billboard_blink_enhanced": {
+      "skinId": "billboard_blink_enhanced",
+      "choice": "old",
+      "notes": "remove this slime"
+    },
+    "haystack_enhanced": {
+      "skinId": "haystack_enhanced",
+      "choice": "old",
+      "notes": "remove this slime"
+    },
+    "orchard_breeze_enhanced": {
+      "skinId": "orchard_breeze_enhanced",
+      "choice": "old",
+      "notes": "remove this slime"
+    },
+    "harbor_wake_enhanced": {
+      "skinId": "harbor_wake_enhanced",
+      "choice": "old",
+      "notes": "remove this slime"
+    },
+    "temple_incense_enhanced": {
+      "skinId": "temple_incense_enhanced",
+      "choice": "old",
+      "notes": "remove this slime"
+    },
+    "canyon_shade_enhanced": {
+      "skinId": "canyon_shade_enhanced",
+      "choice": "old",
+      "notes": "remove this slime"
+    },
+    "reef_bloom_enhanced": {
+      "skinId": "reef_bloom_enhanced",
+      "choice": "old",
+      "notes": "remove this slime"
+    },
+    "savanna_mirage_enhanced": {
+      "skinId": "savanna_mirage_enhanced",
+      "choice": "old",
+      "notes": "remove this slime"
+    },
+    "foundry_heatwave_enhanced": {
+      "skinId": "foundry_heatwave_enhanced",
+      "choice": "old",
+      "notes": "remove this slime"
+    },
+    "tundra_halo_enhanced": {
+      "skinId": "tundra_halo_enhanced",
+      "choice": "old",
+      "notes": "remove this slime"
+    },
+    "observatory_drift_enhanced": {
+      "skinId": "observatory_drift_enhanced",
+      "choice": "old",
+      "notes": "remove this slime"
+    },
+    "ocean_anim": {
+      "skinId": "ocean_anim",
+      "choice": "variant-1",
+      "notes": "Needs upgrade to be \"epic\" tier"
+    },
+    "will_o_glow": {
+      "skinId": "will_o_glow",
+      "choice": "variant-1",
+      "notes": "Need to rethink the concept of this one. Neither of the visuals are correct currently"
+    },
+    "sprinkles": {
+      "skinId": "sprinkles",
+      "choice": "variant-1"
+    },
+    "berry_fizz": {
+      "skinId": "berry_fizz",
+      "choice": "variant-1"
+    },
+    "citrus_pop": {
+      "skinId": "citrus_pop",
+      "choice": "variant-1",
+      "notes": "all-skins data merge with skins.ts gradient"
+    },
+    "sunset_beach": {
+      "skinId": "sunset_beach",
+      "choice": "old",
+      "notes": "skins.ts gradient with all-skins.ts data"
+    },
+    "the_fizz": {
+      "skinId": "the_fizz",
+      "choice": "variant-1"
+    },
+    "void_walker": {
+      "skinId": "void_walker",
+      "choice": "variant-1",
+      "notes": "Needs updated animation code"
+    },
+    "solar_flare": {
+      "skinId": "solar_flare",
+      "choice": "old",
+      "notes": "Ahhh... Solar Crown 2 (mythic) was renamed to Solare Flare. But there was already an epic Solar Flare. Can we rename the epic solar flare to \"sun spot\" and update the mythic solar flare with the correct animations that existed on Solar Crown 2 prior to the name change?"
+    },
+    "infinite_money_glitch": {
+      "skinId": "infinite_money_glitch",
+      "choice": "old",
+      "notes": "This one used to be called Auric King. We updated the name to Infinite Money Glitch and it lost all of the fun gold coin animations."
+    },
+    "starlet": {
+      "skinId": "starlet",
+      "choice": "variant-0",
+      "notes": "use the purple version. this is missing texture."
+    },
+    "pebble": {
+      "skinId": "pebble",
+      "choice": "old",
+      "notes": "use the grey vesion"
+    },
+    "forest_mist": {
+      "skinId": "forest_mist",
+      "choice": "variant-1"
+    },
+    "honeycomb": {
+      "skinId": "honeycomb",
+      "choice": "variant-1",
+      "notes": "supposed to have honeycomb texture"
+    },
+    "cloud_puff": {
+      "skinId": "cloud_puff",
+      "choice": "variant-1"
+    }
+  },
+  "summary": {
+    "old": 27,
+    "new": 0,
+    "merge": 0
+  }
+}
