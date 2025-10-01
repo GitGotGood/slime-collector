@@ -1,0 +1,28 @@
+{
+  "timestamp": "2025-09-25T17:31:40.677Z",
+  "totalDuplicates": 165,
+  "choices": {
+    "moss": {
+      "skinId": "moss",
+      "choice": "variant-1"
+    },
+    "sky": {
+      "skinId": "sky",
+      "choice": "variant-1"
+    },
+    "coral": {
+      "skinId": "coral",
+      "choice": "variant-1"
+    },
+    "charcoal": {
+      "skinId": "charcoal",
+      "choice": "variant-1",
+      "notes": "I believe we gave charcoal contrasting ash grey eyes, mouth, and possibly body outline."
+    }
+  },
+  "summary": {
+    "old": 0,
+    "new": 0,
+    "merge": 0
+  }
+}

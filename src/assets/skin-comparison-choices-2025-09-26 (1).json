@@ -1,0 +1,184 @@
+{
+  "timestamp": "2025-09-26T20:28:20.428Z",
+  "totalDuplicates": 102,
+  "choices": {
+    "magma_vein": {
+      "skinId": "magma_vein",
+      "choice": "old",
+      "notes": "Let's merge variation 3 (including animation code) with Variant 2 data."
+    },
+    "ember_bed": {
+      "skinId": "ember_bed",
+      "choice": "old",
+      "notes": "None of these are GREAT. The inspiration version is missing the animation code which was nice. Variant 1 is close to the color scheme I think we want. And Variant 2 has the data. We'll need to workshop this one before release. Since this is an Epic. Let's choose Variant 3 but include the animation code and merge with the data from Variant 2."
+    },
+    "glacier": {
+      "skinId": "glacier",
+      "choice": "variant-1",
+      "notes": "None of these are great and the animation is missing. Let's pick variant 2 with the understanding that we need to work on the design. And we'll probably want to merge with Glacier Enhanced."
+    },
+    "frost_breath": {
+      "skinId": "frost_breath",
+      "choice": "variant-1",
+      "notes": "Let's go with Variant 2, but we'll need to work on the design. It's missing a gradient, etc."
+    },
+    "moonlit_pool": {
+      "skinId": "moonlit_pool",
+      "choice": "variant-2",
+      "notes": "Variant 3 needs animation code. Then merge variant 3 with the data from Variant 2"
+    },
+    "star_parade": {
+      "skinId": "star_parade",
+      "choice": "variant-1",
+      "notes": "Variant 2 need the animation code. And we should consider reducing to an Epic tier slime. Maybe"
+    },
+    "galaxy_swirl": {
+      "skinId": "galaxy_swirl",
+      "choice": "variant-1",
+      "notes": "Variant 2 is missing the animation code."
+    },
+    "canopy_lantern": {
+      "skinId": "canopy_lantern",
+      "choice": "variant-1"
+    },
+    "moss_quilt": {
+      "skinId": "moss_quilt",
+      "choice": "variant-1"
+    },
+    "acorn_buddy": {
+      "skinId": "acorn_buddy",
+      "choice": "variant-1"
+    },
+    "pearl_whisper": {
+      "skinId": "pearl_whisper",
+      "choice": "variant-1"
+    },
+    "kelp_curl": {
+      "skinId": "kelp_curl",
+      "choice": "variant-1"
+    },
+    "tide_glass": {
+      "skinId": "tide_glass",
+      "choice": "variant-1"
+    },
+    "snow_lantern": {
+      "skinId": "snow_lantern",
+      "choice": "variant-1"
+    },
+    "frost_fern": {
+      "skinId": "frost_fern",
+      "choice": "variant-1"
+    },
+    "drift_puff": {
+      "skinId": "drift_puff",
+      "choice": "variant-1"
+    },
+    "redwall_glow": {
+      "skinId": "redwall_glow",
+      "choice": "variant-1"
+    },
+    "desert_varnish": {
+      "skinId": "desert_varnish",
+      "choice": "variant-1"
+    },
+    "swallow_sweep": {
+      "skinId": "swallow_sweep",
+      "choice": "variant-1"
+    },
+    "aurora_veil_plus": {
+      "skinId": "aurora_veil_plus",
+      "choice": "old",
+      "notes": "Can completely remove Aurora Veil+"
+    },
+    "polar_crown": {
+      "skinId": "polar_crown",
+      "choice": "variant-1"
+    },
+    "ionosong": {
+      "skinId": "ionosong",
+      "choice": "variant-1",
+      "notes": "The all-skins variant is missing the skin gradient from the skin.ts version. That gradient should also be animated to kind of ebb and flow. I THINK some of the code is just missing from the all-skins.ts version"
+    },
+    "synthwave": {
+      "skinId": "synthwave",
+      "choice": "variant-1",
+      "notes": "Use all-skins.ts as the primary, but update it with the body gradient from skins.ts."
+    },
+    "acacia_shade": {
+      "skinId": "acacia_shade",
+      "choice": "variant-1"
+    },
+    "grass_run": {
+      "skinId": "grass_run",
+      "choice": "variant-1"
+    },
+    "sun_drum": {
+      "skinId": "sun_drum",
+      "choice": "variant-1"
+    },
+    "coral_chorus": {
+      "skinId": "coral_chorus",
+      "choice": "variant-1",
+      "notes": "The gradient should be animated."
+    },
+    "anemone_wiggle": {
+      "skinId": "anemone_wiggle",
+      "choice": "variant-1"
+    },
+    "shell_gleam": {
+      "skinId": "shell_gleam",
+      "choice": "variant-1"
+    },
+    "glyph_bloom": {
+      "skinId": "glyph_bloom",
+      "choice": "variant-1"
+    },
+    "vine_inlay": {
+      "skinId": "vine_inlay",
+      "choice": "variant-1"
+    },
+    "incense_drift": {
+      "skinId": "incense_drift",
+      "choice": "variant-1"
+    },
+    "lighthouse_wink": {
+      "skinId": "lighthouse_wink",
+      "choice": "variant-1"
+    },
+    "rope_coil": {
+      "skinId": "rope_coil",
+      "choice": "variant-1"
+    },
+    "foam_crest": {
+      "skinId": "foam_crest",
+      "choice": "variant-1"
+    },
+    "anvil_ember": {
+      "skinId": "anvil_ember",
+      "choice": "variant-1",
+      "notes": "All-skins.ts version looks like it's missing full code."
+    },
+    "forge_rune": {
+      "skinId": "forge_rune",
+      "choice": "variant-1"
+    },
+    "quench_mist": {
+      "skinId": "quench_mist",
+      "choice": "variant-1"
+    },
+    "acorn_enhanced": {
+      "skinId": "acorn_enhanced",
+      "choice": "old",
+      "notes": "Acorn Enhanced can be removed entirely"
+    },
+    "whirlwind_edge": {
+      "skinId": "whirlwind_edge",
+      "choice": "variant-1"
+    }
+  },
+  "summary": {
+    "old": 4,
+    "new": 0,
+    "merge": 0
+  }
+}

@@ -32,38 +32,7 @@ export type UnifiedSkin = {
 // ===== PRODUCTION SKINS (V1 Launch Roster) =====
 export const PRODUCTION_SKINS: UnifiedSkin[] = [
   // Commons - Always unlocked on day 1
-  { 
-    id: "moss", 
-    name: "Moss", 
-    tier: "common", 
-    source: "production", 
-    origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
-    base: { fill: "#5BA86D", stroke: "#1F5132", shine: "#0B3A29" } 
-  },
-  { 
-    id: "sky", 
-    name: "Sky", 
-    tier: "common", 
-    source: "production", 
-    origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
-    base: { fill: "#A9D8FF", stroke: "#1E3A8A", shine: "#0E2440" } 
-  },
-  { 
-    id: "coral", 
-    name: "Coral", 
-    tier: "common", 
-    source: "production", 
-    origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
-    base: { fill: "#FF8B7A", stroke: "#7F1D1D", shine: "#3A0B0B" } 
-  },
-  { 
-    id: "charcoal", 
-    name: "Charcoal", 
-    tier: "common", 
-    source: "production", 
-    origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
-    base: { fill: "#2A2F35", stroke: "#0B0E12", shine: "#EAF0FF" } 
-  },
+  // moss, sky, coral, charcoal - REMOVED (consolidated to old system variants)
   { 
     id: "acorn", 
     name: "Acorn", 
@@ -83,44 +52,6 @@ export const PRODUCTION_SKINS: UnifiedSkin[] = [
 
   // Uncommons - Always unlocked on day 1
   { 
-    id: "spring_fade", 
-    name: "Spring Fade", 
-    tier: "uncommon", 
-    source: "production", 
-    origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
-    gradient: { stops: [["#B7F8C6", 0], ["#FFF4A8", 100]], dir: "180deg" }, 
-    base: { fill: "#B7F8C6", stroke: "#2E6A3A", shine: "#0E2A16" } 
-  },
-  { 
-    id: "autumn_fade", 
-    name: "Autumn Fade", 
-    tier: "uncommon", 
-    source: "production", 
-    origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
-    gradient: { stops: [["#22c55e", 0], ["#dc2626", 100]], dir: "180deg" }, 
-    base: { fill: "#22c55e", stroke: "#0f172a", shine: "#0E2A16" },
-    bio: "Perfect companion to Spring Fade. Captures the complete autumn transformation - from vibrant summer green through golden yellow and warm orange to deep crimson red. Like watching a single leaf change through the entire season."
-  },
-  { 
-    id: "blue_lagoon", 
-    name: "Blue Lagoon", 
-    tier: "uncommon", 
-    source: "production", 
-    origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
-    gradient: { stops: [["#68E0FF", 0], ["#3D78C1", 100]], dir: "180deg" }, 
-    base: { fill: "#68E0FF", stroke: "#1E3A8A", shine: "#0B2140" } 
-  },
-  { 
-    id: "cotton_candy", 
-    name: "Cotton Candy", 
-    tier: "uncommon", 
-    source: "production", 
-    origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
-    gradient: { stops: [["#60a5fa", 0], ["#f472b6", 100]], dir: "180deg" }, 
-    base: { fill: "#60a5fa", stroke: "#ec4899", shine: "#dbeafe" },
-    bio: "Sweet and dreamy like spun sugar at the carnival. This delightful slime captures the whimsical magic of cotton candy with its soft blue-to-pink gradient that melts hearts."
-  },
-  { 
     id: "rainbow", 
     name: "Rainbow", 
     tier: "uncommon", 
@@ -128,60 +59,20 @@ export const PRODUCTION_SKINS: UnifiedSkin[] = [
     origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
     kind: "gradient",
     colors: ["#ef4444", "#f97316", "#fbbf24", "#22c55e", "#3b82f6", "#6366f1", "#8b5cf6"],
-    base: { fill: "#ef4444", stroke: "#0f172a", shine: "#fef2f2" },
+    // Note: base.fill removed to allow gradient to render properly
+    base: { stroke: "#0f172a", shine: "#fef2f2" },
     bio: "A spectacular display of all colors in perfect harmony. This magical slime embodies the full ROYGBV spectrum, bringing joy and wonder wherever it appears."
-  },
-  { 
-    id: "sunset", 
-    name: "Sunset", 
-    tier: "uncommon", 
-    source: "production", 
-    origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
-    kind: "gradient",
-    colors: ["#8b5cf6", "#ec4899", "#f97316", "#fbbf24"],
-    gradient: "linear-gradient(180deg, #8b5cf6 0%, #ec4899 33%, #f97316 66%, #fbbf24 100%)",
-    base: { fill: "#8b5cf6", stroke: "#7c2d12", shine: "#fef3c7" },
-    bio: "Captures the breathtaking beauty of golden hour. This magical slime flows from deep purple through vibrant pink and orange to golden yellow, like watching the most spectacular sunset paint the sky."
-  },
-  { 
-    id: "sunrise", 
-    name: "Sunrise", 
-    tier: "uncommon", 
-    source: "production", 
-    origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
-    kind: "gradient",
-    colors: ["#2196F3", "#64B5F6", "#FFEB3B", "#FF9800", "#F44336"],
-    gradient: "linear-gradient(180deg, #2196F3 0%, #64B5F6 25%, #FFEB3B 50%, #FF9800 75%, #F44336 100%)",
-    bio: "Captures the breathtaking beauty of a dramatic sunrise with deep blues transitioning through brilliant yellows to fiery orange-reds, like watching the sun paint the sky with crepuscular rays."
   },
 
   // Rares - Always unlocked on day 1
   { 
-    id: "polka_mint", 
-    name: "Polka Mint", 
+    id: "sprinkles", 
+    name: "Sprinkles", 
     tier: "rare", 
     source: "production", 
     origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
-    pattern: { type: "polka_dots", size: 3, spacing: 12, color: "#FFFFFF", alpha: 0.14 }, 
-    base: { fill: "#B6E3B6", stroke: "#2E6A3A", shine: "#0E2A16" } 
-  },
-  { 
-    id: "confetti", 
-    name: "Confetti", 
-    tier: "rare", 
-    source: "production", 
-    origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
-    pattern: { type: "polka_dots", size: 3, spacing: 12, colors: ["#EF4444", "#3B82F6", "#10B981", "#F59E0B", "#8B5CF6"], alpha: 0.8 }, 
-    base: { fill: "#FEF3C7", stroke: "#D97706", shine: "#92400E" } 
-  },
-  { 
-    id: "ripple", 
-    name: "Ripple", 
-    tier: "rare", 
-    source: "production", 
-    origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
-    pattern: { type: "concentric_rings", width: 1, center: "off-center", alpha: 0.10 }, 
-    base: { fill: "#7FECD8", stroke: "#134E4A", shine: "#064E3B" } 
+    pattern: { type: "confetti_dots", count: 18, colors: ["#FF6B6B", "#4ECDC4", "#45B7D1", "#FFA07A"], alpha: 0.8 }, 
+    base: { fill: "#F7FBFF", stroke: "#93C5FD", shine: "#0E1B2B" } 
   },
 
   // Epics - Always unlocked on day 1 (daily rotation)
@@ -205,6 +96,26 @@ export const PRODUCTION_SKINS: UnifiedSkin[] = [
     base: { fill: "#43e0c6", stroke: "#0A0F1C", shine: "#b189ff" },
     bio: "Enhanced aurora veil with flowing curtain effects that cascade down like the northern lights. Sparkling particles dance across the surface as the aurora borealis comes to life."
   },
+  { 
+    id: "the_fizz", 
+    name: "The Fizz", 
+    tier: "epic", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
+    anim: "the_fizz", 
+    base: { fill: "#BDEBFF", stroke: "#93DBFF", shine: "#ffffff" },
+    bio: "Bubbly carbonated slime with effervescent fizz effects and sparkling bubbles that rise and pop."
+  },
+  { 
+    id: "void_walker", 
+    name: "Void Walker", 
+    tier: "epic", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
+    anim: "void", 
+    base: { fill: "#0f0f23", stroke: "#1e1b4b", shine: "#c7d2fe" },
+    bio: "Dark void slime with shadowy effects that seem to absorb light and create mysterious depths."
+  },
 
   // Mythics - Always unlocked on day 1 (daily rotation)
   { 
@@ -217,6 +128,299 @@ export const PRODUCTION_SKINS: UnifiedSkin[] = [
     kind: "animated",
     colors: ["#5b2d8f", "#1b1e4b", "#0f1530"]
   },
+  { 
+    id: "solar_flare", 
+    name: "Solar Flare", 
+    tier: "mythic", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
+    anim: "intense_solar_aura", 
+    base: { fill: "#ff8c00", stroke: "#b45309", shine: "#fef3c7" },
+    bio: "Intense solar energy with brilliant corona effects and solar wind particles."
+  },
+  { 
+    id: "infinite_money_glitch", 
+    name: "Infinite Money Glitch", 
+    tier: "mythic", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
+    anim: "golden_particle_rain", 
+    base: { fill: "#fde047", stroke: "#92400e", shine: "#fef3c7" },
+    bio: "Golden slime with infinite money particle effects and wealth-themed animations."
+  },
+  { 
+    id: "cosmic", 
+    name: "Cosmic", 
+    tier: "mythic", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
+    bio: "A cosmic void with swirling accretion disk and gravitational lensing effects.",
+    kind: "animated",
+    colors: ["#000000", "#1a1a2e", "#16213e"],
+    base: { 
+      fill: "#000000", 
+      stroke: "#00d4ff", 
+      shine: "#ff6b35" 
+    },
+    pattern: {
+      type: "accretion_disk",
+      colors: ["#ff6b35", "#ff8c42", "#ffb366", "#00d4ff", "#0099cc"],
+      swirl: true,
+      intensity: 0.8
+    }
+  },
+  { 
+    id: "black_hole", 
+    name: "Black Hole", 
+    tier: "mythic", 
+    source: "production", 
+    origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
+    bio: "A true cosmic singularity with rotating gradient and event horizon effects.",
+    kind: "animated",
+    colors: ["#000000", "#1a1a2e", "#16213e"],
+    base: { 
+      fill: "#000000", 
+      stroke: "#ff6b35", 
+      shine: "#00d4ff" 
+    },
+    pattern: {
+      type: "rotating_gradient",
+      colors: ["#ff6b35", "#ff8c42", "#ffb366", "#00d4ff", "#0099cc"],
+      rotation: true,
+      intensity: 0.9
+    }
+  },
+    {
+      id: "black_hole_2",
+      name: "Black Hole 2",
+      tier: "mythic",
+      source: "production",
+      origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
+      bio: "A cosmic void with lopsided rotating gradient and gravitational lensing effects.",
+      kind: "animated",
+      colors: ["#000000", "#1a1a2e", "#16213e"],
+      base: {
+        fill: "#000000",
+        stroke: "#ff6b35",
+        shine: "#00d4ff"
+      },
+      pattern: {
+        type: "lopsided_gradient",
+        colors: ["#ff6b35", "#ff8c42", "#ffb366", "#00d4ff", "#0099cc"],
+        rotation: true,
+        intensity: 0.9
+      }
+    },
+    {
+      id: "black_hole_3",
+      name: "Black Hole 3",
+      tier: "mythic",
+      source: "production",
+      origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
+      bio: "A true cosmic singularity with orbiting accretion disk and central mass dominance.",
+      kind: "animated",
+      colors: ["#000000", "#1a1a2e", "#16213e"],
+      base: {
+        fill: "#000000",
+        stroke: "#ff6b35",
+        shine: "#00d4ff"
+      },
+      pattern: {
+        type: "orbiting_disk",
+        colors: ["#ff6b35", "#ff8c42", "#ffb366", "#00d4ff", "#0099cc"],
+        rotation: true,
+        intensity: 0.9
+      }
+    },
+    {
+      id: "black_hole_4",
+      name: "Black Hole 4",
+      tier: "mythic",
+      source: "production",
+      origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
+      bio: "A glossy cosmic entity with swirling purplish-pink to blue accretion disk and star speckles.",
+      kind: "animated",
+      colors: ["#000000", "#1a1a2e", "#16213e"],
+      base: {
+        fill: "#000000",
+        stroke: "#ff6b35",
+        shine: "#00d4ff"
+      },
+      pattern: {
+        type: "cosmic_glossy",
+        colors: ["#ff6b35", "#ff8c42", "#ffb366", "#00d4ff", "#0099cc"],
+        rotation: true,
+        intensity: 0.9
+      }
+    },
+    {
+      id: "black_hole_5",
+      name: "Black Hole 5",
+      tier: "mythic",
+      source: "production",
+      origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
+      bio: "A wobbly purple gradient ring with feathered edges and hard pink cut to black center.",
+      kind: "animated",
+      colors: ["#000000", "#1a1a2e", "#16213e"],
+      base: {
+        fill: "#000000",
+        stroke: "#ff6b35",
+        shine: "#00d4ff"
+      },
+      pattern: {
+        type: "wobbly_ring",
+        colors: ["#ff6b35", "#ff8c42", "#ffb366", "#00d4ff", "#0099cc"],
+        rotation: true,
+        intensity: 0.9
+      }
+    },
+    {
+      id: "portal",
+      name: "Portal",
+      tier: "mythic",
+      source: "production",
+      origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
+      bio: "Overlapping ring gradients with different rotation speeds for dynamic motion.",
+      kind: "animated",
+      colors: ["#000000", "#1a1a2e", "#16213e"],
+      base: {
+        fill: "#000000",
+        stroke: "#ff6b35",
+        shine: "#00d4ff"
+      },
+      pattern: {
+        type: "overlapping_rings",
+        colors: ["#ff6b35", "#ff8c42", "#ffb366", "#00d4ff", "#0099cc"],
+        rotation: true,
+        intensity: 0.9
+      }
+    },
+    {
+      id: "vertigo",
+      name: "Vertigo",
+      tier: "mythic",
+      source: "production",
+      origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
+      bio: "Line-based concentric rings with dense packing to simulate gradient effects.",
+      kind: "animated",
+      colors: ["#000000", "#1a1a2e", "#16213e"],
+      base: {
+        fill: "#000000",
+        stroke: "#ff6b35",
+        shine: "#00d4ff"
+      },
+      pattern: {
+        type: "line_rings",
+        colors: ["#22c55e", "#16a34a", "#15803d", "#fbbf24", "#f59e0b"],
+        rotation: true,
+        intensity: 0.9
+      }
+    },
+    {
+      id: "candy_corn",
+      name: "Candy Corn",
+      tier: "uncommon",
+      source: "production",
+      origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
+      bio: "Classic fall treat with vertical gradient from orange to yellow to white.",
+      kind: "solid",
+      colors: ["#ff6b00", "#ffd700", "#ffffff"],
+      base: {
+        fill: "#ff6b00",
+        stroke: "#1f2937",
+        shine: "#ffffff"
+      },
+      pattern: {
+        type: "vertical_gradient",
+        colors: ["#ff6b00", "#ffd700", "#ffffff"],
+        rotation: false,
+        intensity: 0.8
+      }
+    },
+    {
+      id: "watermelon",
+      name: "Watermelon",
+      tier: "uncommon",
+      source: "production",
+      origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
+      bio: "Juicy summer fruit with radial gradient and black seed details.",
+      kind: "solid",
+      colors: ["#90ee90", "#ffffff", "#ff69b4"],
+      base: {
+        fill: "#ff69b4",
+        stroke: "#228b22",
+        shine: "#ffffff"
+      },
+      pattern: {
+        type: "radial_gradient",
+        colors: ["#90ee90", "#ffffff", "#ff69b4"],
+        rotation: false,
+        intensity: 0.8
+      }
+    },
+    {
+      id: "ice_cream_swirl",
+      name: "Ice Cream Swirl",
+      tier: "uncommon",
+      source: "production",
+      origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
+      bio: "Classic soft serve swirl with creamy vanilla and rich chocolate bands.",
+      kind: "solid",
+      colors: ["#ffffff", "#8b4513"],
+      base: {
+        fill: "#ffffff",
+        stroke: "#1f2937",
+        shine: "#ffffff"
+      },
+      pattern: {
+        type: "static_swirl",
+        colors: ["#ffffff", "#8b4513"],
+        rotation: false,
+        intensity: 0.9
+      }
+    },
+    {
+      id: "ice_cream_swirl_2",
+      name: "Ice Cream Swirl 2",
+      tier: "uncommon",
+      source: "production",
+      origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
+      bio: "Conic-gradient soft serve with alternating vanilla and chocolate stripes.",
+      kind: "solid",
+      colors: ["#ffffff", "#8b4513"],
+      base: {
+        fill: "#ffffff",
+        stroke: "#1f2937",
+        shine: "#ffffff"
+      },
+      pattern: {
+        type: "conic_gradient",
+        colors: ["#ffffff", "#8b4513"],
+        rotation: false,
+        intensity: 0.9
+      }
+    },
+    {
+      id: "ice_cream_swirl_3",
+      name: "Ice Cream Swirl 3",
+      tier: "uncommon",
+      source: "production",
+      origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
+      bio: "Mathematically perfect logarithmic spiral with vanilla and chocolate turns.",
+      kind: "solid",
+      colors: ["#ffffff", "#8b4513"],
+      base: {
+        fill: "#ffffff",
+        stroke: "#1f2937",
+        shine: "#ffffff"
+      },
+      pattern: {
+        type: "logarithmic_spiral",
+        colors: ["#ffffff", "#8b4513"],
+        rotation: false,
+        intensity: 0.9
+      }
+    },
   { 
     id: "phoenix_heart", 
     name: "Phoenix Heart", 
@@ -687,46 +891,7 @@ export const PRODUCTION_SKINS: UnifiedSkin[] = [
 
   // === ENHANCED VARIANTS (ALL TIERS) ===
   // Enhanced Common Slimes
-  { 
-    id: "moss_enhanced", 
-    name: "Moss Enhanced", 
-    tier: "common", 
-    source: "production", 
-    origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' },
-    bio: "Calm forest green with leaf highlight and micro-identity.",
-    kind: "solid",
-    colors: ["#3FA05A"]
-  },
-  { 
-    id: "sky_enhanced", 
-    name: "Sky Enhanced", 
-    tier: "common", 
-    source: "production", 
-    origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' },
-    bio: "Breezy powder blue with cloud highlight and micro-identity.",
-    kind: "solid",
-    colors: ["#9ECBF6"]
-  },
-  { 
-    id: "coral_enhanced", 
-    name: "Coral Enhanced", 
-    tier: "common", 
-    source: "production", 
-    origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' },
-    bio: "Friendly warm pink-orange with smile highlight and micro-identity.",
-    kind: "solid",
-    colors: ["#FF7D6E"]
-  },
-  { 
-    id: "charcoal_enhanced", 
-    name: "Charcoal Enhanced", 
-    tier: "common", 
-    source: "production", 
-    origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' },
-    bio: "Bold deep gray with teal face and chip highlight.",
-    kind: "solid",
-    colors: ["#2B2F36"]
-  },
+  // moss_enhanced, sky_enhanced, coral_enhanced, charcoal_enhanced - REMOVED (consolidated to originals)
   { 
     id: "acorn_enhanced", 
     name: "Acorn Enhanced", 
@@ -867,10 +1032,10 @@ export const PRODUCTION_SKINS: UnifiedSkin[] = [
   },
   { 
     id: "biolume_veil_enhanced", 
-    name: "Biolume Veil Enhanced", 
-    tier: "mythic", 
+    name: "Biolume Veil", 
+    tier: "epic", 
     source: "production", 
-    origin: { type: 'shop', source: 'shop', displayName: 'Enhanced Version' },
+    origin: { type: 'shop', source: 'shop', displayName: 'Available in Shop' },
     bio: "Cave bioluminescence curtain with flowing light.",
     kind: "animated",
     colors: ["#0d1b2a", "#16e0ae", "#0a1420"]
@@ -1333,7 +1498,7 @@ export const INSPIRATION_SECRET: UnifiedSkin[] = [
 // Additional Common skins (solid colors with creative themes)
 export const MY_COMMON: UnifiedSkin[] = [
   { id: "honey", name: "Honey", tier: "common", source: "inspiration", palette: { fill: "#f59e0b", stroke: "#92400e", shine: "#fef3c7" } },
-  { id: "coral", name: "Coral", tier: "common", source: "inspiration", palette: { fill: "#fb7185", stroke: "#be185d", shine: "#fecdd3" } },
+  // coral - REMOVED (consolidated to original)
   { id: "sage", name: "Sage", tier: "common", source: "inspiration", palette: { fill: "#84cc16", stroke: "#365314", shine: "#d9f99d" } },
   { id: "periwinkle", name: "Periwinkle", tier: "common", source: "inspiration", palette: { fill: "#8b5cf6", stroke: "#581c87", shine: "#e9d5ff" } },
 ];
@@ -1364,7 +1529,7 @@ export const MY_EPIC: UnifiedSkin[] = [
 
 // Additional Mythic skins (advanced themes)
 export const MY_MYTHIC: UnifiedSkin[] = [
-  { id: "void_walker", name: "Void Walker", tier: "mythic", source: "inspiration", anim: "void", base: { fill: "#0f0f23", stroke: "#1e1b4b", shine: "#c7d2fe" } },
+  { id: "void_walker", name: "Void Walker", tier: "epic", source: "inspiration", anim: "void", base: { fill: "#0f0f23", stroke: "#1e1b4b", shine: "#c7d2fe" } },
   { id: "celestial_harmony", name: "Celestial Harmony", tier: "mythic", source: "inspiration", anim: "celestial", base: { fill: "#fbbf24", stroke: "#92400e", shine: "#fef3c7" } },
   { id: "time_weaver", name: "Time Weaver", tier: "mythic", source: "inspiration", anim: "temporal", base: { fill: "#6366f1", stroke: "#3730a3", shine: "#e0e7ff" } },
   { id: "nebula_hybrid", name: "Nebula (Hybrid)", tier: "mythic", source: "inspiration", anim: "nebula_hybrid", base: { fill: "#6d28d9", stroke: "#3b0764", shine: "#f5d0fe" } },
@@ -1374,14 +1539,12 @@ export const MY_MYTHIC: UnifiedSkin[] = [
 
 // NEW COMMON (solid colors — clean, readable) — 20
 export const NEW_COMMON: UnifiedSkin[] = [
-  { id: "moss", name: "Moss", tier: "common", source: "inspiration", base: { fill: "#5BA86D", stroke: "#1F5132", shine: "#0B3A29" } },
+  // moss, sky, coral, charcoal - REMOVED (consolidated to originals)
   { id: "pistachio", name: "Pistachio", tier: "common", source: "inspiration", base: { fill: "#B6E3B6", stroke: "#2E6A3A", shine: "#0E2A16" } },
   { id: "lime_pop", name: "Lime Pop", tier: "common", source: "inspiration", base: { fill: "#A3F700", stroke: "#336B11", shine: "#10300B" } },
   { id: "acorn", name: "Acorn", tier: "common", source: "inspiration", base: { fill: "#a16207", stroke: "#92400e", shine: "#fef3c7" } },
-  { id: "sky", name: "Sky", tier: "common", source: "inspiration", base: { fill: "#A9D8FF", stroke: "#1E3A8A", shine: "#0E2440" } },
   { id: "denim", name: "Denim", tier: "common", source: "inspiration", base: { fill: "#4F7FBF", stroke: "#1E3A8A", shine: "#0A1B35" } },
   { id: "rain", name: "Rain", tier: "common", source: "inspiration", base: { fill: "#7089A7", stroke: "#334155", shine: "#0C1726" } },
-  { id: "coral", name: "Coral", tier: "common", source: "inspiration", base: { fill: "#FF8B7A", stroke: "#7F1D1D", shine: "#3A0B0B" } },
   { id: "papaya", name: "Papaya", tier: "common", source: "inspiration", base: { fill: "#FFA658", stroke: "#7C2D12", shine: "#3A1405" } },
   { id: "honey", name: "Honey", tier: "common", source: "inspiration", base: { fill: "#FFD24A", stroke: "#92400E", shine: "#3A1F06" } },
   { id: "banana_milk", name: "Banana Milk", tier: "common", source: "inspiration", base: { fill: "#FFF3A7", stroke: "#8A6A0D", shine: "#2A2106" } },
@@ -1392,7 +1555,6 @@ export const NEW_COMMON: UnifiedSkin[] = [
   { id: "sand", name: "Sand", tier: "common", source: "inspiration", base: { fill: "#E9D8B5", stroke: "#9D8057", shine: "#2B2216" } },
   { id: "clay", name: "Clay", tier: "common", source: "inspiration", base: { fill: "#C7744D", stroke: "#7C3A1D", shine: "#2A1108" } },
   { id: "pebble", name: "Pebble", tier: "common", source: "inspiration", base: { fill: "#B9C2CC", stroke: "#475569", shine: "#111827" } },
-  { id: "charcoal", name: "Charcoal", tier: "common", source: "inspiration", base: { fill: "#2A2F35", stroke: "#0B0E12", shine: "#EAF0FF" } },
   { id: "snowcone", name: "Snowcone", tier: "common", source: "inspiration", base: { fill: "#F7FBFF", stroke: "#93C5FD", shine: "#0E1B2B" } },
 ];
 
@@ -1473,7 +1635,7 @@ export const NEW_EPIC: UnifiedSkin[] = [
   { id: "sand_sift", name: "Sand Sift", tier: "epic", source: "inspiration", anim: "sand_sift", base: { fill: "#EED9B7", stroke: "#DCC39F", shine: "#5A472F" } },
   { id: "ink_bloom", name: "Ink Bloom", tier: "epic", source: "inspiration", anim: "ink_bloom", base: { fill: "#12131A", stroke: "#0A0B0F", shine: "#EAF0FF" } },
   { id: "lightning_wink", name: "Lightning Wink", tier: "epic", source: "inspiration", anim: "lightning_wink", base: { fill: "#0F172A", stroke: "#0A0F1A", shine: "#E5F1FF" } },
-  { id: "tonic_fizz", name: "Tonic Fizz", tier: "epic", source: "inspiration", anim: "tonic_fizz", base: { fill: "#BDEBFF", stroke: "#93DBFF", shine: "#0E2440" } },
+  { id: "the_fizz", name: "The Fizz", tier: "epic", source: "inspiration", anim: "the_fizz", base: { fill: "#BDEBFF", stroke: "#93DBFF", shine: "#ffffff" } },
   { id: "star_parade", name: "Star Parade", tier: "epic", source: "inspiration", anim: "star_parade", base: { fill: "#0E1424", stroke: "#090D18", shine: "#EEF3FF" } },
   { id: "rainbow_drip", name: "Rainbow Drip", tier: "epic", source: "inspiration", anim: "rainbow_drip", base: { fill: "#101218", stroke: "#080A0F", shine: "#E6EEFF" } },
 ];
@@ -1487,12 +1649,12 @@ export const NEW_MYTHIC: UnifiedSkin[] = [
   { id: "zephyr_lord", name: "Zephyr Lord", tier: "mythic", source: "inspiration", anim: "wind_rings_sparkles", base: { fill: "#84cc16", stroke: "#365314", shine: "#ecfccb" } },
   { id: "thunder_rune", name: "Thunder Rune", tier: "mythic", source: "inspiration", anim: "runic_flashes", base: { fill: "#6366f1", stroke: "#3730a3", shine: "#e0e7ff" } },
   { id: "solar_crown", name: "Solar Crown", tier: "mythic", source: "inspiration", anim: "coronas_flares", base: { fill: "#fbbf24", stroke: "#92400e", shine: "#fef3c7" } },
-  { id: "solar_crown_2", name: "Solar Crown 2", tier: "mythic", source: "inspiration", anim: "intense_solar_aura", base: { fill: "#ff8c00", stroke: "#b45309", shine: "#fef3c7" } },
+  { id: "solar_flare", name: "Solar Flare", tier: "mythic", source: "inspiration", anim: "intense_solar_aura", base: { fill: "#ff8c00", stroke: "#b45309", shine: "#fef3c7" } },
   { id: "moonlit_pool", name: "Moonlit Pool", tier: "mythic", source: "inspiration", anim: "silver_caustics", base: { fill: "#e2e8f0", stroke: "#64748b", shine: "#f8fafc" } },
   { id: "starlace", name: "Starlace", tier: "mythic", source: "inspiration", anim: "constellation_shimmer", base: { fill: "#1e1b4b", stroke: "#0f172a", shine: "#c7d2fe" } },
   { id: "eclipse", name: "Eclipse", tier: "mythic", source: "inspiration", anim: "dark_rim_glow", base: { fill: "#0f172a", stroke: "#000000", shine: "#fbbf24" } },
   { id: "dragon_scale", name: "Dragon Scale", tier: "mythic", source: "inspiration", anim: "iridescent_plates", base: { fill: "#065f46", stroke: "#134e4a", shine: "#22d3ee" } },
-  { id: "auric_king", name: "Auric King", tier: "mythic", source: "inspiration", anim: "golden_particle_rain", base: { fill: "#fbbf24", stroke: "#92400e", shine: "#fef3c7" } },
+  { id: "infinite_money_glitch", name: "Infinite Money Glitch", tier: "mythic", source: "inspiration", anim: "golden_particle_rain", base: { fill: "#fde047", stroke: "#92400e", shine: "#fef3c7" } },
   { id: "glacial_core", name: "Glacial Core", tier: "mythic", source: "inspiration", anim: "inner_glow_cracks", base: { fill: "#67e8f9", stroke: "#0e7490", shine: "#f0fdfa" } },
   { id: "stormcaller", name: "Stormcaller", tier: "mythic", source: "inspiration", anim: "clouds_distant_bolts", base: { fill: "#64748b", stroke: "#1e293b", shine: "#fbbf24" } },
   { id: "chrono", name: "Chrono", tier: "mythic", source: "inspiration", anim: "ticking_rings_sparks", base: { fill: "#6366f1", stroke: "#3730a3", shine: "#e0e7ff" } },
