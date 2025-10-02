@@ -5,10 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "npm run prebuild-guard && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "prebuild-guard": "node scripts/prebuild-guard.cjs",
+    "test:goldens": "playwright test tests/goldens/golden.spec.ts",
+    "test:goldens:update": "playwright test tests/goldens/golden.spec.ts --update-snapshots",
+    "dev:goldens": "vite --open goldens.html"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.57.0",
@@ -19,6 +23,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",
+    "@playwright/test": "^1.55.1",
     "@tailwindcss/postcss": "^4.1.12",
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
@@ -32,6 +37,8 @@
     "tailwindcss": "^4.1.12",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.39.1",
-    "vite": "^7.1.2"
+    "vite": "^7.1.2",
+    "react-dom": "^19.1.1",
+    "react": "^19.1.1"
   }
 }
