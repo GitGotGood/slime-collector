@@ -13,7 +13,8 @@ const SIZE = 128;
 test.describe('golden screenshots', () => {
   for (const id of SHOP_IDS) {
     test(`skin: ${id}`, async ({ page }) => {
-      await page.goto(`/goldens?id=${id}&size=${SIZE}&scale=1`);
+      // Use explicit html path to work reliably with vite preview in CI
+      await page.goto(`/goldens.html?id=${id}&size=${SIZE}&scale=1`);
       const locator = page.locator('div').first();
       await expect(locator).toHaveScreenshot(`${id}.png`, {
         animations: 'disabled',
