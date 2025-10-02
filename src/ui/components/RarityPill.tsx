@@ -1,4 +1,4 @@
-import type { Rarity } from "../../assets/all-skins";
+type Rarity = "common" | "uncommon" | "rare" | "epic" | "mythic" | "secret";
 
 const RARITY_STYLES: Record<Rarity, string> = {
   common:   "bg-slate-100 text-slate-700 border-slate-200",
