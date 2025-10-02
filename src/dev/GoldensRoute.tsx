@@ -19,7 +19,7 @@ export default function GoldensRoute() {
   const exists = !!SKINS[id];
 
   return (
-    <div style={{ width: size, height: size, display: "flex", alignItems: "center", justifyContent: "center", background: "#ffffff" }}>
+    <div style={{ width: size, height: size, display: "flex", alignItems: "center", justifyContent: "center", background: "#ffffff", overflow: 'hidden' }}>
       {exists ? (
         <UnifiedSlimeRenderer skinId={id} scale={scale} bobDuration={bobDuration} bobDelay={bobDelay} />
       ) : (

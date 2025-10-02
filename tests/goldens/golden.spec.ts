@@ -15,7 +15,7 @@ test.describe('golden screenshots', () => {
     test(`skin: ${id}`, async ({ page }) => {
       // Use explicit html path to work reliably with vite preview in CI
       await page.goto(`/goldens.html?id=${id}&size=${SIZE}&scale=1`);
-      const locator = page.locator('div').first();
+      const locator = page.locator('#root');
       await expect(locator).toHaveScreenshot(`${id}.png`, {
         animations: 'disabled',
         scale: 'css',
