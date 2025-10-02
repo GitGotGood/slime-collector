@@ -1,6 +1,7 @@
 import React from "react";
 import type { RootState } from "../../core/types";
 import Slime from "../components/Slime";
+import { SKINS } from "../../assets/skins";
 
 export default function ProfilePicker({
   open,
@@ -39,7 +40,7 @@ export default function ProfilePicker({
             >
               <div className="w-12 h-12 mx-auto">
                 <Slime 
-                  skinId={p.settings?.activeSkin || "green"}
+                  skinId={(p.settings?.activeSkin && SKINS[p.settings.activeSkin]) ? p.settings.activeSkin : "moss"}
                   className="w-12 h-12"
                   bobDuration={2.5 + Math.random() * 0.5}
                   bobDelay={Math.random() * 2}

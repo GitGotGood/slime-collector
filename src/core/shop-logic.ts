@@ -28,6 +28,7 @@
 
 import { seededRng, TODAY_KEY } from './storage';
 import type { ShopItem, Profile, WorldID } from './types';
+import { getAllLive } from '../assets/slime-roster';
 import { REFRESH_COSTS } from './economy';
 
 // V1 Launch: Shop items using our curated production slimes
@@ -190,15 +191,23 @@ export function todaysPicks(profile: any, allItems: ShopItem[], owned: string[] 
 }
 
 // Main shop selection function
-export function getShopPicks(profile: any, allItems: ShopItem[]) {
+export function getShopPicks(profile: any, _allItems: ShopItem[]) {
   const owned = profile.unlocks?.skins || [];
-  
+  // Build live catalog for the shop from the roster (ignore legacy list)
+  const catalog: ShopItem[] = getAllLive().map((s) => ({
+    id: `skin_${s.id}`,
+    type: 'skin' as const,
+    skin: s.id,
+    tier: s.tier,
+    biome: (s as any).biome || 'shop'
+  }));
+
   // Get evergreen first (persistent until midnight, shows owned as purchased)
-  const evergreen = evergreenPicks(allItems, owned, profile);
+  const evergreen = evergreenPicks(catalog, owned, profile);
   const evergreenSkins = new Set(evergreen.map(item => item.skin));
   
   // Get daily picks that don't overlap with evergreen
-  const dailyPool = allItems.filter(item => !evergreenSkins.has(item.skin));
+  const dailyPool = catalog.filter(item => !evergreenSkins.has(item.skin));
   const daily = todaysPicks(profile, dailyPool, owned);
   
   // Debug logging for shop issues
@@ -219,8 +228,8 @@ export function getShopPicks(profile: any, allItems: ShopItem[]) {
     shopBiasBiome: profile.shopBiasBiome,
     currentTime: Date.now(),
     timeLeft: hasBias ? profile.shopBiasUntil - Date.now() : 0,
-    forestItems: allItems.filter(item => item.biome === 'forest'),
-    biasMatchingItems: allItems.filter(item => item.biome === profile.shopBiasBiome)
+    forestItems: catalog.filter(item => item.biome === 'forest'),
+    biasMatchingItems: catalog.filter(item => item.biome === profile.shopBiasBiome)
   });
   
   // Bias info for UI

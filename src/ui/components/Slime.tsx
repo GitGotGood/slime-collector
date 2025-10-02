@@ -1,6 +1,11 @@
 import React, { useMemo, useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { SKINS } from "../../assets/skins";
+import { resolveId } from "../../assets/slime-roster";
+
+// Debug: Check if SKINS is loaded
+console.log('SKINS loaded in Slime.tsx:', Object.keys(SKINS).length, 'skins');
+console.log('Sample SKINS keys:', Object.keys(SKINS).slice(0, 5));
 
 // Mouse tracking hook for eye tracking
 function useMousePosition() {
@@ -44,8 +49,18 @@ export default function Slime({
   bobDelay = 0,
   eyeTracking = false,
 }: Props) {
-  const id = skinId || paletteId || "green";
-  const skin = SKINS[id] ?? SKINS.green;
+  const id = resolveId(skinId || paletteId || "moss") || "moss";
+  const skin = SKINS[id] ?? SKINS.moss;
+
+  // Debug logging
+  console.log('Slime Debug:', {
+    skinId,
+    paletteId,
+    finalId: id,
+    skinExists: !!skin,
+    skinKind: skin?.kind,
+    availableSkinsCount: Object.keys(SKINS).length
+  });
   const uid = useUid(id);
   const slimeRef = useRef<HTMLDivElement>(null);
   const mousePos = useMousePosition();
@@ -136,8 +151,8 @@ export default function Slime({
       return { fill: skin.colors[0], defs: null as React.ReactNode };
     }
     if (skin.kind === "gradient") {
-      // Check gradient direction
-      const direction = (skin as any).direction;
+      // Check gradient direction using new unified format
+      const direction = skin.gradient?.direction || "horizontal";
       let gradientProps;
       if (direction === "horizontal") {
         gradientProps = { x1: "0", y1: "0", x2: "1", y2: "0" }; // Horizontal: left to right
