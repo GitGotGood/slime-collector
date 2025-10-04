@@ -1,7 +1,7 @@
 import React from "react";
 import Dialog from "./Dialog";
 
-interface StreakModalProps {
+interface StreakCelebrationModalProps {
   open: boolean;
   onClose: () => void;
   currentStreak: number;
@@ -14,25 +14,22 @@ interface StreakModalProps {
     isPast: boolean; 
     isMissed: boolean; 
   }>;
-  streakIncreased?: boolean;
 }
 
-export default function StreakModal({
+export default function StreakCelebrationModal({
   open,
   onClose,
   currentStreak,
   longestStreak,
   totalLogins,
-  weekData,
-  streakIncreased = false
-}: StreakModalProps) {
-  const dayLabels = ['Su', 'M', 'Tu', 'W', 'Th', 'F', 'Sa'];
+  weekData
+}: StreakCelebrationModalProps) {
   
   return (
     <Dialog 
       open={open} 
       onClose={onClose} 
-      title="Practice Streak" 
+      title="🔥 Streak Increased!" 
       maxWidth="max-w-sm"
       footer={
         <div className="flex items-center justify-end gap-2">
@@ -40,12 +37,22 @@ export default function StreakModal({
             onClick={onClose} 
             className="px-4 py-2 rounded-xl bg-emerald-600 text-white hover:bg-emerald-700"
           >
-            Continue
+            Awesome!
           </button>
         </div>
       }
     >
       <div className="text-center space-y-6">
+        {/* Celebration Message */}
+        <div className="space-y-3">
+          <div className="text-lg font-semibold text-orange-600">
+            Nice! You practiced today.
+          </div>
+          <div className="text-sm text-gray-600">
+            You answered 5+ questions and kept your streak going!
+          </div>
+        </div>
+
         {/* Streak Counter */}
         <div className="space-y-3">
           <div className="relative inline-block">
@@ -54,10 +61,8 @@ export default function StreakModal({
               <div className="text-white text-3xl font-bold">
                 {currentStreak}
               </div>
-              {/* Small arrow inside flame - green if streak increased */}
-              <div className={`absolute -top-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center ${
-                streakIncreased ? 'bg-green-500' : 'bg-orange-500'
-              }`}>
+              {/* Green arrow for celebration */}
+              <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center bg-green-500">
                 <div className="text-white text-xs">↑</div>
               </div>
             </div>
@@ -107,10 +112,22 @@ export default function StreakModal({
           <div>Total practice days: <span className="font-semibold text-orange-600">{totalLogins} days</span></div>
         </div>
 
-        {/* Explanation */}
-        <div className="text-sm text-gray-500">
-          A <span className="text-orange-600 font-semibold">practice streak</span> counts how many days<br />you've answered 5+ questions in a row.
-        </div>
+        {/* Next Target */}
+        {currentStreak < 7 && (
+          <div className="text-sm text-orange-600 font-medium">
+            {7 - currentStreak} more days for a 7-day streak!
+          </div>
+        )}
+        {currentStreak >= 7 && currentStreak < 30 && (
+          <div className="text-sm text-orange-600 font-medium">
+            {30 - currentStreak} more days for a 30-day streak!
+          </div>
+        )}
+        {currentStreak >= 30 && (
+          <div className="text-sm text-orange-600 font-medium">
+            Incredible dedication! You're a streak master!
+          </div>
+        )}
       </div>
     </Dialog>
   );

@@ -38,6 +38,7 @@ import ShopModal from "../ui/shop/ShopModal";
 import ProgressModal from "../ui/progress/ProgressModal";
 import ProfilePicker from "../ui/progress/ProfilePicker";
 import StreakModal from "../ui/components/StreakModal";
+import StreakCelebrationModal from "../ui/components/StreakCelebrationModal";
 
 import { useSounds } from "../assets/sounds";
 import { ALL_SHOP_ITEMS } from "../core/shop-logic";
@@ -47,7 +48,7 @@ import { SKINS } from "../assets/skins";
 import { loadState, saveState, mkProfile } from "../core/storage";
 import { SKILL_ORDER, SKILLS, makeProblemForSkill, difficultyMultiplier } from "../core/skills";
 import type { SkillID, ShopItem } from "../core/types";
-import { updateStreakData } from "../core/streak";
+import { updateStreakData, getCurrentWeek, getCenteredWeek, getGraceWindowDate } from "../core/streak";
 import { getMasteryBonus, levelFromTotalXP, applyXP, updateStatsAndCheckMastery, worldIdOf, onWorldMastered, WORLDS, nextWorld, getStrongAnswerCount, meetsMastery, MISTAP_MS, TURBO_MS, TURBO_STREAK, INTERCEPT_COOLDOWN_S, retroScrubTurboAnswers, getRollingAccuracy, getRollingSpeed } from "../core/progression";
 import { priceOf } from "../core/economy";
 import { evaluateBadges, getBadgeName } from "../core/badges";
@@ -207,6 +208,7 @@ function SlimeCollectorAppInner() {
   const [showInterceptModal, setShowInterceptModal] = useState(false);
   const [lastAnswerTime, setLastAnswerTime] = useState<number | null>(null);
   const [showStreakModal, setShowStreakModal] = useState(false);
+  const [showStreakCelebration, setShowStreakCelebration] = useState(false);
   const [streakIncreased, setStreakIncreased] = useState(false);
   
   // Intercept modal handlers
@@ -384,6 +386,22 @@ function SlimeCollectorAppInner() {
 
   // Track which profile we've already loaded to prevent duplicate loads
   const loadedProfileRef = useRef<string | null>(null);
+  const streakCheckedRef = useRef<string | null>(null);
+
+  // Check and update streak data when current profile changes
+  useEffect(() => {
+    if (current && current.id !== streakCheckedRef.current) {
+      streakCheckedRef.current = current.id;
+      
+      // Show awareness modal for existing streaks (but not on first login)
+      if (current.streakData && current.streakData.currentStreak > 0) {
+        const today = new Date().toISOString().slice(0, 10);
+        if (current.streakData.lastLoginDate !== today) {
+          setShowStreakModal(true);
+        }
+      }
+    }
+  }, [current]);
 
   // Load from cloud when active profile changes (only in online mode)
   useEffect(() => {
@@ -586,11 +604,16 @@ function SlimeCollectorAppInner() {
   };
 
   const endSession = () => {
+    console.log(`🎮 END SESSION: Starting endSession function`);
     resetSlime();
     resetCelebrations();
     setGameState("over");
     setOpenSummary(true);
-    if (!current) return;
+    if (!current) {
+      console.log(`❌ END SESSION: No current profile, exiting`);
+      return;
+    }
+    console.log(`🎮 END SESSION: Current profile found, sessionAttempts: ${sessionAttempts}`);
     
     setStore((S: any) => ({
       ...S,
@@ -598,14 +621,35 @@ function SlimeCollectorAppInner() {
         if (p.id !== current.id) return p;
         const np = { ...p, best: { score: Math.max(p.best.score, Math.round(runXP)), streak: Math.max(p.best.streak, bestStreak) } };
         
-        // Update streak data (only if session had at least one question)
-        if (sessionAttempts > 0) {
+        // Update streak data (only if session had at least 5 questions)
+        console.log(`🎯 Session attempts: ${sessionAttempts}, threshold: 5`);
+        console.log(`📊 Current streak data before update:`, {
+          currentStreak: np.streakData?.currentStreak,
+          lastLoginDate: np.streakData?.lastLoginDate,
+          totalLogins: np.streakData?.totalLogins
+        });
+        
+        if (sessionAttempts >= 5) {
           const streakResult = updateStreakData(np);
+          console.log(`🔥 Streak result:`, streakResult);
           if (streakResult.streakIncreased) {
             console.log(`🔥 Streak increased to ${streakResult.newStreak} days!`);
             setStreakIncreased(true);
-            // TODO: Show streak increase notification
+            // Show celebration modal after session summary closes
+            setTimeout(() => {
+              console.log(`🎉 Showing celebration modal`);
+              setShowStreakCelebration(true);
+            }, 1000); // Small delay to let session summary show first
+          } else {
+            console.log(`📊 Streak did not increase (already practiced today or other reason)`);
+            console.log(`📊 Current streak data after update:`, {
+              currentStreak: np.streakData?.currentStreak,
+              lastLoginDate: np.streakData?.lastLoginDate,
+              totalLogins: np.streakData?.totalLogins
+            });
           }
+        } else {
+          console.log(`❌ Not enough questions answered (${sessionAttempts} < 5)`);
         }
         
         // Evaluate badges on session end
@@ -1770,7 +1814,7 @@ return (
               setTimeout(() => {
                 // Check both current profile and the updated store state
                 const updatedCurrent = store.profiles.find((p: any) => p.id === profileId);
-                if (updatedCurrent && updatedCurrent.streakData) {
+                if (updatedCurrent && updatedCurrent.streakData && updatedCurrent.streakData.currentStreak > 0) {
                   setShowStreakModal(true);
                 }
               }, 100); // Small delay to ensure profile data is loaded
@@ -1885,11 +1929,55 @@ return (
           currentStreak={current.streakData?.currentStreak || 0}
           longestStreak={current.streakData?.longestStreak || 0}
           totalLogins={current.streakData?.totalLogins || 0}
-          weekData={current.streakData?.streakHistory?.map((date: string, index: number) => ({
-            date: new Date(Date.now() - (6 - index) * 24 * 60 * 60 * 1000).toISOString().slice(0, 10),
-            completed: !!date
-          })) || []}
+          weekData={(() => {
+            const centeredWeek = getCenteredWeek();
+            const graceDate = getGraceWindowDate();
+            return centeredWeek.map((date: string) => {
+              const isToday = date === graceDate; // Use grace date for "today"
+              const isPast = date < graceDate;
+              const isCompleted = current.streakData?.streakHistory?.includes(date) || false;
+              
+              return {
+                date,
+                completed: isCompleted,
+                isToday,
+                isPast,
+                isMissed: isPast && !isCompleted
+              };
+            });
+          })()}
           streakIncreased={streakIncreased}
+        />
+      )}
+
+      {/* Streak Celebration Modal */}
+      {current && (
+        <StreakCelebrationModal
+          open={showStreakCelebration}
+          onClose={() => {
+            setShowStreakCelebration(false);
+            setStreakIncreased(false); // Reset after modal closes
+          }}
+          currentStreak={current.streakData?.currentStreak || 0}
+          longestStreak={current.streakData?.longestStreak || 0}
+          totalLogins={current.streakData?.totalLogins || 0}
+          weekData={(() => {
+            const centeredWeek = getCenteredWeek();
+            const graceDate = getGraceWindowDate();
+            return centeredWeek.map((date: string) => {
+              const isToday = date === graceDate; // Use grace date for "today"
+              const isPast = date < graceDate;
+              const isCompleted = current.streakData?.streakHistory?.includes(date) || false;
+              
+              return {
+                date,
+                completed: isCompleted,
+                isToday,
+                isPast,
+                isMissed: isPast && !isCompleted
+              };
+            });
+          })()}
         />
       )}
 

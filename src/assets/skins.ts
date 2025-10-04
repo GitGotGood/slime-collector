@@ -462,7 +462,8 @@ export const SKINS: Record<string, ShopSkin> = {
       colors: ["#ff3b3b", "#06e0cf", "#14b8ff", "#ff7b3a"],
       alpha: 0.85
     }
-  }
+  },
+
 };
 
 export default SKINS;
