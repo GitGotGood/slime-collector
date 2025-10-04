@@ -9,6 +9,7 @@ import { WORLDS, meetsMastery, nextWorld } from "../../core/progression";
 import { SKILLS } from "../../core/skills";
 import { BIOMES } from "../../assets/biomes";
 import BadgesGrid from "./BadgesGrid";
+import { getCenteredWeek, getGraceWindowDate } from "../../core/streak";
 
 export default function ProgressModal({
   open,
@@ -286,63 +287,120 @@ export default function ProgressModal({
           <div className="mb-4 text-sm text-emerald-700/80">Track your progress and achievements.</div>
           
           {/* Daily Streak Status */}
-          <div className="bg-white rounded-xl border border-orange-200 p-4 mb-4">
+          <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl border border-orange-200 p-4 mb-4">
             <div className="flex items-center justify-between mb-3">
               <div>
-                <div className="font-semibold text-orange-800">🔥 Daily Login Streak</div>
+                <div className="font-semibold text-orange-800 flex items-center gap-2">
+                  🔥 Practice Streak
+                  {(profile.streakData?.currentStreak || 0) > 0 && (
+                    <span className="text-xs bg-orange-200 text-orange-800 px-2 py-1 rounded-full">
+                      Active!
+                    </span>
+                  )}
+                </div>
                 <div className="text-sm text-orange-700/80 mt-1">
-                  Keep practicing daily to build your streak!
+                  {(() => {
+                    const current = profile.streakData?.currentStreak || 0;
+                    const today = new Date().toISOString().slice(0, 10);
+                    const lastPracticeDate = profile.streakData?.lastLoginDate;
+                    const earnedToday = lastPracticeDate === today;
+                    
+                    if (current === 0) return "Start your streak today!";
+                    if (earnedToday) {
+                      if (current === 1) return "✅ Great start! You practiced today!";
+                      if (current < 7) return `✅ You practiced today! ${7 - current} more days for a week!`;
+                      if (current < 30) return `✅ You practiced today! ${30 - current} more days for a month!`;
+                      return "✅ You practiced today! Incredible dedication!";
+                    } else {
+                      if (current === 1) return "Great start! Come back tomorrow!";
+                      if (current < 7) return `Keep it up! ${7 - current} more days for a week!`;
+                      if (current < 30) return `Amazing! ${30 - current} more days for a month!`;
+                      return "Incredible dedication! You're a streak master!";
+                    }
+                  })()}
                 </div>
               </div>
               <div className="text-right">
-                <div className="text-2xl font-bold text-orange-600">
+                <div className="text-3xl font-bold text-orange-600">
                   {profile.streakData?.currentStreak || 0}
                 </div>
                 <div className="text-xs text-orange-600/80">days</div>
+                {(() => {
+                  const today = new Date().toISOString().slice(0, 10);
+                  const lastPracticeDate = profile.streakData?.lastLoginDate;
+                  const earnedToday = lastPracticeDate === today;
+                  
+                  if (earnedToday) {
+                    return <div className="text-xs text-green-600 font-medium mt-1">✓ Practiced today</div>;
+                  } else if (profile.streakData?.currentStreak > 0) {
+                    return <div className="text-xs text-orange-500 font-medium mt-1">Practice today to continue</div>;
+                  }
+                  return null;
+                })()}
               </div>
             </div>
             
             {/* Streak Stats */}
             <div className="grid grid-cols-2 gap-3 text-xs">
-              <div className="text-center">
-                <div className="font-semibold text-orange-700">
+              <div className="text-center bg-white/50 rounded-lg p-2">
+                <div className="font-semibold text-orange-700 text-lg">
                   {profile.streakData?.longestStreak || 0}
                 </div>
                 <div className="text-orange-600/80">Best Streak</div>
               </div>
-              <div className="text-center">
-                <div className="font-semibold text-orange-700">
+              <div className="text-center bg-white/50 rounded-lg p-2">
+                <div className="font-semibold text-orange-700 text-lg">
                   {profile.streakData?.totalLogins || 0}
                 </div>
-                <div className="text-orange-600/80">Total Logins</div>
+                <div className="text-orange-600/80">Total Practice Days</div>
               </div>
             </div>
             
             {/* Weekly Calendar */}
-            {profile.streakData?.streakHistory && (
-              <div className="mt-3 pt-3 border-t border-orange-100">
-                <div className="text-xs text-orange-700/80 mb-2">This Week:</div>
-                <div className="flex gap-1 justify-center">
-                  {profile.streakData.streakHistory.map((date, index) => {
-                    const isCompleted = !!date;
-                    const isToday = date === new Date().toISOString().split('T')[0];
-                    return (
-                      <div
-                        key={index}
-                        className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${
-                          isCompleted 
-                            ? 'bg-orange-500 text-white' 
-                            : 'bg-orange-100 text-orange-400'
-                        } ${isToday ? 'ring-2 ring-orange-300' : ''}`}
-                        title={isCompleted ? `Completed on ${date}` : 'Not completed'}
-                      >
-                        {isCompleted ? '✓' : '○'}
-                      </div>
-                    );
-                  })}
+            {(() => {
+              const centeredWeek = getCenteredWeek();
+              const graceDate = getGraceWindowDate();
+              
+              return (
+                <div className="mt-3 pt-3 border-t border-orange-100">
+                  <div className="text-xs text-orange-700/80 mb-2">This Week:</div>
+                  <div className="grid grid-cols-7 gap-1">
+                    {centeredWeek.map((date, index) => {
+                      // Parse date correctly to avoid timezone issues
+                      const [year, month, day] = date.split('-').map(Number);
+                      const dateObj = new Date(year, month - 1, day); // month is 0-indexed
+                      const dayName = dateObj.toLocaleDateString('en-US', { weekday: 'short' });
+                      
+                      const isToday = date === graceDate;
+                      const isPast = date < graceDate;
+                      const isCompleted = profile.streakData?.streakHistory?.includes(date) || false;
+                      const isMissed = isPast && !isCompleted;
+                      
+                      return (
+                        <div key={date} className="flex flex-col items-center">
+                          <div className={`text-xs mb-1 w-6 text-center ${
+                            isToday ? 'text-orange-600 font-bold' : 'text-gray-600'
+                          }`}>
+                            {dayName}
+                          </div>
+                          <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${
+                            isCompleted 
+                              ? 'bg-orange-500 text-white' 
+                              : isMissed
+                              ? 'bg-blue-500 text-white'
+                              : isToday
+                              ? 'bg-orange-200 text-orange-600 border border-orange-400'
+                              : 'bg-gray-200 text-gray-400'
+                          }`}>
+                            {isCompleted ? '✓' : isMissed ? '✗' : ''}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
-            )}
+              );
+            })()}
           </div>
           
           {/* Additional Stats Section */}

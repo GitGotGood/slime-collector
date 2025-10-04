@@ -244,7 +244,7 @@ function ProfileCard({ profile, isActive, onSelect, onDelete, isOfflineMode = fa
               ? 'bg-orange-100 text-orange-700' 
               : 'bg-gray-100 text-gray-500'
           }`}>
-            🔥 {stats?.currentStreak || 0} day streak
+            🔥 {stats?.currentStreak || 0} day practice streak
           </div>
         )}
       </div>

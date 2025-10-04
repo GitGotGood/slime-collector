@@ -4,15 +4,50 @@ import type { Profile } from './types';
  * Get today's date as YYYY-MM-DD string
  */
 export function getTodayString(): string {
-  return new Date().toISOString().slice(0, 10);
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const day = String(today.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
 }
 
 /**
  * Get yesterday's date as YYYY-MM-DD string
  */
 export function getYesterdayString(): string {
-  const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000);
-  return yesterday.toISOString().slice(0, 10);
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const year = yesterday.getFullYear();
+  const month = String(yesterday.getMonth() + 1).padStart(2, '0');
+  const day = String(yesterday.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+/**
+ * Get the date string for a grace window (27-hour rolling window)
+ * This allows practice sessions to count for the previous day if done within 3 hours of midnight
+ */
+export function getGraceWindowDate(): string {
+  const now = new Date();
+  const hours = now.getHours();
+  
+  // Helper function to format date as YYYY-MM-DD in local timezone
+  const formatLocalDate = (date: Date): string => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+  
+  // If it's between midnight and 3 AM, count as previous day
+  if (hours < 3) {
+    const previousDay = new Date(now);
+    previousDay.setDate(now.getDate() - 1);
+    return formatLocalDate(previousDay);
+  }
+  
+  // Otherwise, use today
+  return formatLocalDate(now);
 }
 
 /**
@@ -24,11 +59,54 @@ export function getCurrentWeek(): string[] {
   const sunday = new Date(today);
   sunday.setDate(today.getDate() - dayOfWeek);
   
+  // Helper function to format date as YYYY-MM-DD in local timezone
+  const formatLocalDate = (date: Date): string => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+  
   const week: string[] = [];
   for (let i = 0; i < 7; i++) {
     const date = new Date(sunday);
     date.setDate(sunday.getDate() + i);
-    week.push(date.toISOString().slice(0, 10));
+    week.push(formatLocalDate(date));
+  }
+  
+  return week;
+}
+
+/**
+ * Get a 7-day window centered on today (3 days before, today, 3 days after)
+ */
+export function getCenteredWeek(): string[] {
+  const today = new Date();
+  const week: string[] = [];
+  
+  // Helper function to format date as YYYY-MM-DD in local timezone
+  const formatLocalDate = (date: Date): string => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+  
+  // Get 3 days before today
+  for (let i = 3; i > 0; i--) {
+    const date = new Date(today);
+    date.setDate(today.getDate() - i);
+    week.push(formatLocalDate(date));
+  }
+  
+  // Add today
+  week.push(formatLocalDate(today));
+  
+  // Get 3 days after today
+  for (let i = 1; i <= 3; i++) {
+    const date = new Date(today);
+    date.setDate(today.getDate() + i);
+    week.push(formatLocalDate(date));
   }
   
   return week;
@@ -49,12 +127,13 @@ export function initializeStreakData(): Profile['streakData'] {
 }
 
 /**
- * Update streak data when a session is completed
+ * Update streak data when a practice session is completed
  * This should be called when a player completes at least one math session
  */
 export function updateStreakData(profile: Profile): { streakIncreased: boolean; newStreak: number } {
   const today = getTodayString();
   const yesterday = getYesterdayString();
+  const graceDate = getGraceWindowDate();
   
   // Initialize streak data if it doesn't exist
   if (!profile.streakData) {
@@ -66,13 +145,13 @@ export function updateStreakData(profile: Profile): { streakIncreased: boolean; 
   let newStreak = currentStreak;
   let streakIncreased = false;
   
-  // If already logged in today, no change
-  if (lastLoginDate === today) {
+  // If already practiced today (or within grace window), no change
+  if (lastLoginDate === graceDate) {
     return { streakIncreased: false, newStreak: currentStreak };
   }
   
-  // If logged in yesterday, increment streak
-  if (lastLoginDate === yesterday) {
+  // If practiced yesterday (or within grace window), increment streak
+  if (lastLoginDate === yesterday || (lastLoginDate === today && graceDate === yesterday)) {
     newStreak = currentStreak + 1;
     streakIncreased = true;
   } else {
@@ -83,14 +162,14 @@ export function updateStreakData(profile: Profile): { streakIncreased: boolean; 
   // Update streak data
   profile.streakData.currentStreak = newStreak;
   profile.streakData.longestStreak = Math.max(longestStreak, newStreak);
-  profile.streakData.lastLoginDate = today;
+  profile.streakData.lastLoginDate = graceDate; // Use grace date for consistency
   profile.streakData.totalLogins += 1;
   
   // Update streak history (last 7 days for calendar display)
-  const currentWeek = getCurrentWeek();
-  profile.streakData.streakHistory = currentWeek.map(date => {
+  const centeredWeek = getCenteredWeek();
+  profile.streakData.streakHistory = centeredWeek.map(date => {
     // Mark today as completed
-    if (date === today) return date;
+    if (date === graceDate) return date;
     
     // Mark previous days as completed if they were part of the streak
     const daysAgo = Math.floor((Date.now() - new Date(date).getTime()) / (24 * 60 * 60 * 1000));
