@@ -1,8 +1,8 @@
 // Centralized roster, alias resolution, and selectors for live/workshop skins
 // Non-destructive by design: aliases are applied at read-time only
 
-import SKINS from "./skins";
-import type { ShopSkin } from "./skins";
+import { SKINS } from "./skins";
+import type { UnifiedSkin } from "./skins";
 
 // One-hop alias map: legacyId -> canonicalId
 export const ALIASES: Record<string, string> = {
@@ -19,13 +19,13 @@ export function resolveId(id: string | undefined | null): string | null {
 export function isLive(id: string | undefined | null): boolean {
   const resolved = resolveId(id);
   if (!resolved) return false;
-  const skin = (SKINS as Record<string, ShopSkin>)[resolved];
+  const skin = (SKINS as Record<string, UnifiedSkin>)[resolved];
   return !!skin && (skin as any).status !== "hidden"; // status is optional; treat missing as live
 }
 
 // Get all live skins as an array (sorted by tier then name for stability)
-export function getAllLive(): ShopSkin[] {
-  const list = Object.values(SKINS as Record<string, ShopSkin>);
+export function getAllLive(): UnifiedSkin[] {
+  const list = Object.values(SKINS as Record<string, UnifiedSkin>);
   return list
     .filter((s) => (s as any).status !== "hidden")
     .sort((a, b) => {
@@ -43,9 +43,9 @@ export function getLiveIds(): Set<string> {
 }
 
 // Order-preserving fetch by ids (alias-aware); unknown ids are skipped
-export function getByIds(ids: string[]): ShopSkin[] {
-  const result: ShopSkin[] = [];
-  const map = SKINS as Record<string, ShopSkin>;
+export function getByIds(ids: string[]): UnifiedSkin[] {
+  const result: UnifiedSkin[] = [];
+  const map = SKINS as Record<string, UnifiedSkin>;
   ids.forEach((raw) => {
     const id = resolveId(raw);
     if (id && map[id]) result.push(map[id]);
@@ -54,17 +54,17 @@ export function getByIds(ids: string[]): ShopSkin[] {
 }
 
 // Filter by tier (alias-aware)
-export function getByTier(tier: ShopSkin["tier"]): ShopSkin[] {
+export function getByTier(tier: UnifiedSkin["tier"]): UnifiedSkin[] {
   return getAllLive().filter((s) => s.tier === tier);
 }
 
 // Simple tag search helper (optional future use)
-export function searchByTag(tag: string): ShopSkin[] {
+export function searchByTag(tag: string): UnifiedSkin[] {
   return getAllLive().filter((s: any) => Array.isArray(s.tags) && s.tags.includes(tag));
 }
 
 // Profile collection helper (expects unlocks.skins: string[])
-export function getCollectionForProfile(profile: any): ShopSkin[] {
+export function getCollectionForProfile(profile: any): UnifiedSkin[] {
   const owned = new Set<string>((profile?.unlocks?.skins ?? []).map((id: string) => resolveId(id) || id));
   return getAllLive().filter((s) => owned.has(s.id));
 }
@@ -73,7 +73,7 @@ export function getCollectionForProfile(profile: any): ShopSkin[] {
 export function safeId(id: string | null | undefined): string | null {
   const r = resolveId(id ?? null);
   if (!r) return null;
-  return (SKINS as Record<string, ShopSkin>)[r] ? r : null;
+  return (SKINS as Record<string, UnifiedSkin>)[r] ? r : null;
 }
 
 export default {
