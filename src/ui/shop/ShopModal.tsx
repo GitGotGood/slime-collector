@@ -1,13 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
 import Dialog from "../components/Dialog";
 import Slime from "../components/Slime";
+import UnifiedSlimeRenderer from "../components/UnifiedSlimeRenderer";
+import ErrorBoundary from "../components/ErrorBoundary";
 import GooPill from "../components/GooPill";
 import RarityPill from "../components/RarityPill";
 import { SKINS } from "../../assets/skins";
-import { PRODUCTION_SKINS } from "../../assets/all-skins";
+import roster, { resolveId, safeId, isLive } from "../../assets/slime-roster";
+import { ALL_SHOP_ITEMS, getShopPicks, nextRefreshCost, refreshDaily } from "../../core/shop-logic";
 import type { Profile, ShopItem } from "../../core/types";
 import { priceOf } from "../../core/economy";
-import { ALL_SHOP_ITEMS, getShopPicks, nextRefreshCost, refreshDaily } from "../../core/shop-logic";
 import { Timer, MapPin } from "lucide-react";
 import { getBiomeAccent } from "../../assets/biomes";
 
@@ -182,12 +184,13 @@ function ShopCard({
   const active = profile.settings.activeSkin === item.skin;
   const price = priceOf(item);
 
-  const meta = SKINS[item.skin];
-  const displayName = meta?.name ?? item.skin; // fallback to id if no pretty name
+  // Resolve skin id through alias map and guard against non-live ids
+  const canonicalId = safeId(item.skin) || "moss";
+  const meta = SKINS[canonicalId];
+  const displayName = meta?.name ?? canonicalId; // fallback to id if no pretty name
   
-  // Find origin information from production skins
-  const unifiedSkin = PRODUCTION_SKINS.find(skin => skin.id === item.skin);
-  const origin = unifiedSkin?.origin;
+  // Origin information not available in unified system yet
+  const origin = null;
 
   return (
     <div className="rounded-xl border border-emerald-200 bg-white p-3 text-center transition-all relative">
@@ -198,8 +201,14 @@ function ShopCard({
       
       <div className="aspect-square w-full grid place-items-center">
         <div className="scale-90">
-          {/* Use skinId (new Slime prop) */}
-          <Slime skinId={item.skin as any} className="w-24" eyeTracking={profile.settings.eyeTracking} />
+          {/* Use unified renderer for shop to guarantee parity with unified visuals */}
+          <ErrorBoundary label="ShopItem">
+            <UnifiedSlimeRenderer
+              skinId={canonicalId as any}
+              className="w-24"
+              eyeTracking={profile.settings.eyeTracking}
+            />
+          </ErrorBoundary>
         </div>
       </div>
 

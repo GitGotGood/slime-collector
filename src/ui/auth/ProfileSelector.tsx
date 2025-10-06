@@ -7,6 +7,9 @@ import { levelFromTotalXP } from '../../core/progression';
 import { getBiomeForSkill } from '../../assets/biomes';
 import { SKILLS } from '../../core/skills';
 import Slime from '../components/Slime';
+import UnifiedSlimeRenderer from '../components/UnifiedSlimeRenderer';
+import { resolveId } from '../../assets/slime-roster';
+import { SKINS } from '../../assets/skins';
 
 interface ProfileSelectorProps {
   profiles: KidProfile[];
@@ -80,7 +83,7 @@ function ProfileCard({ profile, isActive, onSelect, onDelete, isOfflineMode = fa
             level,
             goo: saveData.goo || 0,
             xp: saveData.xp || 0,
-            activeSkin: saveData.settings?.activeSkin || 'green',
+            activeSkin: (resolveId(saveData.settings?.activeSkin) && SKINS[resolveId(saveData.settings?.activeSkin)!]) ? resolveId(saveData.settings?.activeSkin)! : 'moss',
             biomesUnlocked,
             badgesEarned,
             slimesCollected,
@@ -93,7 +96,7 @@ function ProfileCard({ profile, isActive, onSelect, onDelete, isOfflineMode = fa
             level: 1,
             goo: 0,
             xp: 0,
-            activeSkin: 'green',
+            activeSkin: 'moss',
             biomesUnlocked: 1,
             badgesEarned: 0,
             slimesCollected: 1,
@@ -107,7 +110,7 @@ function ProfileCard({ profile, isActive, onSelect, onDelete, isOfflineMode = fa
           level: 1,
           goo: 0,
           xp: 0,
-          activeSkin: 'green',
+          activeSkin: 'moss',
           biomesUnlocked: 1,
           badgesEarned: 0,
           slimesCollected: 1,
@@ -255,8 +258,8 @@ function ProfileCard({ profile, isActive, onSelect, onDelete, isOfflineMode = fa
           {loading ? (
             <div className="w-12 h-12 rounded-full bg-emerald-100 animate-pulse" />
           ) : (
-            <Slime 
-              skinId={stats?.activeSkin || 'green'}
+            <UnifiedSlimeRenderer
+              skinId={(stats?.activeSkin || 'moss') as any}
               className="w-14 h-14"
               bobDuration={2.5 + Math.random() * 0.5}
               bobDelay={Math.random() * 2}

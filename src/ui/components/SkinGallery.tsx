@@ -269,7 +269,14 @@ function GallerySlime({ skin, size = "normal" }: { skin: UnifiedSkin; size?: "sm
       "tundra_halo_enhanced": "tundra_halo_enhanced",
       "observatory_drift_enhanced": "observatory_drift_enhanced"
     };
-    const skinId = mapping[skin.id] || "moss"; // Default to moss instead of green
+    // Map old skin IDs to new unified system IDs
+    const skinIdMapping: Record<string, string> = {
+      ...mapping,
+      "aurora_veil": "aurora",
+      // Add other mappings as needed
+    };
+
+    const skinId = skinIdMapping[skin.id] || "moss"; // Default to moss instead of green
     
     return (
       <div className={`${sizeClass} relative flex items-center justify-center`}>
@@ -5785,8 +5792,8 @@ function EnhancedComparisonView({ rarityFilter }: { rarityFilter: string }) {
         <h4 className="text-lg font-semibold text-green-700 mb-4">🟢 Enhanced Common Slimes</h4>
         <div className="grid gap-4">
           {filteredPairs.filter(pair => pair.tier === "common" && !pair.isPreProd).map((pair) => {
-            const originalSkin = ALL_SKINS.find(s => s.id === pair.original);
-            const enhancedSkin = ALL_SKINS.find(s => s.id === pair.enhanced);
+            const originalSkin = SKINS.find(s => s.id === pair.original);
+            const enhancedSkin = SKINS.find(s => s.id === pair.enhanced);
             
             if (!originalSkin || !enhancedSkin) return null;
 
@@ -5837,8 +5844,8 @@ function EnhancedComparisonView({ rarityFilter }: { rarityFilter: string }) {
         <h4 className="text-lg font-semibold text-blue-700 mb-4">🔵 Enhanced Uncommon Slimes</h4>
         <div className="grid gap-4">
           {filteredPairs.filter(pair => pair.tier === "uncommon").map((pair) => {
-            const originalSkin = ALL_SKINS.find(s => s.id === pair.original);
-            const enhancedSkin = ALL_SKINS.find(s => s.id === pair.enhanced);
+            const originalSkin = SKINS.find(s => s.id === pair.original);
+            const enhancedSkin = SKINS.find(s => s.id === pair.enhanced);
             
             if (!originalSkin || !enhancedSkin) return null;
 
@@ -5889,8 +5896,8 @@ function EnhancedComparisonView({ rarityFilter }: { rarityFilter: string }) {
         <h4 className="text-lg font-semibold text-purple-700 mb-4">🟣 Enhanced Rare Slimes</h4>
         <div className="grid gap-4">
           {filteredPairs.filter(pair => pair.tier === "rare").map((pair) => {
-            const originalSkin = ALL_SKINS.find(s => s.id === pair.original);
-            const enhancedSkin = ALL_SKINS.find(s => s.id === pair.enhanced);
+            const originalSkin = SKINS.find(s => s.id === pair.original);
+            const enhancedSkin = SKINS.find(s => s.id === pair.enhanced);
             
             if (!originalSkin || !enhancedSkin) return null;
 
@@ -5941,8 +5948,8 @@ function EnhancedComparisonView({ rarityFilter }: { rarityFilter: string }) {
         <h4 className="text-lg font-semibold text-orange-700 mb-4">⚡ Enhanced Epic Slimes</h4>
         <div className="grid gap-6">
           {filteredPairs.filter(pair => pair.tier === "epic" && !pair.isPreProd).map((pair) => {
-            const originalSkin = ALL_SKINS.find(s => s.id === pair.original);
-            const enhancedSkin = ALL_SKINS.find(s => s.id === pair.enhanced);
+            const originalSkin = SKINS.find(s => s.id === pair.original);
+            const enhancedSkin = SKINS.find(s => s.id === pair.enhanced);
             
             if (!originalSkin || !enhancedSkin) return null;
 
@@ -5993,8 +6000,8 @@ function EnhancedComparisonView({ rarityFilter }: { rarityFilter: string }) {
         <h4 className="text-lg font-semibold text-orange-700 mb-4">🧪 Pre-Production Enhanced Epics</h4>
         <div className="grid gap-6">
           {filteredPairs.filter(pair => pair.tier === "epic" && pair.isPreProd).map((pair) => {
-            const originalSkin = ALL_SKINS.find(s => s.id === pair.original);
-            const enhancedSkin = ALL_SKINS.find(s => s.id === pair.enhanced);
+            const originalSkin = SKINS.find(s => s.id === pair.original);
+            const enhancedSkin = SKINS.find(s => s.id === pair.enhanced);
             
             if (!originalSkin || !enhancedSkin) return null;
 
@@ -6045,8 +6052,8 @@ function EnhancedComparisonView({ rarityFilter }: { rarityFilter: string }) {
         <h4 className="text-lg font-semibold text-emerald-700 mb-4">🌟 Enhanced Mythic Slimes</h4>
         <div className="grid gap-6">
           {filteredPairs.filter(pair => pair.tier === "mythic" && !pair.isPreProd).map((pair) => {
-            const originalSkin = ALL_SKINS.find(s => s.id === pair.original);
-            const enhancedSkin = ALL_SKINS.find(s => s.id === pair.enhanced);
+            const originalSkin = SKINS.find(s => s.id === pair.original);
+            const enhancedSkin = SKINS.find(s => s.id === pair.enhanced);
             
             if (!originalSkin || !enhancedSkin) return null;
 
@@ -6097,7 +6104,7 @@ function EnhancedComparisonView({ rarityFilter }: { rarityFilter: string }) {
         <h4 className="text-lg font-semibold text-purple-700 mb-4">🔬 Pre-Production Enhanced Mythics</h4>
         <div className="grid gap-6">
           {filteredPairs.filter(pair => pair.tier === "mythic" && pair.isPreProd).map((pair) => {
-            const enhancedSkin = ALL_SKINS.find(s => s.id === pair.enhanced);
+            const enhancedSkin = SKINS.find(s => s.id === pair.enhanced);
             
             if (!enhancedSkin) return null;
 
@@ -6147,8 +6154,8 @@ function EnhancedComparisonView({ rarityFilter }: { rarityFilter: string }) {
         <h4 className="text-lg font-semibold text-green-700 mb-4">🌱 Pre-Production Enhanced Commons</h4>
         <div className="grid gap-4">
           {filteredPairs.filter(pair => pair.tier === "common" && pair.isPreProd).map((pair) => {
-            const originalSkin = ALL_SKINS.find(s => s.id === pair.original);
-            const enhancedSkin = ALL_SKINS.find(s => s.id === pair.enhanced);
+            const originalSkin = SKINS.find(s => s.id === pair.original);
+            const enhancedSkin = SKINS.find(s => s.id === pair.enhanced);
             
             if (!originalSkin || !enhancedSkin) return null;
 
@@ -6224,27 +6231,36 @@ function EnhancedComparisonView({ rarityFilter }: { rarityFilter: string }) {
 // Main Gallery Component
 export default function SkinGallery({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [filter, setFilter] = useState<"all" | "production" | "pre-production" | "inspiration" | "enhanced">("all");
-  const [rarityFilter, setRarityFilter] = useState<"all" | keyof typeof SKINS_BY_TIER | "seasonal">("all");
+  const [rarityFilter, setRarityFilter] = useState<"all" | "common" | "uncommon" | "rare" | "epic" | "mythic" | "seasonal">("all");
   const [searchTerm, setSearchTerm] = useState("");
 
+  // Define skins that are in the unified system (don't show these in gallery)
+  const UNIFIED_SKIN_IDS = new Set([
+    'moss', 'sky', 'coral', 'charcoal', 'fog', 'bluebird', 'apple_shine', 'honey', 'lilac', 'acorn',
+    'spring_fade', 'autumn_fade', 'blue_lagoon', 'cotton_candy', 'sunset', 'sunrise', 'polka_mint',
+    'ripple', 'lava_flow', 'aurora', 'dark_aurora', 'rainbow', 'confetti', 'sprinkles', 'nebula',
+    'phoenix_heart', 'biolume', 'vanilla_sprinkles'
+  ]);
+
   const filteredSkins = useMemo(() => {
-    let skins = ALL_SKINS;
-    
-    // Source filter
+    // Start with all non-unified skins
+    let skins = ALL_SKINS.filter(skin => !UNIFIED_SKIN_IDS.has(skin.id));
+
+    // Source filter (applied to filtered skins)
     if (filter !== "all") {
       if (filter === "production") {
-        skins = SKINS_BY_SOURCE.production;
+        skins = skins.filter(skin => SKINS_BY_SOURCE.production.some(s => s.id === skin.id));
       } else if (filter === "pre-production") {
-        skins = SKINS_BY_SOURCE["pre-production"];
+        skins = skins.filter(skin => SKINS_BY_SOURCE["pre-production"].some(s => s.id === skin.id));
       } else if (filter === "inspiration") {
-        skins = SKINS_BY_SOURCE.inspiration;
+        skins = skins.filter(skin => SKINS_BY_SOURCE.inspiration.some(s => s.id === skin.id));
       } else if (filter === "enhanced") {
-        // Show only enhanced versions
-        skins = SKINS_BY_SOURCE.production.filter(skin => skin.id.includes("_enhanced"));
+        // Show only enhanced versions that aren't in unified system
+        skins = skins.filter(skin => skin.id.includes("_enhanced"));
       }
     }
-    
-    // Rarity filter
+
+    // Rarity filter (applied to filtered skins)
     if (rarityFilter !== "all") {
       if (rarityFilter === "seasonal") {
         skins = skins.filter(s => NEW_SEASONAL.some(seasonal => seasonal.id === s.id));
@@ -6265,11 +6281,14 @@ export default function SkinGallery({ open, onClose }: { open: boolean; onClose:
   }, [filter, rarityFilter, searchTerm]);
 
   const stats = {
-    total: ALL_SKINS.length,
-    production: SKINS_BY_SOURCE.production.length,
-    inspiration: SKINS_BY_SOURCE.inspiration.length,
-    seasonal: NEW_SEASONAL.length,
-    byTier: Object.entries(SKINS_BY_TIER).map(([tier, skins]) => [tier, skins.length])
+    total: skins.length,
+    production: skins.filter(skin => SKINS_BY_SOURCE.production.some(s => s.id === skin.id)).length,
+    inspiration: skins.filter(skin => SKINS_BY_SOURCE.inspiration.some(s => s.id === skin.id)).length,
+    seasonal: skins.filter(skin => NEW_SEASONAL.some(seasonal => seasonal.id === skin.id)).length,
+    byTier: Object.entries(skins.reduce((acc, skin) => {
+      acc[skin.tier] = (acc[skin.tier] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>)).map(([tier, count]) => [tier, count])
   };
 
   return (

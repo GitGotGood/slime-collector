@@ -1,7 +1,10 @@
 import { useState } from "react";
 import Dialog from "../components/Dialog";
 import Slime from "../components/Slime";
+import UnifiedSlimeRenderer from "../components/UnifiedSlimeRenderer";
+import ErrorBoundary from "../components/ErrorBoundary";
 import { SKINS } from "../../assets/skins";
+import { getAllLive, resolveId, isLive } from "../../assets/slime-roster";
 import RarityPill from "../components/RarityPill";
 import type { Profile } from "../../core/types";
 import { BADGES } from "../../core/badges";
@@ -469,9 +472,9 @@ export default function ProgressModal({
                 <div className="text-xs text-emerald-700/80 mb-2">Preview:</div>
                 <div className="flex justify-center">
                   <div className="w-16">
-                    <Slime 
-                      skinId={profile.settings.activeSkin as any} 
-                      className="w-16" 
+                    <Slime
+                      skinId={(profile.settings.activeSkin && SKINS[profile.settings.activeSkin]) ? profile.settings.activeSkin : "moss"}
+                      className="w-16"
                       eyeTracking={profile.settings.eyeTracking}
                       bobDuration={3}
                     />
@@ -507,8 +510,15 @@ function CollectionTab({ profile, onEquipSkin, onUnlockAllShopSlimes }: {
     return styles[tier as keyof typeof styles] || 'bg-gray-100 text-gray-700 border-gray-200';
   };
   
-  // Get owned slimes and their tiers
-  const ownedSlimes = Object.values(SKINS).filter((skin) => profile.unlocks.skins.includes(skin.id));
+  // Get owned slimes via roster (alias-aware, live only) and de-duplicate by id
+  const liveMap = Object.fromEntries(getAllLive().map(s => [s.id, s] as const));
+  const ownedSlimes = Array.from(
+    new Set(
+      (profile.unlocks?.skins || [])
+        .map((id: string) => resolveId(id) || null)
+        .filter((id): id is string => !!id && !!liveMap[id])
+    )
+  ).map((id) => liveMap[id]);
   
   // Define the desired tier order: All, Common, Uncommon, Rare, Epic, Mythic
   const tierOrder = ['common', 'uncommon', 'rare', 'epic', 'mythic'];
@@ -598,7 +608,9 @@ function CollectionTab({ profile, onEquipSkin, onUnlockAllShopSlimes }: {
               </div>
               
               <div className="aspect-square grid place-items-center">
-                <Slime paletteId={skin.id as any} className="w-20" eyeTracking={profile.settings.eyeTracking} />
+                <ErrorBoundary label="CollectionItem">
+                  <UnifiedSlimeRenderer skinId={skin.id as any} className="w-20" eyeTracking={profile.settings.eyeTracking} />
+                </ErrorBoundary>
               </div>
               
               <div className="mt-2 text-sm font-semibold text-emerald-800">{skin.name}</div>

@@ -42,6 +42,7 @@ import StreakCelebrationModal from "../ui/components/StreakCelebrationModal";
 
 import { useSounds } from "../assets/sounds";
 import { ALL_SHOP_ITEMS } from "../core/shop-logic";
+import { getAllLive } from "../assets/slime-roster";
 import { SKINS } from "../assets/skins";
 
 import { loadState, saveState, mkProfile } from "../core/storage";
@@ -59,6 +60,7 @@ import LayoutPreview from "../dev/LayoutPreview";
 import EdgeBlendingExperiments from "../dev/EdgeBlendingExperiments";
 import WorldMap from "../dev/WorldMap";
 import ProgressDashboard from "../dev/ProgressDashboard";
+import { SkinComparisonTool } from "../tools/SkinComparisonTool";
 import Starburst, { EmojiBurst } from "../ui/components/Starburst";
 import { Volume2, VolumeX, ShoppingBag, UserCircle2, Power, Users, Coffee } from "lucide-react";
 import { motion } from "framer-motion";
@@ -87,6 +89,13 @@ function SlimeCollectorAppInner() {
   console.log('🎮 CURRENT PROFILE DEBUG:', {
     activeProfile: activeProfile ? { id: activeProfile.id, name: activeProfile.name } : null,
     storeCurrentId: store.currentId,
+    currentProfile: current ? {
+      id: current.id,
+      name: current.name,
+      activeSkin: current.settings?.activeSkin,
+      skinExists: !!(current.settings?.activeSkin && SKINS[current.settings.activeSkin]),
+      skinsLoaded: Object.keys(SKINS).length
+    } : null,
     storeProfilesCount: store.profiles.length,
     storeProfileNames: store.profiles.map((p: any) => ({ id: p.id, name: p.name })),
     current: current ? { id: current.id, name: current.name } : null,
@@ -156,6 +165,7 @@ function SlimeCollectorAppInner() {
   const [openLayoutPreview, setOpenLayoutPreview] = useState(false);
   const [openEdgeBlending, setOpenEdgeBlending] = useState(false);
   const [openWorldMap, setOpenWorldMap] = useState(false);
+  const [openSkinComparison, setOpenSkinComparison] = useState(false);
   const [openProgressDashboard, setOpenProgressDashboard] = useState(false);
   
   // Save status indicator
@@ -1489,12 +1499,19 @@ return (
               <div className="flex items-center justify-center py-4">
                 {/* active skin with celebrations */}
                 <div className="relative">
-                  <Slime 
-                    skinId={current.settings.activeSkin as any} 
-                    mood={slimeMood} 
+                  <Slime
+                    skinId={(current.settings.activeSkin && SKINS[current.settings.activeSkin]) ? current.settings.activeSkin : "moss"}
+                    mood={slimeMood}
                     scale={slimeScale}
                     eyeTracking={current.settings.eyeTracking}
                   />
+
+                  {/* Debug: Check what skinId is being passed */}
+                  {console.log('SlimeCollectorApp Debug:', {
+                    activeSkin: current.settings.activeSkin,
+                    skinExists: !!(current.settings.activeSkin && SKINS[current.settings.activeSkin]),
+                    finalSkinId: (current.settings.activeSkin && SKINS[current.settings.activeSkin]) ? current.settings.activeSkin : "moss"
+                  })}
                   
                   {/* Celebrations overlay */}
                   <div className="pointer-events-none absolute inset-0 z-20">
@@ -1723,23 +1740,20 @@ return (
             }));
           }}
           onUnlockAllShopSlimes={import.meta.env.DEV ? () => {
-            // Get all shop skin IDs that exist in the old SKINS system
-            const shopSkinIds = ALL_SHOP_ITEMS
-              .filter(item => item.type === 'skin' && SKINS[item.skin])
-              .map(item => item.skin);
-            
-            // Add all shop skins to current profile
+            // Get all live skin ids from unified roster (canonical ids)
+            const shopSkinIds = getAllLive().map(s => s.id);
+
             setStore((S: any) => ({
               ...S,
               profiles: S.profiles.map((p: any) =>
-                p.id === current.id 
-                  ? { 
-                      ...p, 
-                      unlocks: { 
-                        ...p.unlocks, 
-                        skins: [...new Set([...p.unlocks.skins, ...shopSkinIds])]
-                      } 
-                    } 
+                p.id === current.id
+                  ? {
+                      ...p,
+                      unlocks: {
+                        ...p.unlocks,
+                        skins: Array.from(new Set([...(p.unlocks?.skins || []), ...shopSkinIds]))
+                      }
+                    }
                   : p
               ),
             }));
@@ -1828,12 +1842,13 @@ return (
   </div>
 
     {import.meta.env.DEV && (
-              <DevPanel 
-          onOpenSkinGallery={() => setOpenSkinGallery(true)} 
+              <DevPanel
+          onOpenSkinGallery={() => {/* setOpenSkinGallery(true) */}}
           onOpenExperiments={() => setOpenExperiments(true)}
           onOpenLayoutPreview={() => setOpenLayoutPreview(true)}
           onOpenEdgeBlending={() => setOpenEdgeBlending(true)}
           onOpenWorldMap={() => setOpenWorldMap(true)}
+          onOpenSkinComparison={() => setOpenSkinComparison(true)}
           onOpenProgressDashboard={() => setOpenProgressDashboard(true)}
         />
     )}
@@ -1841,10 +1856,11 @@ return (
     {/* Dev Modals */}
     {import.meta.env.DEV && (
       <>
-        <SkinGallery 
-          open={openSkinGallery} 
-          onClose={() => setOpenSkinGallery(false)} 
-        />
+        {/* Temporarily commented out SkinGallery for debugging */}
+        {/* <SkinGallery
+          open={openSkinGallery}
+          onClose={() => setOpenSkinGallery(false)}
+        /> */}
         <Experiments 
           open={openExperiments} 
           onClose={() => setOpenExperiments(false)} 
@@ -1873,6 +1889,22 @@ return (
                 }}
                 onClose={() => setOpenProgressDashboard(false)} 
               />
+            </div>
+          </div>
+        )}
+        {openSkinComparison && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+            <div className="w-full h-full bg-white overflow-auto">
+              <div className="sticky top-0 bg-white border-b p-4 flex justify-between items-center z-10">
+                <h2 className="text-xl font-bold">Skin Comparison Tool</h2>
+                <button
+                  onClick={() => setOpenSkinComparison(false)}
+                  className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+                >
+                  Close
+                </button>
+              </div>
+              <SkinComparisonTool />
             </div>
           </div>
         )}
@@ -2032,6 +2064,13 @@ return (
 
 // Main export with Auth wrapper
 export default function SlimeCollectorApp() {
+  // Startup health log (dev only)
+  if (import.meta.env.DEV) {
+    import('../assets/slime-roster').then((r) => {
+      const liveCount = r.getAllLive().length;
+      console.log('🩺 STARTUP HEALTH', { liveCount });
+    }).catch(() => {});
+  }
   return (
     <AuthProvider>
       <SlimeCollectorAppInner />

@@ -2,7 +2,9 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Eye, MousePointer, Hand, Image, MessageCircle, Archive } from "lucide-react";
 import { BiomeLayer } from "../assets/biomes";
-import { PRODUCTION_SKINS, INSPIRATION_COMMON, INSPIRATION_UNCOMMON, INSPIRATION_RARE } from "../assets/all-skins";
+import { SKINS } from "../assets/skins";
+// Temporarily commented out during migration to unified skin system
+// import { PRODUCTION_SKINS, INSPIRATION_COMMON, INSPIRATION_UNCOMMON, INSPIRATION_RARE } from "../assets/all-skins";
 import Slime from "../ui/components/Slime";
 
 // Mouse tracking hook
@@ -1904,12 +1906,8 @@ function ProgressiveCollectionTest() {
   const currentProgress = mockProgress[progressStage];
   
   // Sample slimes for the experiment (mixing production and inspiration)
-  const allSlimes = [
-    ...PRODUCTION_SKINS.slice(0, 6),
-    ...INSPIRATION_COMMON.slice(0, 4),
-    ...INSPIRATION_UNCOMMON.slice(0, 3),
-    ...INSPIRATION_RARE.slice(0, 2)
-  ];
+  // Temporarily disabled during migration - using SKINS from unified system
+  const allSlimes = Object.values(SKINS).slice(0, 15);
 
   // Determine reveal state for each slime
   const getSlimeState = (slime: any) => {
