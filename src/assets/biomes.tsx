@@ -239,6 +239,49 @@ export const BIOMES: Record<BiomeId, BiomeStyle> = {
       background: "linear-gradient(180deg, #1B1F27 0%, #2A3240 100%)",
     },
   },
+
+  // EVENT BIOMES - Spooky Season 2024
+  // 17) Pumpkin Patch - warm autumn, spooky but friendly
+  pumpkin_patch: {
+    name: "Pumpkin Patch",
+    cssVars: {
+      '--bgA': '#8B4513',
+      '--bgB': '#D2691E',
+      '--accent': '#FF6B35',
+      '--ink': '#2D1B0E'
+    },
+    style: {
+      background: "url('/src/images/biomes/pumpkinpatch.png') center/cover, linear-gradient(180deg, #8B4513 0%, #D2691E 100%)",
+    },
+  },
+
+  // 18) Graveyard - eerie, misty, mysterious
+  graveyard: {
+    name: "Graveyard",
+    cssVars: {
+      '--bgA': '#2C2C2C',
+      '--bgB': '#4A4A4A',
+      '--accent': '#8B5CF6',
+      '--ink': '#E5E5E5'
+    },
+    style: {
+      background: "url('/src/images/biomes/cemetery.png') center/cover, linear-gradient(180deg, #2C2C2C 0%, #4A4A4A 100%)",
+    },
+  },
+
+  // 19) Haunted House - dark, ominous, final challenge
+  haunted_house: {
+    name: "Haunted House",
+    cssVars: {
+      '--bgA': '#1A1A1A',
+      '--bgB': '#2D1B0E',
+      '--accent': '#DC2626',
+      '--ink': '#F3F4F6'
+    },
+    style: {
+      background: "url('/src/images/biomes/hauntedhouse.png') center/cover, linear-gradient(180deg, #1A1A1A 0%, #2D1B0E 100%)",
+    },
+  },
 };
 
 // Helper function to determine current biome from player progression
@@ -285,7 +328,12 @@ export function getBiomeForSkill(skillId: any): BiomeId {
     "powers10": "foundry",
     "volume_rect": "foundry",
     "coord_plane": "foundry", // Also foundry
-    "word_multi": "foundry" // Also foundry
+    "word_multi": "foundry", // Also foundry
+    
+    // Event biomes - word problems
+    "word_pumpkin": "pumpkin_patch",
+    "word_graveyard": "graveyard", 
+    "word_haunted": "haunted_house"
   };
   
   return skillToBiome[skillId] || "meadow";

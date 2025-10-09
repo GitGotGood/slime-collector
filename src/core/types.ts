@@ -16,11 +16,13 @@ export type SkillID =
   | 'frac_add_like'|'frac_sub_like'|'frac_whole_mult'
   | 'dec_place'|'dec_addsub'
   | 'order_ops'|'powers10'
-  | 'volume_rect'|'coord_plane'|'word_multi';
+  | 'volume_rect'|'coord_plane'|'word_multi'
+  | 'word_pumpkin'|'word_graveyard'|'word_haunted'; // Halloween event skills
 
 export type WorldID =
   | 'meadow'|'beach'|'forest'|'desert'|'cove'|'tundra'|'canyon'|'aurora'
-  | 'savanna'|'glacier'|'volcano'|'reef'|'temple'|'harbor'|'observatory'|'foundry';
+  | 'savanna'|'glacier'|'volcano'|'reef'|'temple'|'harbor'|'observatory'|'foundry'
+  | 'pumpkin_patch'|'graveyard'|'haunted_house'; // Event biomes
 
 // Legacy type alias for compatibility
 export type SkillId = SkillID;
@@ -53,6 +55,10 @@ export type WorldDef = {
   alsoSkills: SkillID[];                // listed in Skills dashboard
   gate: MasteryGate;                    // EARLY / MID / LATE
   rewards: { biomeId: WorldID; shopBiasDays: number }; // unlock behavior
+  
+  // Branching system fields (optional for backward compatibility)
+  branchOf?: WorldID;                   // which world this branches from (null for spine)
+  layer?: number;                       // 0 = spine, 1+ = branch layers
 };
 
 export interface SkillStat {

@@ -26,6 +26,7 @@
  */
 
 import type { Profile, SkillID, WorldDef, WorldID, MasteryGate } from './types';
+import { getEventState } from './events';
 
 // Constants for new accuracy/speed system
 export const MISTAP_MS = 180;
@@ -65,22 +66,56 @@ export function applyXP(profile: Profile, addXp: number) {
 
 // 16 Worlds: K→5 Linear Path (V1 - Clean Progression)
 export const WORLDS: WorldDef[] = [
-  { id:'meadow', title:'Meadow', primarySkill:'add_1_10', alsoSkills:[], gate:GATES.EARLY, rewards:{ biomeId:'beach', shopBiasDays:7 } },
-  { id:'beach',  title:'Beach',  primarySkill:'add_1_20', alsoSkills:[], gate:GATES.EARLY, rewards:{ biomeId:'forest',  shopBiasDays:7 } },
-  { id:'forest', title:'Forest', primarySkill:'sub_1_10', alsoSkills:[], gate:GATES.EARLY, rewards:{ biomeId:'desert', shopBiasDays:7 } },
-  { id:'desert', title:'Desert', primarySkill:'sub_1_20', alsoSkills:[], gate:GATES.EARLY, rewards:{ biomeId:'cove', shopBiasDays:7 } },
-  { id:'cove',   title:'Cove',   primarySkill:'mixed_20', alsoSkills:[], gate:GATES.EARLY, rewards:{ biomeId:'tundra', shopBiasDays:7 } },
-  { id:'tundra', title:'Tundra', primarySkill:'mul_0_5_10', alsoSkills:[], gate:GATES.MID, rewards:{ biomeId:'canyon', shopBiasDays:7 } },
-  { id:'canyon', title:'Canyon', primarySkill:'mul_0_10', alsoSkills:[], gate:GATES.MID, rewards:{ biomeId:'aurora', shopBiasDays:7 } },
-  { id:'aurora', title:'Aurora', primarySkill:'div_facts', alsoSkills:[], gate:GATES.MID, rewards:{ biomeId:'savanna', shopBiasDays:7 } },
-  { id:'savanna',title:'Savanna',primarySkill:'add_3digit', alsoSkills:[], gate:GATES.MID, rewards:{ biomeId:'glacier', shopBiasDays:7 } },
-  { id:'glacier',title:'Glacier',primarySkill:'mul_1d_x_2_3d', alsoSkills:[], gate:GATES.MID, rewards:{ biomeId:'volcano', shopBiasDays:7 } },
-  { id:'volcano',title:'Volcano',primarySkill:'longdiv_1d', alsoSkills:[], gate:GATES.LATE, rewards:{ biomeId:'reef', shopBiasDays:7 } },
-  { id:'reef',   title:'Reef',   primarySkill:'frac_basic', alsoSkills:[], gate:GATES.LATE, rewards:{ biomeId:'temple', shopBiasDays:7 } },
-  { id:'temple', title:'Temple', primarySkill:'frac_add_like', alsoSkills:[], gate:GATES.LATE, rewards:{ biomeId:'harbor', shopBiasDays:7 } },
-  { id:'harbor', title:'Harbor', primarySkill:'dec_place', alsoSkills:[], gate:GATES.LATE, rewards:{ biomeId:'observatory', shopBiasDays:7 } },
-  { id:'observatory', title:'Observatory', primarySkill:'order_ops', alsoSkills:[], gate:GATES.LATE, rewards:{ biomeId:'foundry', shopBiasDays:7 } },
-  { id:'foundry', title:'Foundry', primarySkill:'volume_rect', alsoSkills:[], gate:GATES.LATE, rewards:{ biomeId:'foundry', shopBiasDays:7 } },
+  { id:'meadow', title:'Meadow', primarySkill:'add_1_10', alsoSkills:[], gate:GATES.EARLY, rewards:{ biomeId:'beach', shopBiasDays:7 }, layer:0 },
+  { id:'beach',  title:'Beach',  primarySkill:'add_1_20', alsoSkills:[], gate:GATES.EARLY, rewards:{ biomeId:'forest',  shopBiasDays:7 }, layer:0 },
+  { id:'forest', title:'Forest', primarySkill:'sub_1_10', alsoSkills:[], gate:GATES.EARLY, rewards:{ biomeId:'desert', shopBiasDays:7 }, layer:0 },
+  { id:'desert', title:'Desert', primarySkill:'sub_1_20', alsoSkills:[], gate:GATES.EARLY, rewards:{ biomeId:'cove', shopBiasDays:7 }, layer:0 },
+  { id:'cove',   title:'Cove',   primarySkill:'mixed_20', alsoSkills:[], gate:GATES.EARLY, rewards:{ biomeId:'tundra', shopBiasDays:7 }, layer:0 },
+  { id:'tundra', title:'Tundra', primarySkill:'mul_0_5_10', alsoSkills:[], gate:GATES.MID, rewards:{ biomeId:'canyon', shopBiasDays:7 }, layer:0 },
+  { id:'canyon', title:'Canyon', primarySkill:'mul_0_10', alsoSkills:[], gate:GATES.MID, rewards:{ biomeId:'aurora', shopBiasDays:7 }, layer:0 },
+  { id:'aurora', title:'Aurora', primarySkill:'div_facts', alsoSkills:[], gate:GATES.MID, rewards:{ biomeId:'savanna', shopBiasDays:7 }, layer:0 },
+  { id:'savanna',title:'Savanna',primarySkill:'add_3digit', alsoSkills:[], gate:GATES.MID, rewards:{ biomeId:'glacier', shopBiasDays:7 }, layer:0 },
+  { id:'glacier',title:'Glacier',primarySkill:'mul_1d_x_2_3d', alsoSkills:[], gate:GATES.MID, rewards:{ biomeId:'volcano', shopBiasDays:7 }, layer:0 },
+  { id:'volcano',title:'Volcano',primarySkill:'longdiv_1d', alsoSkills:[], gate:GATES.LATE, rewards:{ biomeId:'reef', shopBiasDays:7 }, layer:0 },
+  { id:'reef',   title:'Reef',   primarySkill:'frac_basic', alsoSkills:[], gate:GATES.LATE, rewards:{ biomeId:'temple', shopBiasDays:7 }, layer:0 },
+  { id:'temple', title:'Temple', primarySkill:'frac_add_like', alsoSkills:[], gate:GATES.LATE, rewards:{ biomeId:'harbor', shopBiasDays:7 }, layer:0 },
+  { id:'harbor', title:'Harbor', primarySkill:'dec_place', alsoSkills:[], gate:GATES.LATE, rewards:{ biomeId:'observatory', shopBiasDays:7 }, layer:0 },
+  { id:'observatory', title:'Observatory', primarySkill:'order_ops', alsoSkills:[], gate:GATES.LATE, rewards:{ biomeId:'foundry', shopBiasDays:7 }, layer:0 },
+  { id:'foundry', title:'Foundry', primarySkill:'volume_rect', alsoSkills:[], gate:GATES.LATE, rewards:{ biomeId:'foundry', shopBiasDays:7 }, layer:0 },
+];
+
+// 🎃 EVENT WORLDS - Spooky Season 2024 (Branching from Meadow)
+export const EVENT_WORLDS: WorldDef[] = [
+  { 
+    id:'pumpkin_patch', 
+    title:'Pumpkin Patch', 
+    primarySkill:'word_pumpkin', // Halloween word problems
+    alsoSkills:[], 
+    gate:{ attempts: 20, minAcc: 1.0, maxAvgMs: 10000 }, // 20 correct in a row
+    rewards:{ biomeId:'graveyard', shopBiasDays:0 }, // Unlocks graveyard
+    branchOf:'meadow', // Branches from Meadow
+    layer:1 // First branch layer
+  },
+  { 
+    id:'graveyard', 
+    title:'Graveyard', 
+    primarySkill:'word_graveyard', // Halloween word problems
+    alsoSkills:[], 
+    gate:{ attempts: 20, minAcc: 1.0, maxAvgMs: 10000 }, // 20 correct in a row
+    rewards:{ biomeId:'haunted_house', shopBiasDays:0 }, // Unlocks haunted house
+    branchOf:'pumpkin_patch', // Branches from Pumpkin Patch
+    layer:2 // Second branch layer
+  },
+  { 
+    id:'haunted_house', 
+    title:'Haunted House', 
+    primarySkill:'word_haunted', // Halloween word problems
+    alsoSkills:[], 
+    gate:{ attempts: 20, minAcc: 1.0, maxAvgMs: 10000 }, // 20 correct in a row
+    rewards:{ biomeId:'haunted_house', shopBiasDays:0 }, // Final biome
+    branchOf:'graveyard', // Branches from Graveyard
+    layer:3 // Third branch layer
+  },
 ];
 
 // 🗺️ FUTURE WORLD MAP FEATURE: Additional Skills for Exploration (V2)
@@ -148,6 +183,13 @@ export function nextWorld(profile: any): WorldDef | null {
     unlockedBiomes: profile?.unlocks?.biomes
   });
   
+  // Check event worlds first if event is active
+  const eventWorld = nextEventWorld(profile);
+  if (eventWorld) {
+    console.log(`🌍 Returning next event world: ${eventWorld.id} (${eventWorld.title})`);
+    return eventWorld;
+  }
+  
   for (const w of WORLDS) {
     const isMastered = meetsMastery(profile, w.primarySkill, w.gate);
     console.log(`🌍 Checking world ${w.id} (${w.title}):`, {
@@ -165,6 +207,40 @@ export function nextWorld(profile: any): WorldDef | null {
   
   console.log('🌍 All worlds mastered, returning null');
   return null; // all mastered
+}
+
+// Event world progression logic
+export function nextEventWorld(profile: any): WorldDef | null {
+  // Check if event is active
+  const eventState = getEventState();
+  
+  if (!eventState.isEventActive) {
+    return null; // No event worlds if event is not active
+  }
+  
+  // Check if meadow is mastered (prerequisite for event worlds)
+  const meadowMastered = meetsMastery(profile, 'add_1_10', { attempts: 20, minAcc: 0.8, maxAvgMs: 5000 });
+  if (!meadowMastered) {
+    return null; // Must master meadow first
+  }
+  
+  // Check event worlds in order
+  for (const w of EVENT_WORLDS) {
+    const isMastered = meetsMastery(profile, w.primarySkill, w.gate);
+    console.log(`🎃 Checking event world ${w.id} (${w.title}):`, {
+      primarySkill: w.primarySkill,
+      gate: w.gate,
+      isMastered,
+      skillStats: profile?.skillStats?.[w.primarySkill]
+    });
+    
+    if (!isMastered) {
+      console.log(`🎃 Returning next event world: ${w.id} (${w.title})`);
+      return w;
+    }
+  }
+  
+  return null; // All event worlds mastered
 }
 
 // V2 FEATURE: Check if a world is mastered (including exploration skills)
@@ -194,6 +270,13 @@ export function onWorldMastered(profile: any, worldId: WorldID): any {
     currentBiomes: profile?.unlocks?.biomes || [],
     mastered: profile?.mastered || {}
   });
+
+  // Check if this is an event world first
+  const eventWorld = EVENT_WORLDS.find(x => x.id === worldId);
+  if (eventWorld) {
+    console.log('🎃 EVENT WORLD MASTERED:', eventWorld);
+    return onEventWorldMastered(profile, eventWorld);
+  }
 
   const w = WORLDS.find(x => x.id === worldId);
   if (!w) {
@@ -270,6 +353,39 @@ export function onWorldMastered(profile: any, worldId: WorldID): any {
     shopBiasUntil: out.shopBiasUntil,
     shopBiasBiome: out.shopBiasBiome
   });
+  
+  return out;
+}
+
+// Event world mastery handler
+export function onEventWorldMastered(profile: any, eventWorld: WorldDef): any {
+  console.log('🎃 EVENT WORLD MASTERED:', {
+    worldId: eventWorld.id,
+    worldTitle: eventWorld.title,
+    primarySkill: eventWorld.primarySkill,
+    rewardBiome: eventWorld.rewards.biomeId
+  });
+
+  const out = { ...profile };
+  // ensure arrays
+  out.unlocks = out.unlocks || { skins: ['green'], biomes: ['meadow'] };
+  out.unlocks.biomes = Array.isArray(out.unlocks.biomes) ? out.unlocks.biomes : ['meadow'];
+
+  console.log('🎃 BEFORE EVENT UNLOCKING - Current biomes:', out.unlocks.biomes);
+
+  // Unlock the reward biome for event worlds
+  const rewardBiomeId = eventWorld.rewards.biomeId;
+  if (!out.unlocks.biomes.includes(rewardBiomeId)) {
+    out.unlocks.biomes.push(rewardBiomeId);
+    console.log(`🎃 ✅ UNLOCKED EVENT BIOME: ${rewardBiomeId} (from mastering ${eventWorld.id})`);
+  }
+
+  // TODO: Add event-specific rewards here
+  // - Unlock 3 slimes for shop availability
+  // - Award direct slime reward for 20-correct streak
+  // - Award event badge
+
+  console.log('🎃 AFTER EVENT UNLOCKING - New biomes:', out.unlocks.biomes);
   
   return out;
 }

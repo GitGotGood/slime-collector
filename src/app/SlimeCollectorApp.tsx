@@ -28,7 +28,7 @@
 
 // src/app/SlimeCollectorApp.tsx
 import { useEffect, useMemo, useState, useRef } from "react";
-import { BiomeLayer, getBiomeForSkill } from "../assets/biomes";
+import { BiomeLayer, getBiomeForSkill, type BiomeId } from "../assets/biomes";
 
 import Slime from "../ui/components/Slime";
 import QuestionCard from "../ui/gameplay/QuestionCard";
@@ -39,6 +39,8 @@ import ProgressModal from "../ui/progress/ProgressModal";
 import ProfilePicker from "../ui/progress/ProfilePicker";
 import StreakModal from "../ui/components/StreakModal";
 import StreakCelebrationModal from "../ui/components/StreakCelebrationModal";
+import { EventHUD } from "../ui/components/EventHUD";
+import { EventAnnouncementModal } from "../ui/components/EventAnnouncementModal";
 
 import { useSounds } from "../assets/sounds";
 import { ALL_SHOP_ITEMS } from "../core/shop-logic";
@@ -49,6 +51,7 @@ import { loadState, saveState, mkProfile } from "../core/storage";
 import { SKILL_ORDER, SKILLS, makeProblemForSkill, difficultyMultiplier } from "../core/skills";
 import type { SkillID, ShopItem } from "../core/types";
 import { updateStreakData, getCurrentWeek, getCenteredWeek, getGraceWindowDate } from "../core/streak";
+import { getEventState, type EventState, setTestEventActive } from "../core/events";
 import { getMasteryBonus, levelFromTotalXP, applyXP, updateStatsAndCheckMastery, worldIdOf, onWorldMastered, WORLDS, nextWorld, getStrongAnswerCount, meetsMastery, MISTAP_MS, TURBO_MS, TURBO_STREAK, INTERCEPT_COOLDOWN_S, retroScrubTurboAnswers, getRollingAccuracy, getRollingSpeed } from "../core/progression";
 import { priceOf } from "../core/economy";
 import { evaluateBadges, getBadgeName } from "../core/badges";
@@ -62,7 +65,7 @@ import WorldMap from "../dev/WorldMap";
 import ProgressDashboard from "../dev/ProgressDashboard";
 import { SkinComparisonTool } from "../tools/SkinComparisonTool";
 import Starburst, { EmojiBurst } from "../ui/components/Starburst";
-import { Volume2, VolumeX, ShoppingBag, UserCircle2, Power, Users, Coffee } from "lucide-react";
+import { Volume2, VolumeX, ShoppingBag, Power, Users, Coffee } from "lucide-react";
 import { motion } from "framer-motion";
 
 import { AuthProvider, useAuth } from "../ui/auth/AuthProvider";
@@ -210,6 +213,10 @@ function SlimeCollectorAppInner() {
   const [showStreakModal, setShowStreakModal] = useState(false);
   const [showStreakCelebration, setShowStreakCelebration] = useState(false);
   const [streakIncreased, setStreakIncreased] = useState(false);
+  
+  // Event system state
+  const [eventState, setEventState] = useState<EventState>(getEventState());
+  const [showEventAnnouncement, setShowEventAnnouncement] = useState(false);
   
   // Intercept modal handlers
   const handleTakeBreak = () => {
@@ -403,6 +410,33 @@ function SlimeCollectorAppInner() {
     }
   }, [current]);
 
+  // Event system - update event state and show announcement
+  useEffect(() => {
+    const newEventState = getEventState();
+    setEventState(newEventState);
+    
+    // Show announcement modal when event becomes active
+    if (newEventState.isEventActive && !showEventAnnouncement) {
+      // Check if this is the first time seeing this event
+      const eventKey = `event_announced_${newEventState.currentEvent?.id}`;
+      const hasAnnounced = localStorage.getItem(eventKey);
+      
+      if (!hasAnnounced) {
+        setShowEventAnnouncement(true);
+        localStorage.setItem(eventKey, 'true');
+      }
+    }
+  }, []); // Run once on mount and when dependencies change
+
+  // Update event state every minute
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setEventState(getEventState());
+    }, 60000); // Check every minute
+    
+    return () => clearInterval(interval);
+  }, []);
+
   // Load from cloud when active profile changes (only in online mode)
   useEffect(() => {
     if (activeProfile && !isOfflineMode) {
@@ -555,6 +589,19 @@ function SlimeCollectorAppInner() {
       }
     }
     
+    // HALLOWEEN EVENT: Add spooky biome skills when event is active
+    const { isEventActive: eventActive } = getEventState();
+    console.log('🎃 EVENT DEBUG: Event active?', eventActive, 'Event state:', eventState);
+    if (eventActive) {
+      const spookySkills: SkillID[] = ['word_pumpkin', 'word_graveyard', 'word_haunted'];
+      for (const spookySkill of spookySkills) {
+        if (!list.includes(spookySkill)) {
+          list.push(spookySkill);
+        }
+      }
+      console.log('🎃 EVENT DEBUG: Added spooky skills:', spookySkills);
+    }
+    
     // Debug logging for skill unlock logic
     console.log(`🔓 SKILL UNLOCK DEBUG:`, {
       skillOrder: SKILL_ORDER.slice(0, 5), // first 5 for brevity
@@ -566,7 +613,7 @@ function SlimeCollectorAppInner() {
     });
     
     return list;
-  }, [store.currentId, current?.mastered, store]); // Include store to trigger re-render on profile updates
+  }, [store.currentId, current?.mastered, store, eventState]); // Include eventState to trigger re-render when event status changes
 
   // start / end
   const startGame = () => {
@@ -1064,8 +1111,10 @@ function SlimeCollectorAppInner() {
 const level = current ? levelFromTotalXP(current.xp).level : 1;
 const { xpInto, xpNeed } = current ? levelFromTotalXP(current.xp) : { xpInto: 0, xpNeed: 100 };
 
-// Determine current biome - use skill-based biome for dynamic visual experience
-const currentBiome = getBiomeForSkill(skill);
+// Determine current biome - prioritize currentWorld if set, otherwise use skill-based biome
+const currentBiome = current?.currentWorld ? 
+  (current.currentWorld as BiomeId) : 
+  getBiomeForSkill(skill);
 
 return (
   <div className="min-h-screen relative overflow-hidden">
@@ -1101,6 +1150,26 @@ return (
       {/* Main card (slightly translucent so global biome softly shines through) */}
       <div className="relative w-full max-w-3xl mx-auto rounded-2xl shadow-xl bg-white/80 backdrop-blur-sm border border-emerald-100">
         
+        {/* Top Left Controls */}
+        <div className="absolute top-4 left-4 z-20">
+          {/* Change Player Link */}
+          {(user || isOfflineMode) && activeProfile && (
+            <button
+              onClick={() => {
+                // Refresh profile data if in offline mode to show latest progress
+                if (isOfflineMode && refreshOfflineProfiles) {
+                  refreshOfflineProfiles();
+                }
+                setShowProfileSwitcher(true);
+              }}
+              className="text-emerald-600 hover:text-emerald-700 text-sm font-medium underline"
+              title="Change Player"
+            >
+              Change Player
+            </button>
+          )}
+        </div>
+
         {/* Top Right Controls */}
         <div className="absolute top-4 right-4 z-20 flex items-center gap-2">
           {/* Save Status Indicator */}
@@ -1131,6 +1200,25 @@ return (
             </div>
           )}
           
+          {/* Sound Toggle */}
+          <button
+            onClick={() => {
+              setSoundOn((s) => !s);
+              if (current) {
+                setStore((S: any) => ({
+                  ...S,
+                  profiles: S.profiles.map((p: any) =>
+                    p.id === current.id ? { ...p, settings: { ...p.settings, soundOn: !soundOn } } : p
+                  ),
+                }));
+              }
+            }}
+            className="flex items-center justify-center w-8 h-8 rounded-lg bg-white/70 backdrop-blur-sm border border-gray-200 hover:bg-gray-50 transition-colors"
+            title={soundOn ? "Sound on" : "Sound off"}
+          >
+            {soundOn ? <Volume2 className="w-4 h-4 text-gray-600" /> : <VolumeX className="w-4 h-4 text-gray-400" />}
+          </button>
+
           {/* Sign Out Button */}
           {user && (
             <button
@@ -1171,19 +1259,7 @@ return (
                 </div>
               )}
 
-              <div className="flex items-center justify-center gap-6">
-                {/* Hearts */}
-                <div className="flex items-center gap-1" title="Lives">
-                  {Array.from({ length: 3 }).map((_, i) => (
-                    <svg key={i} viewBox="0 0 24 24" className={`w-6 h-6 ${i < lives ? "fill-red-500" : "fill-red-200"}`}>
-                      <path
-                        d="M12 21s-7-4.6-9.5-8.2C.6 9.8 1.7 6.6 4.4 5.6c1.7-.6 3.5-.1 4.7 1.2L12 9.9l2.9-3.1c1.2-1.3 3-1.8 4.7-1.2 2.7 1 3.8 4.2 1.9 7.2C19 16.4 12 21 12 21z"
-                        strokeWidth="1.2"
-                        className="stroke-red-600"
-                      />
-                    </svg>
-                  ))}
-                </div>
+              <div className="flex items-center justify-center gap-6 flex-wrap">
 
                 {/* Goo Counter */}
                 <div
@@ -1196,7 +1272,7 @@ return (
                 </div>
 
                 {/* XP Bar */}
-                <div className="flex-1 max-w-48">
+                <div className="w-48">
                   <div className="h-4 w-full rounded-full bg-emerald-100 overflow-hidden">
                     <div
                       className="h-full bg-emerald-500 transition-all duration-300"
@@ -1315,15 +1391,44 @@ return (
                 <BiomeLayer biome={currentBiome} />
             </div>
 
-            {/* Top bar with streak counters (left) and Take A Break button (right) */}
+            {/* Top bar with streak counters (left), biome info (center), and Take A Break button (right) */}
             <div className="flex items-center justify-between px-4 pt-4">
-              {/* Streak counters - moved to top left */}
+              {/* Streak counters - left */}
               <div className="flex items-center gap-4">
-              <div className="text-emerald-700 font-semibold">Streak: {streak}</div>
-              <div className="text-emerald-700/80 text-sm">Best: {bestStreak}</div>
-            </div>
+                <div className="text-emerald-700 font-semibold">Streak: {streak}</div>
+                <div className="text-emerald-700/80 text-sm">Best: {bestStreak}</div>
+              </div>
 
-              {/* Take A Break button - top right */}
+              {/* Biome name and hearts - center */}
+              <div className="flex flex-col items-center gap-2">
+                {/* Biome name */}
+                <div className="text-center text-xs text-emerald-600/70">
+                  {(() => {
+                    const skillLabel = SKILLS[skill]?.label ?? skill;
+                    const worldName = getWorldNameForSkill(skill);
+                    const mastered = current?.mastered?.[skill] || false;
+                    
+                    return worldName 
+                      ? `${skillLabel} • ${worldName}${mastered ? ' ✓' : ''}`
+                      : skillLabel;
+                  })()}
+                </div>
+                
+                {/* Hearts */}
+                <div className="flex items-center gap-1" title="Lives">
+                  {Array.from({ length: 3 }).map((_, i) => (
+                    <svg key={i} viewBox="0 0 24 24" className={`w-5 h-5 ${i < lives ? "fill-red-500" : "fill-red-200"}`}>
+                      <path
+                        d="M12 21s-7-4.6-9.5-8.2C.6 9.8 1.7 6.6 4.4 5.6c1.7-.6 3.5-.1 4.7 1.2L12 9.9l2.9-3.1c1.2-1.3 3-1.8 4.7-1.2 2.7 1 3.8 4.2 1.9 7.2C19 16.4 12 21 12 21z"
+                        strokeWidth="1.2"
+                        className="stroke-red-600"
+                      />
+                    </svg>
+                  ))}
+                </div>
+              </div>
+
+              {/* Take A Break button - right */}
               {gameState === "playing" && (
                 <button
                   onClick={endSession}
@@ -1469,33 +1574,6 @@ return (
                 </div>
               )}
 
-              {/* Current Skill/World Indicator */}
-              <div className="px-4 pb-2">
-                <div className="text-center text-xs text-emerald-600/70">
-                  {(() => {
-                    const skillLabel = SKILLS[skill]?.label ?? skill;
-                    const worldName = getWorldNameForSkill(skill);
-                    const mastered = current?.mastered?.[skill] || false;
-                    
-                    // Debug logging
-                    console.log('🎯 HUD SKILL DISPLAY DEBUG:', {
-                      skill,
-                      skillLabel,
-                      worldName,
-                      mastered,
-                      currentSkill: current?.settings?.currentSkill,
-                      worldId: worldIdOf(skill),
-                      nextWorld: current ? nextWorld(current)?.id : 'no-profile',
-                      nextWorldTitle: current ? nextWorld(current)?.title : 'no-profile'
-                    });
-                    
-                    return worldName 
-                      ? `${skillLabel} • ${worldName}${mastered ? ' ✓' : ''}`
-                      : skillLabel;
-                  })()}
-                </div>
-            </div>
-
               <div className="flex items-center justify-center py-4">
                 {/* active skin with celebrations */}
                 <div className="relative">
@@ -1506,12 +1584,6 @@ return (
                     eyeTracking={current.settings.eyeTracking}
                   />
 
-                  {/* Debug: Check what skinId is being passed */}
-                  {console.log('SlimeCollectorApp Debug:', {
-                    activeSkin: current.settings.activeSkin,
-                    skinExists: !!(current.settings.activeSkin && SKINS[current.settings.activeSkin]),
-                    finalSkinId: (current.settings.activeSkin && SKINS[current.settings.activeSkin]) ? current.settings.activeSkin : "moss"
-                  })}
                   
                   {/* Celebrations overlay */}
                   <div className="pointer-events-none absolute inset-0 z-20">
@@ -1616,96 +1688,66 @@ return (
 
         {/* Bottom Controls */}
         <div className="mx-6 mb-6 p-4">
-          <div className="flex items-center justify-center gap-3 flex-wrap">
-            {/* Skill Selector */}
-            <select
-              value={skill}
-              onChange={(e) => updateCurrentSkill(e.target.value as SkillID)}
-              className="rounded-xl bg-white px-4 py-2 text-emerald-800 text-sm border border-emerald-200"
-              title="Select math skill and world progression"
-            >
-              {unlockedSkills.map((id) => {
-                const skillLabel = SKILLS[id as SkillID]?.label ?? id;
-                const worldName = getWorldNameForSkill(id);
-                const mastered = current?.mastered?.[id] || false;
-                
-                // Format: "Addition 1–10 • Meadow World" or "Addition 1–10 • Meadow ✓" if mastered
-                const displayLabel = worldName 
-                  ? `${skillLabel} • ${worldName}${mastered ? ' ✓' : ''}`
-                  : skillLabel;
-                
-                return (
-                  <option key={id} value={id}>
-                    {displayLabel}
-                  </option>
-                );
-              })}
-            </select>
-
-            {/* Sound Toggle */}
-            <button
-              onClick={() => {
-                setSoundOn((s) => !s);
-                if (current) {
-                  setStore((S: any) => ({
-                    ...S,
-                    profiles: S.profiles.map((p: any) =>
-                      p.id === current.id ? { ...p, settings: { ...p.settings, soundOn: !soundOn } } : p
-                    ),
-                  }));
-                }
-              }}
-              className="inline-flex items-center gap-2 rounded-xl px-4 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-sm border border-emerald-200"
-              title={soundOn ? "Sound on" : "Sound off"}
-            >
-              {soundOn ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
-              <span className="hidden sm:inline">Sound</span>
-            </button>
-
-            {/* Profile Switcher Button - for both online and offline modes */}
-            {(user || isOfflineMode) && activeProfile && (
+          <div className="flex items-center justify-between gap-3 flex-wrap">
+            {/* Left - Shop Button */}
+            <div className="flex items-center">
               <button
-                onClick={() => {
-                  // Refresh profile data if in offline mode to show latest progress
-                  if (isOfflineMode && refreshOfflineProfiles) {
-                    refreshOfflineProfiles();
-                  }
-                  setShowProfileSwitcher(true);
-                }}
-                className={`inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm border ${
-                  isOfflineMode
-                    ? 'bg-gray-50 hover:bg-gray-100 text-gray-700 border-gray-200'
-                    : 'bg-blue-50 hover:bg-blue-100 text-blue-700 border-blue-200'
-                }`}
-                title={isOfflineMode ? "Switch Player (Offline)" : "Switch Player"}
+                onClick={() => setOpenShop(true)}
+                className="inline-flex items-center gap-2 rounded-xl px-4 py-2 bg-amber-50 hover:bg-amber-100 text-amber-700 text-sm border border-amber-200"
+                title="Shop"
               >
-                <Users className="w-4 h-4" />
-                <span className="hidden sm:inline">
-                  {activeProfile.name}
-                  {isOfflineMode && <span className="ml-1 text-xs">📵</span>}
-                </span>
+                <ShoppingBag className="w-4 h-4" />
+                <span className="hidden sm:inline">Shop</span>
               </button>
-            )}
+            </div>
 
-            {/* Shop Button */}
-            <button
-              onClick={() => setOpenShop(true)}
-              className="inline-flex items-center gap-2 rounded-xl px-4 py-2 bg-amber-50 hover:bg-amber-100 text-amber-700 text-sm border border-amber-200"
-              title="Shop"
-            >
-              <ShoppingBag className="w-4 h-4" />
-              <span className="hidden sm:inline">Shop</span>
-            </button>
+            {/* Center - User Profile Button (opens progress) */}
+            <div className="flex items-center">
+              {(user || isOfflineMode) && activeProfile && (
+                <button
+                  onClick={() => setOpenProgress(true)}
+                  className={`inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm border ${
+                    isOfflineMode
+                      ? 'bg-gray-50 hover:bg-gray-100 text-gray-700 border-gray-200'
+                      : 'bg-blue-50 hover:bg-blue-100 text-blue-700 border-blue-200'
+                  }`}
+                  title={isOfflineMode ? "View Progress (Offline)" : "View Progress"}
+                >
+                  <Users className="w-4 h-4" />
+                  <span className="hidden sm:inline">
+                    {activeProfile.name}
+                    {isOfflineMode && <span className="ml-1 text-xs">📵</span>}
+                  </span>
+                </button>
+              )}
+            </div>
 
-            {/* Progress Button */}
-            <button
-              onClick={() => setOpenProgress(true)}
-              className="inline-flex items-center gap-2 rounded-xl px-4 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-sm border border-emerald-200"
-              title="Progress"
-            >
-              <UserCircle2 className="w-4 h-4" />
-              <span className="hidden sm:inline">Progress</span>
-            </button>
+            {/* Right - Skill Selector */}
+            <div className="flex items-center">
+              <select
+                value={skill}
+                onChange={(e) => updateCurrentSkill(e.target.value as SkillID)}
+                className="rounded-xl bg-white px-4 py-2 text-emerald-800 text-sm border border-emerald-200 min-w-48"
+                title="Select math skill and world progression"
+              >
+                {unlockedSkills.map((id) => {
+                  const skillLabel = SKILLS[id as SkillID]?.label ?? id;
+                  const worldName = getWorldNameForSkill(id);
+                  const mastered = current?.mastered?.[id] || false;
+                  
+                  // Format: "Addition 1–10 • Meadow World" or "Addition 1–10 • Meadow ✓" if mastered
+                  const displayLabel = worldName 
+                    ? `${skillLabel} • ${worldName}${mastered ? ' ✓' : ''}`
+                    : skillLabel;
+                  
+                  return (
+                    <option key={id} value={id}>
+                      {displayLabel}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
 
           </div>
         </div>
@@ -1873,7 +1915,38 @@ return (
           <EdgeBlendingExperiments onClose={() => setOpenEdgeBlending(false)} />
         )}
         {openWorldMap && (
-          <WorldMap onClose={() => setOpenWorldMap(false)} />
+          <WorldMap 
+            onClose={() => setOpenWorldMap(false)}
+            profile={current}
+            onPlayBiome={(biomeId) => {
+              // Set the current world to the selected biome
+              if (current) {
+                // Map biome to skill for event biomes
+                let skillToSet = current.settings?.currentSkill || "add_1_10";
+                if (biomeId === "pumpkin_patch") skillToSet = "word_pumpkin";
+                else if (biomeId === "graveyard") skillToSet = "word_graveyard";
+                else if (biomeId === "haunted_house") skillToSet = "word_haunted";
+                
+                const updatedProfile = {
+                  ...current,
+                  currentWorld: biomeId,
+                  settings: {
+                    ...current.settings,
+                    currentSkill: skillToSet
+                  }
+                };
+                
+                setStore((prev: any) => ({
+                  ...prev,
+                  profiles: prev.profiles.map((p: any) => 
+                    p.id === current.id ? updatedProfile : p
+                  )
+                }));
+                
+                console.log(`🎮 Switched to biome: ${biomeId} with skill: ${skillToSet}`);
+              }
+            }}
+          />
         )}
         {openProgressDashboard && current && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
@@ -1981,6 +2054,15 @@ return (
         />
       )}
 
+      {/* Event HUD */}
+      <EventHUD />
+
+      {/* Event Announcement Modal */}
+      <EventAnnouncementModal
+        open={showEventAnnouncement}
+        onClose={() => setShowEventAnnouncement(false)}
+      />
+
       {/* DEV CHEAT BUTTONS - For biome debugging */}
       {import.meta.env.DEV && (
         <div className="fixed bottom-4 right-4 space-y-2 z-50">
@@ -2055,6 +2137,76 @@ return (
             className="px-3 py-2 bg-blue-600 text-white text-sm rounded-lg shadow-lg hover:bg-blue-700 transition-colors"
           >
             🎮 Cheat: Log State
+          </button>
+          
+          {/* Event System Test Button */}
+          <button
+            onClick={() => {
+              setTestEventActive();
+              console.log('🎃 EVENT TEST: Set event to active for 1 hour');
+              // Force a re-render by updating event state
+              setEventState(getEventState());
+            }}
+            className="px-3 py-2 bg-orange-600 text-white text-sm rounded-lg shadow-lg hover:bg-orange-700 transition-colors"
+          >
+            🎃 Test Event Active
+          </button>
+          
+          {/* Event Announcement Test Button */}
+          <button
+            onClick={() => {
+              console.log('🎃 EVENT TEST: Manually triggering announcement modal');
+              setShowEventAnnouncement(true);
+            }}
+            className="px-3 py-2 bg-purple-600 text-white text-sm rounded-lg shadow-lg hover:bg-purple-700 transition-colors"
+          >
+            📢 Test Announcement
+          </button>
+          
+          {/* Clear Event Announcement History */}
+          <button
+            onClick={() => {
+              const eventKey = `event_announced_spooky_season_2024`;
+              localStorage.removeItem(eventKey);
+              console.log('🎃 EVENT TEST: Cleared announcement history');
+            }}
+            className="px-3 py-2 bg-red-600 text-white text-sm rounded-lg shadow-lg hover:bg-red-700 transition-colors"
+          >
+            🗑️ Clear Announcement
+          </button>
+          
+          {/* Test Event Biome Unlock */}
+          <button
+            onClick={() => {
+              if (current) {
+                // Add event biomes to unlocked list
+                const newBiomes = [...(current.unlocks?.biomes || ['meadow'])];
+                if (!newBiomes.includes('pumpkin_patch')) newBiomes.push('pumpkin_patch');
+                if (!newBiomes.includes('graveyard')) newBiomes.push('graveyard');
+                if (!newBiomes.includes('haunted_house')) newBiomes.push('haunted_house');
+                
+                const updatedProfile = {
+                  ...current,
+                  unlocks: {
+                    ...current.unlocks,
+                    biomes: newBiomes
+                  }
+                };
+                
+                // Update the profile
+                setStore((prev: any) => ({
+                  ...prev,
+                  profiles: prev.profiles.map((p: any) => 
+                    p.id === current.id ? updatedProfile : p
+                  )
+                }));
+                
+                console.log('🎃 BIOME TEST: Unlocked all event biomes');
+              }
+            }}
+            className="px-3 py-2 bg-green-600 text-white text-sm rounded-lg shadow-lg hover:bg-green-700 transition-colors"
+          >
+            🎃 Unlock Event Biomes
           </button>
         </div>
       )}

@@ -13,6 +13,8 @@ import { SKILLS } from "../../core/skills";
 import { BIOMES } from "../../assets/biomes";
 import BadgesGrid from "./BadgesGrid";
 import { getCenteredWeek, getGraceWindowDate } from "../../core/streak";
+import WorldMap from "../../dev/WorldMap";
+import { Map } from "lucide-react";
 
 export default function ProgressModal({
   open,
@@ -33,6 +35,7 @@ export default function ProgressModal({
 }) {
   const [tab, setTab] = useState<"collection" | "badges" | "biomes" | "stats" | "options">("collection");
   const [name, setName] = useState(profile.name);
+  const [showWorldMap, setShowWorldMap] = useState(false);
 
   return (
     <Dialog
@@ -482,8 +485,35 @@ export default function ProgressModal({
                 </div>
               </div>
             </div>
+
+            {/* World Map Button */}
+            <div className="bg-white rounded-xl border border-emerald-200 p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="font-semibold text-emerald-800">World Map</div>
+                  <div className="text-sm text-emerald-700/80 mt-1">
+                    Explore the game world and discover new biomes
+                  </div>
+                </div>
+                <button
+                  onClick={() => setShowWorldMap(true)}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border bg-purple-50 text-purple-700 border-purple-200 hover:bg-purple-100 transition-colors"
+                >
+                  <Map className="w-4 h-4" />
+                  Open Map
+                </button>
+              </div>
+            </div>
           </div>
         </div>
+      )}
+
+      {/* World Map Modal */}
+      {showWorldMap && (
+        <WorldMap
+          onClose={() => setShowWorldMap(false)}
+          profile={profile}
+        />
       )}
     </Dialog>
   );

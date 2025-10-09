@@ -6,17 +6,81 @@
 ---
 
 ## 🧠 **Recent Context (Last 5 Changes)**
-*Updated: September 29, 2025 - For session continuity and micro memory*
+*Updated: October 7, 2025 - For session continuity and micro memory*
 
-1. **[Sep-29] Unified Skin System Implementation**: Successfully implemented shop-focused skin system with 26 curated skins and new renderer architecture
-2. **[Sep-24] Skin System Migration Planning**: Comprehensive analysis of dual skin system tech debt and migration strategy with ChatGPT consultation
-3. **[Sep-19] Meta Documentation System**: Implemented comprehensive micro-memory system with journal organization and git timestamp tracking
-4. **[Sep-18] Rolling Accuracy & Daily Streaks**: Implemented rolling accuracy windows, turbo detection, and daily login streak system
-5. **[Sep-18] Session Summary Enhancement**: Added animated XP/goo count-ups, motivational messages, and badge display
+1. **[Oct-7] Halloween Event System Implementation**: Complete seasonal event system with spooky biomes, PNG backgrounds, skill dropdown integration, and word problem generators
+2. **[Sep-29] Unified Skin System Implementation**: Successfully implemented shop-focused skin system with 26 curated skins and new renderer architecture
+3. **[Sep-24] Skin System Migration Planning**: Comprehensive analysis of dual skin system tech debt and migration strategy with ChatGPT consultation
+4. **[Sep-19] Meta Documentation System**: Implemented comprehensive micro-memory system with journal organization and git timestamp tracking
+5. **[Sep-18] Rolling Accuracy & Daily Streaks**: Implemented rolling accuracy windows, turbo detection, and daily login streak system
 
 ---
 
 ## 📅 **Session History**
+
+### **October 7, 2025 - Halloween Event System Implementation & World Map Enhancement**
+
+**Major Seasonal Event Achievement:**
+- ✅ **Complete Halloween Event System**: Implemented flexible event framework with countdown timers, announcement modals, and event state management
+- ✅ **Spooky Biome Integration**: Added 3 Halloween biomes (Pumpkin Patch, Graveyard, Haunted House) with PNG background images
+- ✅ **World Map Enhancement**: Implemented drag-and-pan functionality, scrollable canvas, and unified biome unlock data
+- ✅ **Skill Dropdown Integration**: Added spooky biome skills to skill selector for quick access during events
+- ✅ **Halloween Word Problems**: Created themed word problem generators with spooky scenarios
+
+**Critical Technical Implementations:**
+
+1. **🎃 Event System Architecture (`src/core/events.ts`)**
+   - **Flexible Event Framework**: `SeasonalEvent` interface with name, content, dates, and state management
+   - **Event State Management**: `getEventState()`, `isEventActive()`, and test helper functions
+   - **Countdown System**: Real-time event timer with automatic state transitions
+   - **Announcement System**: Modal system for event notifications with localStorage persistence
+
+2. **🗺️ World Map Overhaul (`src/dev/WorldMap.tsx`)**
+   - **Drag & Pan Functionality**: Click-and-drag navigation with mouse and touch support
+   - **Scrollable Canvas**: 200% x 150% viewport with proper overflow handling
+   - **Unified Data Source**: Replaced mock data with actual profile biome unlock data
+   - **Event Biome Integration**: Dynamic positioning and visual highlighting for spooky biomes
+   - **"Play Here" Button**: Direct biome selection from map to gameplay
+
+3. **🎨 Spooky Biome System (`src/assets/biomes.tsx`)**
+   - **PNG Background Integration**: `pumpkinpatch.png`, `cemetery.png`, `hauntedhouse.png` with CSS fallbacks
+   - **Halloween Color Schemes**: Orange/pumpkin, purple/graveyard, dark/haunted house themes
+   - **Skill-to-Biome Mapping**: `word_pumpkin`, `word_graveyard`, `word_haunted` skill associations
+
+4. **📝 Halloween Word Problems (`src/core/skills.ts`)**
+   - **Pumpkin Patch Problems**: "9 pumpkins total, 3 carved. How many left?" (subtraction scenarios)
+   - **Graveyard Mysteries**: "12 tombstones, 4 fallen. How many standing?" (subtraction scenarios)
+   - **Haunted House Challenges**: "8 rooms, 3 haunted. How many safe?" (subtraction scenarios)
+   - **Difficulty Scaling**: 1.30, 1.40, 1.50 difficulty multipliers for progression
+
+5. **🎮 Skill Dropdown Integration (`src/app/SlimeCollectorApp.tsx`)**
+   - **Event-Aware Skills**: Spooky skills appear in dropdown when Halloween event is active
+   - **Always Available Pattern**: Similar to triple/quad digit subtraction, not biome-locked
+   - **Seamless Integration**: Works alongside existing skill progression system
+
+**Visual & UX Enhancements:**
+- **Event HUD**: Live countdown timer in top-right corner with Halloween theming
+- **Event Announcement Modal**: Themed modal with event details, countdown, and highlights
+- **Spooky Biome Visuals**: Orange ring highlighting for event biomes on World Map
+- **Biome Visual Consistency**: Fixed conflict between World Map selection and game background
+- **Drag Cursor Feedback**: Proper grab/grabbing cursor states for map navigation
+
+**Technical Problem Solving:**
+- **Drag Event Conflicts**: Resolved biome nodes capturing mouse events by adding `data-biome-node` attributes
+- **Biome Unlock Data**: Unified map data source to use actual profile unlocks instead of mock data
+- **Event State Persistence**: localStorage-based announcement history to prevent spam
+- **Timezone Handling**: Fixed date display issues in event countdown system
+- **Profile Data Integration**: Connected World Map to actual profile biome unlock status
+
+**Architecture Insights:**
+- **Event-Driven Design**: Flexible system supports multiple seasonal events beyond Halloween
+- **Progressive Enhancement**: Event features gracefully degrade when events are inactive
+- **Data Unification**: Single source of truth for biome unlock status across all UI components
+- **User Experience Priority**: Drag-and-pan makes map navigation intuitive on all devices
+
+**Next Phase**: Word problem template/engine refinement for more sophisticated Halloween scenarios
+
+---
 
 ### **September 29, 2025 - Unified Skin System Implementation & Architecture Evolution**
 

@@ -276,6 +276,43 @@ function g_word_multi(): Problem {
   return { text: `Story: ${a} groups of ${b} ${add ? '+' : '-'} ${c}`, answer: ans, options: mc4(ans, [a + b + c, a * b, ans + 2]) };
 }
 
+// ---- Halloween Event: Spooky Word Problems
+function g_word_pumpkin(): Problem {
+  const pumpkins = ri(5, 15);
+  const carved = ri(2, pumpkins - 1);
+  const remaining = pumpkins - carved;
+  
+  return { 
+    text: `Pumpkin Patch: ${pumpkins} pumpkins total, ${carved} carved. How many left?`, 
+    answer: remaining, 
+    options: mc4(remaining, [remaining - 1, remaining + 1, carved, pumpkins], 0, 20) 
+  };
+}
+
+function g_word_graveyard(): Problem {
+  const tombstones = ri(8, 20);
+  const broken = ri(1, Math.floor(tombstones / 2));
+  const standing = tombstones - broken;
+  
+  return { 
+    text: `Graveyard: ${tombstones} tombstones, ${broken} fallen. How many standing?`, 
+    answer: standing, 
+    options: mc4(standing, [standing - 1, standing + 1, broken, tombstones], 0, 25) 
+  };
+}
+
+function g_word_haunted(): Problem {
+  const rooms = ri(6, 12);
+  const haunted = ri(2, Math.floor(rooms / 2));
+  const safe = rooms - haunted;
+  
+  return { 
+    text: `Haunted House: ${rooms} rooms, ${haunted} haunted. How many safe?`, 
+    answer: safe, 
+    options: mc4(safe, [safe - 1, safe + 1, haunted, rooms], 0, 15) 
+  };
+}
+
 // ---- Registry
 export const SKILLS: Record<SkillID, SkillDef> = {
   add_1_10: { id: 'add_1_10', label: 'Addition 1–10', diff: 1.00, kind: 'add', gen: g_add_1_10 },
@@ -306,6 +343,11 @@ export const SKILLS: Record<SkillID, SkillDef> = {
   volume_rect: { id: 'volume_rect', label: 'Volume (Rect Prisms)', diff: 1.90, kind: 'geom', gen: g_volume_rect },
   coord_plane: { id: 'coord_plane', label: 'Coordinate Plane (Q1)', diff: 1.80, kind: 'coord', gen: g_coord_plane },
   word_multi: { id: 'word_multi', label: 'Multi-step Word Ops', diff: 2.05, kind: 'word', gen: g_word_multi },
+  
+  // HALLOWEEN EVENT: Spooky biome word problems
+  word_pumpkin: { id: 'word_pumpkin', label: 'Pumpkin Patch Problems', diff: 1.30, kind: 'word', gen: g_word_pumpkin },
+  word_graveyard: { id: 'word_graveyard', label: 'Graveyard Mysteries', diff: 1.40, kind: 'word', gen: g_word_graveyard },
+  word_haunted: { id: 'word_haunted', label: 'Haunted House Challenges', diff: 1.50, kind: 'word', gen: g_word_haunted },
 };
 
 export function makeProblemForSkill(id: SkillID): Problem {
